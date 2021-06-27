@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on 移动技术分享</title>
+    <link>https://comert007.github.io/categories/</link>
+    <description>Recent content in Categories on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Apr 2021 23:33:03 +0000</lastBuildDate><atom:link href="https://comert007.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>codec</title>
+      <link>https://comert007.github.io/categories/codec/</link>
+      <pubDate>Sat, 10 Apr 2021 23:33:03 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/codec/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ai</title>
+      <link>https://comert007.github.io/categories/ai/</link>
+      <pubDate>Thu, 08 Apr 2021 10:54:08 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/ai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>android</title>
+      <link>https://comert007.github.io/categories/android/</link>
+      <pubDate>Thu, 08 Apr 2021 10:54:08 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ffmpeg</title>
+      <link>https://comert007.github.io/categories/ffmpeg/</link>
+      <pubDate>Wed, 07 Apr 2021 16:44:03 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/ffmpeg/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IP</title>
+      <link>https://comert007.github.io/categories/ip/</link>
+      <pubDate>Fri, 02 Apr 2021 09:55:32 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/ip/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GFW</title>
+      <link>https://comert007.github.io/categories/gfw/</link>
+      <pubDate>Fri, 26 Mar 2021 11:12:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/gfw/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>blog</title>
+      <link>https://comert007.github.io/categories/blog/</link>
+      <pubDate>Wed, 24 Mar 2021 14:50:15 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flutter</title>
+      <link>https://comert007.github.io/categories/flutter/</link>
+      <pubDate>Sun, 17 Mar 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/categories/flutter/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

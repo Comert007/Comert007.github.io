@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>使用 Hexo 搭建个人博客</title>
+  <meta property="og:title" content="使用 Hexo 搭建个人博客" />
+  <meta name="twitter:title" content="使用 Hexo 搭建个人博客" />
+
+  <meta name="description" content="
+
+作为一只程序猿，每个人都希望有一个自己的个人博客，博客自己写的话，那太麻烦了。幸好Hexo提供了一个快捷生成博客的方案。
+">
+  <meta property="og:description" content="
+
+作为一只程序猿，每个人都希望有一个自己的个人博客，博客自己写的话，那太麻烦了。幸好Hexo提供了一个快捷生成博客的方案。
+">
+  <meta name="twitter:description" content="
+
+作为一只程序猿，每个人都希望有一个自己的个人博客，博客自己写的话，那太麻烦了。幸好Hexo提供了一个快捷生成博客的方案。
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/hexo-blog/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/hexo-blog/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>使用 Hexo 搭建个人博客</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/theme/">theme</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/hexo/">hexo</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/ssl/">ssl</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <p><img src="https://comert007.github.io/img/top/hexo.jpeg" alt=""></p>
+<blockquote>
+<p>作为一只程序猿，每个人都希望有一个自己的个人博客，博客自己写的话，那太麻烦了。幸好<a href="https://hexo.io/zh-cn/docs/index.html">Hexo</a>提供了一个快捷生成博客的方案。</p>
+</blockquote>
+<p>注意：以下操作都在Linux系统上进行</p>
+<h2 id="本地构建hexo">本地构建Hexo</h2>
+<p>在构建Hexo之前，我们得先安装两个工具:</p>
+<ul>
+<li>Git</li>
+<li>Node.js</li>
+</ul>
+<p>Git 安装很简单，运行如下代码</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo apt-get install git
+</code></pre></div><p>Node.js安装复杂稍微复杂一点，可参考<a href="https://www.cnblogs.com/mao2080/p/9346018.html">Linux系统安装Nodejs
+</a></p>
+<p>这里当都已安装完成了。</p>
+<h3 id="安装hexo">安装Hexo</h3>
+<p>安装了<code>node</code>就可以使用使用 npm 安装 <code>Hexo</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">npm install -g hexo-cli
+</code></pre></div><p>查看是否安装完成，可以使用如下代码：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">hexo -v
+</code></pre></div><p>创建一个本地文件夹，用来存放 <code>hexo blog</code>, 我这里是<code>StaticWeb</code> 
+在当前文件夹下执行</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">hexo init
+npm install 
+</code></pre></div><p>构建完成之后大概可以看到如下的一个目录结构：</p>
+<p>.
+├── _config.yml
+├── package.json
+├── scaffolds
+├── source
+|   ├── _drafts
+|   └── _posts
+└── themes</p>
+<p>然后在<code>Terminal</code>中执行如下代码，就可以通过 <code>http://localhost:4000</code>进行访问了</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">hexo s/hexo server
+</code></pre></div><p><img src="https://comert007.github.io/img/ssl/hexo-blog-landscape.png" alt="Hexo"></p>
+<h2 id="更换-hexo-主题">更换 Hexo 主题</h2>
+<p>我们发现这个主题实在是太丑了，没办法重新找一个进行更换，我这里使用的是<code>Melody</code>，如果想使用其他的主题到<a href="https://hexo.io/themes/">Hexo主题</a>进行更换</p>
+<ul>
+<li><a href="https://molunerfinn.com/">Melody-Preview</a></li>
+<li><a href="https://github.com/Molunerfinn/hexo-theme-melody">Melody-GitHub</a></li>
+<li><a href="https://molunerfinn.com/hexo-theme-melody-doc/">Melody-Docment</a></li>
+</ul>
+<p>进入<code>StaticWeb</code>将 Melody主题克隆下来</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">git clone -b master https://github.com/Molunerfinn/hexo-theme-melody themes/melody
+</code></pre></div><p>并安装<code>jade</code>和<code>stylus renderer</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">npm install hexo-renderer-jade hexo-renderer-stylus
+</code></pre></div><p>最后将<code>StaticWeb/_config.yml</code>中的<code>theme</code>改成<code>melody</code></p>
+<p>重新执行<code>hexo s</code>就可以看到新的主题样式了
+<img src="https://comert007.github.io/img/ssl/hexo-index-page.png" alt="Melody"></p>
+<h2 id="将hexo部署到自己服务器">将Hexo部署到自己服务器</h2>
+<p>这里说明一下为什么部署到自己的服务器，是因为实在是伤不起<code>Github</code>、<code>Coding</code>这些网站了，实在是运行太慢了，半天都打不开。需要准备一下如下：</p>
+<ul>
+<li>一台服务器(系统使用的是<code>centOS</code>)</li>
+<li>域名（不强求）</li>
+</ul>
+<h3 id="安装工具">安装工具</h3>
+<p>进入我们自己的服务器，安装<code>Git</code>和<code>Nginx</code>
+为什么需要这两个呢？这里简单解释一下</p>
+<ul>
+<li>Git用来构建一个简单的代码仓库</li>
+<li>Nginx用来代理自己搭建好的网站</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ssh root@IP //进入自己服务器，IP为你服务器IPv4地址,回车之后输入密码即可登录
+// 进入之后，安装git
+yum install git-core
+// 安装Nginx
+yum install -y nginx
+// 启动Nginx
+service nginx start
+</code></pre></div><p>安装完成并且启动之后，就可以通过自己的ip或者域名访问了</p>
+<h3 id="构建git仓库与网站存储">构建Git仓库与网站存储</h3>
+<ul>
+<li>创建网站目录</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mkdir /www/blog 
+</code></pre></div><ul>
+<li>创建Git仓库</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mkdir /www/warehouse/hexo
+cd /www/warehouse/hexo
+git init --bare hexo.git
+</code></pre></div><h3 id="使用-git-hooks-实现自动项目部署">使用 Git Hooks 实现自动项目部署</h3>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vim /var/blog/hexo.git/hooks/post-receive
+// 进入后编辑如下
+<span style="color:#93a1a1;font-style:italic">#!/bin/bash</span>
+git --work-tree=/www/blog --git-dir=/www/warehouse/hexo/hexo.git checkout -f
+</code></pre></div><p><code>post-receive</code>它运行在服务端而不是用户的本地机器，它在任何开发者推送代码时运行．
+关于更多关于<code>Git Hook</code>可参考<a href="http://notes.11ten.net/apps-auto-deploy-with-git.html">使用 Git Hooks 实现自动项目部署</a></p>
+<ul>
+<li>赋予可执行权限</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">chmod +x /www/warehouse/hexo/hexo.git/hooks/post-receive
+</code></pre></div><h2 id="配置nginx">配置Nginx</h2>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">cd /etc/nginx/
+vim nginx.conf
+</code></pre></div><ul>
+<li>编辑<code>nginx.conf</code></li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">server_name  www.readdown.com;
+#root         /usr/share/nginx/html;
+root         /var/www/hexo;
+</code></pre></div><ul>
+<li>保存退出后执行如下：</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">nginx s reload
+</code></pre></div><ul>
+<li>再次修改本地<code>StaticWeb/_config.yml</code></li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">url: ip或域名（http://xxx.com）
+...deploy:
+  type: git
+  repo: root@xxx.com:/var/blog/hexo
+  branch: master
+</code></pre></div><ul>
+<li>最后一次运行</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">hexo clean
+hexo g
+hexo deploy
+</code></pre></div><p>上传完成之后，就可以成功访问了,例如<a href="http://readdown.com/">我的博客</a></p>
+<h2 id="添加证书">添加证书</h2>
+<p>我们想将我们的网站<code>http://</code>变成<code>https://</code>，那就需要向我们的服务器添加SSL证书．大概添加步骤如下：</p>
+<ol>
+<li>
+<p>先打开<a href="https://www.aliyun.com/">阿里云</a>，找到产品服务-安全－SSL证书，进入<a href="https://yundun.console.aliyun.com/?spm=5176.12818093.recent.dcas.488716d0SPrrSr&amp;p=cas#/overview/cn-hangzhou">SSL证书</a></p>
+</li>
+<li>
+<p>点击<code>购买证书</code>，然后进入购买页面，我们选择个人免费版，可使用一年时间
+<img src="https://comert007.github.io/img/ssl/ssl_buy.png" alt="证书购买"></p>
+</li>
+<li>
+<p>购买完成后需进行一个个人认证申请，等几分钟状态就会从申请中变成已签发
+<img src="https://comert007.github.io/img/ssl/ssl_sign.png" alt="证书签发"></p>
+</li>
+<li>
+<p>点击<code>下载</code>，就会出现如下，可下载<code>Apache</code>、<code>Tomcat</code>、<code>Nginx</code>，我们这里下载<code>Nginx</code>的证书
+<img src="https://comert007.github.io/img/ssl/ssl_down.png" alt="证书签发"></p>
+</li>
+</ol>
+<p>５. 配置</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx"><span style="color:#93a1a1;font-style:italic"># HTTPS server
+</span><span style="color:#93a1a1;font-style:italic"></span>  <span style="color:#859900">server</span> {
+  <span style="color:#dc322f;font-weight:bold">listen</span> <span style="color:#2aa198;font-weight:bold">443</span>;
+  <span style="color:#dc322f;font-weight:bold">server_name</span> <span style="color:#2aa198">localhost</span>;
+  <span style="color:#dc322f;font-weight:bold">ssl</span> <span style="color:#268bd2">on</span>;
+  <span style="color:#dc322f;font-weight:bold">ssl_certificate</span> <span style="color:#2aa198">cert.pem</span>;
+  <span style="color:#dc322f;font-weight:bold">ssl_certificate_key</span> <span style="color:#2aa198">cert.key</span>;
+  <span style="color:#dc322f;font-weight:bold">ssl_session_timeout</span> <span style="color:#2aa198;font-weight:bold">5m</span>;
+  <span style="color:#dc322f;font-weight:bold">ssl_protocols</span> <span style="color:#2aa198">TLSv1</span> <span style="color:#2aa198">TLSv1.1</span> <span style="color:#2aa198">TLSv1.2</span>;
+  <span style="color:#dc322f;font-weight:bold">ssl_ciphers</span> <span style="color:#2aa198">ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP</span>;
+  <span style="color:#dc322f;font-weight:bold">ssl_prefer_server_ciphers</span> <span style="color:#268bd2">on</span>;
+  <span style="color:#dc322f;font-weight:bold">location</span> <span style="color:#2aa198">/</span> {
+			}
+</code></pre></div><ol start="6">
+<li>配置完成之后会发现，如果我们访问<code>http://</code>不会自动转成<code>https://</code>，修改如下</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx"><span style="color:#859900">server</span> {
+ <span style="color:#dc322f;font-weight:bold">listen</span> <span style="color:#2aa198;font-weight:bold">80</span>;
+ <span style="color:#dc322f;font-weight:bold">server_name</span> <span style="color:#2aa198">localhost</span>;   <span style="color:#93a1a1;font-style:italic">#将localhost修改为您证书绑定的域名，例如：www.example.com。
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#dc322f;font-weight:bold">rewrite</span> <span style="color:#2aa198">^(.*)</span>$ <span style="color:#2aa198">https://</span><span style="color:#268bd2">$host$1</span> <span style="color:#2aa198">permanent</span>;   <span style="color:#93a1a1;font-style:italic">#将所有http请求通过rewrite重定向到https。
+</span><span style="color:#93a1a1;font-style:italic"></span> <span style="color:#dc322f;font-weight:bold">location</span> <span style="color:#2aa198">/</span> {
+<span style="color:#dc322f;font-weight:bold">index</span> <span style="color:#2aa198">index.html</span> <span style="color:#2aa198">index.htm</span>;
+			}
+		}
+</code></pre></div><ol start="7">
+<li>另外
+如果我们直接访问可能还是访问不了，因为https运行的端口是443，但是一般服务器会启动防火墙，不会自动开启<code>443</code>端口，所有我们需要将443端口开放</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// 将443端口加入开放列表
+firewall-cmd --zone=public --add-port=443/tcp --permanent
+// 重新加载，不然仍然无法访问
+firewall-cmd --reload
+// 查询防火墙开发端口
+firewall-cmd --zone=public --list-port
+</code></pre></div><p>以上就是如何搭建一个简单的博客，并对网站添加SSL证书．</p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/hexo-blog/">使用 Hexo 搭建个人博客</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/lock-screen/" data-toggle="tooltip" data-placement="top" title="Android 音乐播放锁屏界面">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/ffmpeg-basic/" data-toggle="tooltip" data-placement="top" title="FFmpeg命令行入门基础">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

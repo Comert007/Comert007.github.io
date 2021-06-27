@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>log on 移动技术分享</title>
+    <link>https://comert007.github.io/tags/log/</link>
+    <description>Recent content in log on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 05 Apr 2021 20:08:01 +0000</lastBuildDate><atom:link href="https://comert007.github.io/tags/log/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>FFmpegAPI介绍以及日志系统</title>
+      <link>https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Mon, 05 Apr 2021 20:08:01 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;音视频的文章已经断更很久了，在这里说声抱歉。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;不论是Android，还是现在国内很火的&lt;code&gt;HarmonyOS-鸿蒙系统&lt;/code&gt;，其实都不能脱离音视频的范畴，&lt;code&gt;鸿蒙&lt;/code&gt;也实现了对&lt;code&gt;FFmpeg&lt;/code&gt;、&lt;code&gt;openGL&lt;/code&gt;等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

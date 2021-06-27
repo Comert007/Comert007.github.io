@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>view on 移动技术分享</title>
+    <link>https://comert007.github.io/tags/view/</link>
+    <description>Recent content in view on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 06 Dec 2019 14:58:00 +0000</lastBuildDate><atom:link href="https://comert007.github.io/tags/view/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android 音乐播放锁屏界面</title>
+      <link>https://comert007.github.io/post/lock-screen/</link>
+      <pubDate>Fri, 06 Dec 2019 14:58:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/lock-screen/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;如果写过&lt;code&gt;Android&lt;/code&gt;相关的音乐播放器，我们都知道可以从锁屏界面控制音乐的播放、暂停、上／下一曲等操作，那如何打造一个自己应用的锁屏界面呢？&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

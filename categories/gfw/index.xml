@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GFW on 移动技术分享</title>
+    <link>https://comert007.github.io/categories/gfw/</link>
+    <description>Recent content in GFW on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 26 Mar 2021 11:12:00 +0000</lastBuildDate><atom:link href="https://comert007.github.io/categories/gfw/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IP或Port被墙检测</title>
+      <link>https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/</link>
+      <pubDate>Fri, 26 Mar 2021 11:12:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/</guid>
+      <description>&lt;p&gt;在&lt;a href=&#34;https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/&#34;&gt;《自建VPS-防火长城》&lt;/a&gt;中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>自建VPS-防火长城</title>
+      <link>https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/</link>
+      <pubDate>Thu, 25 Mar 2021 09:33:08 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;相信很多做技术、科研的童鞋，都会找一些资料，但是这些资料毕竟相对于国内，国外跟好一些，所以我们经常会去浏览一些国外的网站，但是你如果想访问一些国外的网站，你会发现“找不到该网页”，这是因为国内为了让我们的孩子茁壮成长，对于一些网站做了封锁，那么我们怎么绕过这些封锁呢？。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

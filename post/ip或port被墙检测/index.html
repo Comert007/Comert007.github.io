@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>IP或Port被墙检测</title>
+  <meta property="og:title" content="IP或Port被墙检测" />
+  <meta name="twitter:title" content="IP或Port被墙检测" />
+
+  <meta name="description" content="在《自建VPS-防火长城》中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？">
+  <meta property="og:description" content="在《自建VPS-防火长城》中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？">
+  <meta name="twitter:description" content="在《自建VPS-防火长城》中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>IP或Port被墙检测</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <p>在<a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">《自建VPS-防火长城》</a>中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？</p>
+<h1 id="ip检测">IP检测</h1>
+<p>点击链接进入<a href="https://www.vps234.com/">VPS234</a>IP检测网站</p>
+<blockquote>
+<p><a href="https://www.vps234.com/ipchecker/">https://www.vps234.com/ipchecker/</a></p>
+</blockquote>
+<p>输入IP进行检测</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">108.61.13.174
+</code></pre></div><p><img src="https://comert007.github.io/img/vps/vps234_test_ip_error.png" alt="IP被封锁">
+<img src="https://comert007.github.io/img/vps/vps234_test_ip_ok.png" alt="IP被正常"></p>
+<p>如果国内<code>ICMP</code>和<code>TCP</code>都是<!-- raw HTML omitted --><!-- raw HTML omitted -->，而国外是<!-- raw HTML omitted --><!-- raw HTML omitted -->，就表示你的IP已经被我们的老大哥封锁了。</p>
+<h1 id="端口检测">端口检测</h1>
+<p>点击链接进入端口检测网站</p>
+<blockquote>
+<p><a href="http://port.ping.pe/">http://port.ping.pe/</a></p>
+</blockquote>
+<p>输入ip和端口进行检测</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">108.61.13.174:80
+</code></pre></div><p><img src="https://comert007.github.io/img/vps/port_test_ok.png" alt=""></p>
+<p><img src="https://comert007.github.io/img/vps/port_test_error.png" alt=""></p>
+<h1 id="搬瓦工自带工具检测">搬瓦工自带工具检测</h1>
+<p>如果你的国外服务器是<a href="https://bwh88.net/">搬瓦工</a>，那么你可以直接使用它自带的检测地址</p>
+<ol>
+<li>首先登录<a href="https://bwh88.net/">搬瓦工</a></li>
+</ol>
+<p><img src="https://comert007.github.io/img/vps/bwh88_home.png" alt="搬瓦工首页"></p>
+<ol start="2">
+<li>然后点击顶部<code>register</code>，没有注册过的就会去注册，已注册过的就跳转到如下位置，并登录<code>KiwiVM</code></li>
+</ol>
+<p><img src="https://comert007.github.io/img/vps/bwh88_services.png" alt="搬瓦工服务"></p>
+<ol start="3">
+<li>登录成功之后就使用如下链接进行测试</li>
+</ol>
+<blockquote>
+<p><a href="https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck">https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck</a></p>
+</blockquote>
+<p><img src="https://comert007.github.io/img/vps/bwh88_test_main_ip.png" alt="测试IP"></p>
+<p>如果测试成功就绿色标记显示为<code>IP NOT BLOCKED</code>，失败就红色标记显示为<code>IP BLOCKED</code>，也就是说：</p>
+<ul>
+<li><!-- raw HTML omitted -->IP NOT BLOCKED <!-- raw HTML omitted -->= 没被封</li>
+<li><!-- raw HTML omitted -->IP BLOCKED <!-- raw HTML omitted --> = 被封</li>
+</ul>
+<p>我这里是没有被封
+<img src="https://comert007.github.io/img/vps/bwh88_test_main_ip_ok.png" alt="测试IP成功"></p>
+<p>如果被封了，那就去换IP吧，<a href="https://bwh88.net/">搬瓦工</a>换IP大概有两种方式：</p>
+<ol>
+<li><a href="https://www.bandwagonhost.net/1925.html">搬瓦工每 10 周可免费更换一次被封 IP</a></li>
+<li><a href="https://www.bandwagonhost.net/1312.html">搬瓦工IP被封后，后台自助付费更换新IP教程（仅需8美元）</a></li>
+</ol>
+<p>免费换IP的方式，没有尝试过，有那个时间的童鞋可以确认一下。付费换IP需要8美元，折合人民币50多元，其实还是有点小贵，如果喜欢瞎折腾，我建议购买可以<!-- raw HTML omitted -->免费换IP<!-- raw HTML omitted -->的服务商。</p>
+<ol>
+<li><a href="https://www.hostwinds.com/">hostwinds</a> - 博主当前使用，虽然有时延迟比较高，但是便宜~</li>
+<li><a href="https://www.vultr.com/">vultr</a> - 大品牌，延迟低，稍贵</li>
+</ol>
+<p>也可以看看其他的推荐<a href="https://zhuanlan.zhihu.com/p/161232292">支持免费换IP的VPS汇总</a></p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/">IP或Port被墙检测</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">自建VPS-防火长城</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/">【转载】解决Hexo博客分页展示为HTML代码的问题</a></li>
+    
+    <li><a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">Android逆向-初识反编译工具</a></li>
+    
+    <li><a href="https://comert007.github.io/post/audio-encod/">Android音视频开发:音频非压缩编码和压缩编码</a></li>
+    
+    <li><a href="https://comert007.github.io/post/basic-media/">Android音视频开发:踩一踩“门槛”</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-command/">Android上的FFmpeg命令行</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a></li>
+    
+    <li><a href="https://comert007.github.io/post/hexo-blog/">使用 Hexo 搭建个人博客</a></li>
+    
+    <li><a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/" data-toggle="tooltip" data-placement="top" title="自建VPS-防火长城">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/" data-toggle="tooltip" data-placement="top" title="Cloudflare优选IP">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

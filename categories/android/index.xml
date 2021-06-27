@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>android on 移动技术分享</title>
+    <link>https://comert007.github.io/categories/android/</link>
+    <description>Recent content in android on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 08 Apr 2021 10:54:08 +0000</lastBuildDate><atom:link href="https://comert007.github.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>华为机器学习-图像分割</title>
+      <link>https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/</link>
+      <pubDate>Thu, 08 Apr 2021 10:54:08 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/</guid>
+      <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;记得以前，经常拍大头贴和寸照，要去专门的照相馆，先是让你站在一个红色或者蓝色的幕布前进行拍照，然后就去电脑上把刚刚拍的照片背景在进行修饰，最后再打印出来。其实这都没什么，最主要的是难以忍受他们拍的照片~~&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android逆向-初识反编译工具</title>
+      <link>https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Wed, 24 Mar 2021 10:23:26 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/decompile/apktool_decode_apk.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android 音乐播放锁屏界面</title>
+      <link>https://comert007.github.io/post/lock-screen/</link>
+      <pubDate>Fri, 06 Dec 2019 14:58:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/lock-screen/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;如果写过&lt;code&gt;Android&lt;/code&gt;相关的音乐播放器，我们都知道可以从锁屏界面控制音乐的播放、暂停、上／下一曲等操作，那如何打造一个自己应用的锁屏界面呢？&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Flutter(三)-如何实现登录动画效果</title>
+      <link>https://comert007.github.io/post/flutter3/</link>
+      <pubDate>Sun, 17 Mar 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/flutter3/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在上一篇的时候，我们讲解了怎么做一个登录界面，但是之后呢？完全是草草结尾的感觉嘛，这不，接下来就是给大家详细说说，这个登录里面不得鸟的故事。先来看一个登录的过程~~&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Flutter(一)-你入门了没？</title>
+      <link>https://comert007.github.io/post/flutter1/</link>
+      <pubDate>Sun, 03 Mar 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/flutter1/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;距离Google发布Flutter已经有很长一段时间了，又是一门新的技术，那么我们到底是学呢还是学呢还是学呢？不要问我，我不知道，鬼特么知道我这辈子还要学习多少东西。其实新技术的出现也意味着，老技术会面临淘汰危机，而你将面临着失业危机。用一句话来说：你永远不知道意外和惊喜哪个先来~~&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Flutter(二)-Hello World?</title>
+      <link>https://comert007.github.io/post/flutter2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/flutter2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在上一篇文章中以简单的方式对Flutter自己提供的演示进行了一个简单的分析，当然那是远远不够。本来打算为大家带来官网上的无限下拉刷新的案例，但是发现这里的有些东西实在是太超前了，作为Flutter入门篇，当然不能这么随意，以为了让大家都能够学有所得，所以今天给大家带来了自己手撸的一个登录。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

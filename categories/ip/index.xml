@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IP on 移动技术分享</title>
+    <link>https://comert007.github.io/categories/ip/</link>
+    <description>Recent content in IP on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Apr 2021 09:55:32 +0000</lastBuildDate><atom:link href="https://comert007.github.io/categories/ip/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cloudflare优选IP</title>
+      <link>https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/</link>
+      <pubDate>Fri, 02 Apr 2021 09:55:32 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/</guid>
+      <description>&lt;p&gt;在自建VPS之后，我们会发现连接速度并没有那么理想，难度是我们被骗了？其实不然，实质上是我们的VPS所走的线路不是什么高端线路。现在市面上提供的线路一般有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;163传统骨干网 - 全程都是以202.97开头&lt;/li&gt;
+&lt;li&gt;CN2 GT 中端线路 - 去程和回程国内线路都是202.97开头，国际则是59.43开头&lt;/li&gt;
+&lt;li&gt;CN2 GIA 独立线路 - 全程59.43开头，表现最好最稳定&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>IP或Port被墙检测</title>
+      <link>https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/</link>
+      <pubDate>Fri, 26 Mar 2021 11:12:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/</guid>
+      <description>&lt;p&gt;在&lt;a href=&#34;https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/&#34;&gt;《自建VPS-防火长城》&lt;/a&gt;中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>购买Hostwinds VPS以及免费换IP</title>
+      <link>https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/</guid>
+      <description>&lt;p&gt;在{% post_link IP或Port被墙检测 《IP或Port被墙检测》 %}中我们介绍到，可以使用免费换IP的服务商，防止我们操作失误造成GFW对我们的封锁。这里用笔者经常使用的&lt;code&gt;Hostwinds&lt;/code&gt;介绍。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

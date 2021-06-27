@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>逆向 on 移动技术分享</title>
+    <link>https://comert007.github.io/tags/%E9%80%86%E5%90%91/</link>
+    <description>Recent content in 逆向 on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Mar 2021 10:23:26 +0000</lastBuildDate><atom:link href="https://comert007.github.io/tags/%E9%80%86%E5%90%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android逆向-初识反编译工具</title>
+      <link>https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Wed, 24 Mar 2021 10:23:26 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/decompile/apktool_decode_apk.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

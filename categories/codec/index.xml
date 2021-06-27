@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>codec on 移动技术分享</title>
+    <link>https://comert007.github.io/categories/codec/</link>
+    <description>Recent content in codec on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Apr 2021 23:33:03 +0000</lastBuildDate><atom:link href="https://comert007.github.io/categories/codec/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>编译Android使用的libx264并使用进行H.264编码</title>
+      <link>https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/</link>
+      <pubDate>Sat, 10 Apr 2021 23:33:03 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/top/x264.jpg&#34; alt=&#34;&#34;&gt;
+在日常的音视频开发中，我们经常使用&lt;code&gt;FFmpeg&lt;/code&gt;，因为它确实好用呀，囊括了各种功能！但是有个很严重的问题，如果是编译在Android和IOS上使用，会造成APP的包很大。可以看我编译的FFmpeg在Android上的应用程式。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android音视频开发:音频非压缩编码和压缩编码</title>
+      <link>https://comert007.github.io/post/audio-encod/</link>
+      <pubDate>Sun, 19 Jan 2020 08:50:56 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/audio-encod/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/top/audio-encode.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;音视频在开发中，最重要也是最复杂的就是编解码的过程，在上一篇的&lt;a href=&#34;https://readdown.com/2020/01/11/basic-media/&#34;&gt;《Android音视频开发:踩一踩“门槛”》&lt;/a&gt;中，我们说音频的编码根据大小划分有两种：压缩编码和非压缩编码，那到底是怎么实现的这两中编码的呢？这一次就详细了解Android中如何使用这两种方式进行音频编码&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android音视频开发:踩一踩“门槛”</title>
+      <link>https://comert007.github.io/post/basic-media/</link>
+      <pubDate>Sat, 11 Jan 2020 09:14:33 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/basic-media/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/top/basic-media.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;音视频行业已经发展很多年了，随着近几年移动端越来越多的音视频APP的出现，将音视频推向一个高潮，但是由于音视频的学习成本很高，很多开发者望而却步，为了跟紧时代的步伐，我写了这篇音视频基础，讲解了音视频的相关知识，给大家破除音视频的“高门槛”，希望可以共同进步。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

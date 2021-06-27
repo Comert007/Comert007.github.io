@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>编译Android使用的libx264并使用进行H.264编码</title>
+  <meta property="og:title" content="编译Android使用的libx264并使用进行H.264编码" />
+  <meta name="twitter:title" content="编译Android使用的libx264并使用进行H.264编码" />
+
+  <meta name="description" content="
+在日常的音视频开发中，我们经常使用FFmpeg，因为它确实好用呀，囊括了各种功能！但是有个很严重的问题，如果是编译在Android和IOS上使用，会造成APP的包很大。可以看我编译的FFmpeg在Android上的应用程式。">
+  <meta property="og:description" content="
+在日常的音视频开发中，我们经常使用FFmpeg，因为它确实好用呀，囊括了各种功能！但是有个很严重的问题，如果是编译在Android和IOS上使用，会造成APP的包很大。可以看我编译的FFmpeg在Android上的应用程式。">
+  <meta name="twitter:description" content="
+在日常的音视频开发中，我们经常使用FFmpeg，因为它确实好用呀，囊括了各种功能！但是有个很严重的问题，如果是编译在Android和IOS上使用，会造成APP的包很大。可以看我编译的FFmpeg在Android上的应用程式。">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>编译Android使用的libx264并使用进行H.264编码</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/libx264/">libx264</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#下载">下载</a></li>
+    <li><a href="#编写脚本">编写脚本</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#cmake">Cmake</a></li>
+    <li><a href="#ndk-build">ndk-build</a></li>
+    <li><a href="#验证">验证</a></li>
+    <li><a href="#结尾">结尾</a></li>
+  </ul>
+</nav>
+</aside>
+
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <p><img src="https://comert007.github.io/img/top/x264.jpg" alt="">
+在日常的音视频开发中，我们经常使用<code>FFmpeg</code>，因为它确实好用呀，囊括了各种功能！但是有个很严重的问题，如果是编译在Android和IOS上使用，会造成APP的包很大。可以看我编译的FFmpeg在Android上的应用程式。</p>
+<blockquote>
+<p><a href="https://github.com/AnJoiner/FFmpegCommand">https://github.com/AnJoiner/FFmpegCommand</a></p>
+</blockquote>
+<p>一般的<code>FFmpeg</code>编译之后也会有6～7M左右，再加上编译一些第三方音视频处理库的话（如：<!-- raw HTML omitted -->fdk-aac、mp3lame、libx264<!-- raw HTML omitted -->等等），可能达到10多M，这样就造成了APP的臃肿，所以说对于APP上使用的应用程式应该秉承这样一个原则：</p>
+<blockquote>
+<p>单一原则 - 一个类只应该有一个功能，这里需要引申一下，一个功能只引入一个三方库</p>
+</blockquote>
+<p>所以即便FFmpeg很强大，但是如果只是处理单独的<code>H.264</code>编码视频，我们仅仅使用<a href="https://www.videolan.org/developers/x264.html">libx264</a>就可以了。这也就是为什么我在APP上放弃使用<code>FFmpeg</code>而选择编译<code>libx264</code>的原因，尽管也能通过FFmpeg去使用libx264，而且还比单独使用libx264方便。</p>
+<h1 id="libx264">libx264</h1>
+<p><code>libx264</code>是支持H.264编码算法的一套程式，这套程式里提供了完整的对视频裸流处理成H.264压缩的算法。</p>
+<p>注意：我这里所谓的视频裸流，不仅仅只是指常用的<code>YUV420</code>格式，还有一些其他格式，，这里粘贴一下<code>libx264</code>主要支持的视频裸流格式:</p>
+<ul>
+<li><code>X264_CSP_I420</code> - YUV420</li>
+<li><code>X264_CSP_NV21</code> - YUV420格式的一种，但是带一个y planar 和 一个打包带v+u，这种格式在Android上就是Camera的数据。</li>
+<li><code>X264_CSP_I422</code> - YUV422</li>
+<li><code>X264_CSP_I444</code> - YUV444</li>
+<li><code>X264_CSP_RGB</code> - RGB格式</li>
+</ul>
+<p>还有很多其他格式，基本支持市面上常用的所有格式，如果对于YUV不熟悉的童鞋可以看一下之前的<a href="https://comert007.github.io/post/basic-media/">《Android音视频开发:踩一踩“门槛”》</a></p>
+<p>那接下来我们就来试试，如何将libx264交叉编译到<code>Android</code>上，以及使用编译的链接文件进行编码。</p>
+<h1 id="交叉编译">交叉编译</h1>
+<p>想要使用libx264我们得编译成在Android和IOS上能够使用的二进制文件:</p>
+<ul>
+<li>后缀为.a格式的静态文件</li>
+<li>后缀为.so格式的动态文件</li>
+</ul>
+<blockquote>
+<p>注意：这里编译是在Linux和MacOS上执行，在Windows配置实在是比较麻烦，真心不如使用虚拟机安装一个ubuntu的Linux系统。</p>
+</blockquote>
+<h2 id="下载">下载</h2>
+<p>下载的方式大概有如下两种:</p>
+<ul>
+<li>可以直接官网的下载地址<a href="https://code.videolan.org/videolan/x264/-/archive/master/x264-master.tar.bz2">直接进行下载</a>。</li>
+<li>也可以打开Terminal，通过git将代码拷贝到本地</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> git clone https://code.videolan.org/videolan/x264.git
+</code></pre></div><p>解压之后大概的目录内容如下
+<img src="https://comert007.github.io/img/media/x264-dir.png" alt="x264目录"></p>
+<h2 id="编写脚本">编写脚本</h2>
+<p>进入上述解压之后的x264根目录，然后创建一个build_x264.sh(可以随便取名字，只要是.sh的文件就可)的可执行文件。然后贴上如下代码:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic">#!/bin/bash
+</span><span style="color:#93a1a1;font-style:italic"></span>// Android ndk位置
+<span style="color:#268bd2">ANDROID_NDK</span>=/home/c2yu/developer/android/sdk/ndk/android-ndk-r14b
+
+
+<span style="color:#859900">function</span> build_x264()
+{
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$ANDROID_ABI</span>
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$ANDROID_NDK</span>/platforms/<span style="color:#268bd2">$ANDROID_API</span>/<span style="color:#268bd2">$ANDROID_ARCH</span>
+<span style="color:#268bd2">TOOLCHAIN</span>=<span style="color:#268bd2">$ANDROID_NDK</span>/toolchains/<span style="color:#268bd2">$ANDROID_EABI</span>/prebuilt/linux-x86_64/bin
+
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/<span style="color:#268bd2">$CROSS_COMPILE</span>
+
+<span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;Compiling x264 for </span><span style="color:#268bd2">$ANDROID_ABI</span><span style="color:#2aa198">&#34;</span>
+./configure <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --prefix=<span style="color:#268bd2">$PREFIX</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-asm <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-static <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-shared <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-pic <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --host=<span style="color:#268bd2">$HOST</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --cross-prefix=<span style="color:#268bd2">$CROSS_PREFIX</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --sysroot=<span style="color:#268bd2">$SYSROOT</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    
+make clean
+make -j4
+make install
+<span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;The Compilation of x264 for </span><span style="color:#268bd2">$ANDROID_ABI</span><span style="color:#2aa198"> is completed&#34;</span>
+}
+
+<span style="color:#93a1a1;font-style:italic"># armeabi-v7a</span>
+<span style="color:#268bd2">ANDROID_ABI</span>=armeabi-v7a
+<span style="color:#268bd2">ANDROID_API</span>=android-14
+<span style="color:#268bd2">ANDROID_ARCH</span>=arch-arm
+<span style="color:#268bd2">ANDROID_EABI</span>=arm-linux-androideabi-4.9
+
+<span style="color:#268bd2">HOST</span>=arm-linux-androideabi
+<span style="color:#268bd2">CROSS_COMPILE</span>=arm-linux-androideabi-
+
+build_x264
+
+<span style="color:#93a1a1;font-style:italic"># arm64-v8a</span>
+<span style="color:#268bd2">ANDROID_ABI</span>=arm64-v8a
+<span style="color:#268bd2">ANDROID_API</span>=android-21
+<span style="color:#268bd2">ANDROID_ARCH</span>=arch-arm64
+<span style="color:#268bd2">ANDROID_EABI</span>=aarch64-linux-android-4.9
+
+<span style="color:#268bd2">HOST</span>=aarch64-linux-android
+<span style="color:#268bd2">CROSS_COMPILE</span>=aarch64-linux-android-
+
+build_x264
+</code></pre></div><blockquote>
+<p>上述为在Linux上的脚本，需要注意</p>
+<ul>
+<li>ANDROID_NDK 需要替换成你自己的android ndk路径。这里使用的是ndk-14b版本</li>
+<li>如果是MacOS需要将<code>TOOLCHAIN</code>后路径替换成<code>$ANDROID_NDK/toolchains/$ANDROID_EABI/prebuilt/darwin-x86_64/bin</code></li>
+</ul>
+</blockquote>
+<p>脚本编辑完成之后保存，然后在<code>Terminal</code>赋予可执行权限并编译：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">cd xxx/x264  // 进入x264目录
+sudo chmod +x build_x264.sh // 赋予可执行权限
+./build_x264.sh //开始交叉编译
+</code></pre></div><p>编译之后会在当前目录生成一个<code>android</code>文件夹，打开之后就会看到大概如下内容:
+<img src="https://comert007.github.io/img/media/x264-cross-compile.png" alt="">
+任意打开一个文件夹，我们可以看到如下内容：
+<img src="https://comert007.github.io/img/media/x264-cross-compile2.png" alt=""></p>
+<ul>
+<li><code>include</code>里面装的是头文件 - 后面会用到</li>
+<li><code>bin</code> 里面装的是x264执行文件 - 终端使用，不用考虑</li>
+<li><code>lib</code> 里面装的就是我们需要的.a和.so二进制文件 - 最终就是为了它</li>
+</ul>
+<p><img src="https://comert007.github.io/img/media/x264-cross-complie-libs.png" alt="二进制文件"></p>
+<h1 id="使用">使用</h1>
+<p>虽然我们已经成功编译出了libx264的二进制文件，但是在Android上还是不能直接使用。因为还没有写编码程序。</p>
+<p>在Android上使用大概有如下两种方式:</p>
+<ul>
+<li>通过<code>cmake</code>的方式直接在Android Studio上使用</li>
+<li><code>ndk-build</code>编译成可直接使用的动态链接文件。</li>
+</ul>
+<p>下面会详细介绍这两种方式的使用方法。</p>
+<h2 id="cmake">Cmake</h2>
+<ol>
+<li>
+<p>创建一个Android的原生项目(Native)，怎么创建？请参考<a href="https://comert007.github.io/post/audio-encod/">《Android音视频开发:音频非压缩编码和压缩编码》</a> ，里面介绍了如何创建一个Native项目。</p>
+</li>
+<li>
+<p>创建完成项目之后，将上述提到的<code>include</code>文件夹里面的头文件放入<code>cpp</code>这个文件夹下</p>
+</li>
+</ol>
+<p><img src="https://comert007.github.io/img/media/x264-android-cmake-project-dir.png" alt=""></p>
+<blockquote>
+<p>请先忽略这个<code>h264-encode</code>的这个c++文件，在后面会介绍</p>
+</blockquote>
+<ol start="3">
+<li>
+<p>然后在<code>main</code>目录下创建<code>nativeLibs</code>文件夹，将<code>arm64-v8a</code>和<code>armeabi-v7a</code>的两个文件夹的内容拷贝进去，如上图那样。</p>
+</li>
+<li>
+<p>创建<code>h264-encode.cpp</code>的编码视频的处理程序。粘贴代码如下：</p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">
+<span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&#34;android/log.h&#34;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#859900">extern</span> <span style="color:#2aa198">&#34;C&#34;</span> {
+<span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&#34;x264.h&#34;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&#34;jni.h&#34;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic"></span>}
+
+<span style="color:#93a1a1;font-style:italic">#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG  , &#34;h264-encode&#34;, __VA_ARGS__)
+</span><span style="color:#93a1a1;font-style:italic">#define LOGI(...) __android_log_print(ANDROID_LOG_INFO  , &#34;h264-encode&#34;, __VA_ARGS__)
+</span><span style="color:#93a1a1;font-style:italic">#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR  , &#34;h264-encode&#34;, __VA_ARGS__)
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#859900">extern</span> <span style="color:#2aa198">&#34;C&#34;</span>
+<span style="color:#268bd2">JNIEXPORT</span> <span style="color:#268bd2">jint</span> <span style="color:#268bd2">JNICALL</span>
+<span style="color:#268bd2">Java_com_coder_x264cmake_X264Encode_encode</span>(
+        <span style="color:#268bd2">JNIEnv</span> *<span style="color:#268bd2">env</span>, <span style="color:#268bd2">jobject</span> <span style="color:#268bd2">thiz</span>,
+        <span style="color:#268bd2">jint</span> <span style="color:#268bd2">width</span>, <span style="color:#268bd2">jint</span> <span style="color:#268bd2">height</span>,
+        <span style="color:#268bd2">jstring</span> <span style="color:#268bd2">yuv_path</span>, <span style="color:#268bd2">jstring</span> <span style="color:#268bd2">h264_path</span>, <span style="color:#268bd2">jint</span> <span style="color:#268bd2">yuv_csp</span>) {
+    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">ret</span> = <span style="color:#2aa198;font-weight:bold">0</span>;
+    <span style="color:#93a1a1;font-style:italic">// TODO: implement encode()
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">if</span> (<span style="color:#268bd2">width</span> == <span style="color:#2aa198;font-weight:bold">0</span> || <span style="color:#268bd2">height</span> == <span style="color:#2aa198;font-weight:bold">0</span>) {
+        <span style="color:#268bd2">LOGE</span>(<span style="color:#2aa198">&#34;width or height cannot be zero!&#34;</span>);
+    }
+    <span style="color:#859900">const</span> <span style="color:#859900;font-weight:bold">char</span> *<span style="color:#268bd2">yuv_file_path</span> = <span style="color:#268bd2">env</span>-&gt;<span style="color:#268bd2">GetStringUTFChars</span>(<span style="color:#268bd2">yuv_path</span>, <span style="color:#268bd2">JNI_FALSE</span>);
+    <span style="color:#859900">const</span> <span style="color:#859900;font-weight:bold">char</span> *<span style="color:#268bd2">h264_file_path</span> = <span style="color:#268bd2">env</span>-&gt;<span style="color:#268bd2">GetStringUTFChars</span>(<span style="color:#268bd2">h264_path</span>, <span style="color:#268bd2">JNI_FALSE</span>);
+
+    <span style="color:#859900">if</span> (!<span style="color:#268bd2">yuv_file_path</span>) {
+        <span style="color:#268bd2">LOGE</span>(<span style="color:#2aa198">&#34;yuv path cannot be null&#34;</span>);
+        <span style="color:#859900">return</span> -<span style="color:#2aa198;font-weight:bold">1</span>;
+    }
+    <span style="color:#859900">if</span> (!<span style="color:#268bd2">h264_file_path</span>) {
+        <span style="color:#268bd2">LOGE</span>(<span style="color:#2aa198">&#34;h264 path cannot be null&#34;</span>);
+        <span style="color:#859900">return</span> -<span style="color:#2aa198;font-weight:bold">1</span>;
+    }
+    <span style="color:#93a1a1;font-style:italic">// 打开yuv
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">FILE</span> *<span style="color:#268bd2">yuv_file</span> = <span style="color:#268bd2">fopen</span>(<span style="color:#268bd2">yuv_file_path</span>, <span style="color:#2aa198">&#34;rb&#34;</span>);
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">yuv_file</span> == <span style="color:#cb4b16">NULL</span>) {
+        <span style="color:#268bd2">LOGE</span>(<span style="color:#2aa198">&#34;cannot open yuv file&#34;</span>);
+        <span style="color:#859900">return</span> -<span style="color:#2aa198;font-weight:bold">1</span>;
+    }
+    <span style="color:#268bd2">FILE</span> *<span style="color:#268bd2">h264_file</span> = <span style="color:#268bd2">fopen</span>(<span style="color:#268bd2">h264_file_path</span>, <span style="color:#2aa198">&#34;wb&#34;</span>);
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">h264_file</span> == <span style="color:#cb4b16">NULL</span>) {
+        <span style="color:#268bd2">LOGE</span>(<span style="color:#2aa198">&#34;cannot open h264 file&#34;</span>);
+        <span style="color:#859900">return</span> -<span style="color:#2aa198;font-weight:bold">1</span>;
+    }
+    <span style="color:#93a1a1;font-style:italic">// 设置x264处理的yuv格式默认为YUV420
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">csp</span> = <span style="color:#268bd2">X264_CSP_I420</span>;
+    <span style="color:#859900">switch</span> (<span style="color:#268bd2">yuv_csp</span>) {
+        <span style="color:#859900">case</span> <span style="color:#2aa198;font-weight:bold">0</span>:
+            <span style="color:#268bd2">csp</span> = <span style="color:#268bd2">X264_CSP_I420</span>;
+            <span style="color:#859900">break</span>;
+        <span style="color:#859900">case</span> <span style="color:#2aa198;font-weight:bold">1</span>:
+            <span style="color:#268bd2">csp</span> = <span style="color:#268bd2">X264_CSP_I422</span>;
+            <span style="color:#859900">break</span>;
+        <span style="color:#859900">case</span> <span style="color:#2aa198;font-weight:bold">2</span>:
+            <span style="color:#268bd2">csp</span> = <span style="color:#268bd2">X264_CSP_I444</span>;
+            <span style="color:#859900">break</span>;
+        <span style="color:#859900">default</span>:
+            <span style="color:#268bd2">csp</span> = <span style="color:#268bd2">X264_CSP_I420</span>;
+    }
+
+    <span style="color:#268bd2">LOGI</span>(<span style="color:#2aa198">&#34;the params is success:</span><span style="color:#2aa198">\n</span><span style="color:#2aa198"> %dx%d %s %s:&#34;</span>, <span style="color:#268bd2">width</span>, <span style="color:#268bd2">height</span>, <span style="color:#268bd2">yuv_file_path</span>, <span style="color:#268bd2">h264_file_path</span>);
+
+    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">frame_number</span> = <span style="color:#2aa198;font-weight:bold">0</span>;
+    <span style="color:#93a1a1;font-style:italic">// 处理h264单元数据
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i_nal</span> = <span style="color:#2aa198;font-weight:bold">0</span>;
+    <span style="color:#268bd2">x264_nal_t</span> *<span style="color:#268bd2">nal</span> = <span style="color:#cb4b16">NULL</span>;
+    <span style="color:#93a1a1;font-style:italic">// x264
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">x264_t</span> *<span style="color:#268bd2">h</span> = <span style="color:#cb4b16">NULL</span>;
+    <span style="color:#268bd2">x264_param_t</span> *<span style="color:#268bd2">param</span> = (<span style="color:#268bd2">x264_param_t</span> *) <span style="color:#268bd2">malloc</span>(<span style="color:#859900">sizeof</span>(<span style="color:#268bd2">x264_param_t</span>));
+    <span style="color:#268bd2">x264_picture_t</span> *<span style="color:#268bd2">pic_in</span> = (<span style="color:#268bd2">x264_picture_t</span> *) (<span style="color:#268bd2">malloc</span>(<span style="color:#859900">sizeof</span>(<span style="color:#268bd2">x264_picture_t</span>)));
+    <span style="color:#268bd2">x264_picture_t</span> *<span style="color:#268bd2">pic_out</span> = (<span style="color:#268bd2">x264_picture_t</span> *) (<span style="color:#268bd2">malloc</span>(<span style="color:#859900">sizeof</span>(<span style="color:#268bd2">x264_picture_t</span>)));
+
+    <span style="color:#93a1a1;font-style:italic">// 初始化编码参数
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">x264_param_default</span>(<span style="color:#268bd2">param</span>);
+    <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_width</span> = <span style="color:#268bd2">width</span>;
+    <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_height</span> = <span style="color:#268bd2">height</span>;
+    <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_csp</span> = <span style="color:#268bd2">csp</span>;
+    <span style="color:#93a1a1;font-style:italic">// 配置处理级别
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">x264_param_apply_profile</span>(<span style="color:#268bd2">param</span>, <span style="color:#268bd2">x264_profile_names</span>[<span style="color:#2aa198;font-weight:bold">2</span>]);
+    <span style="color:#93a1a1;font-style:italic">// 通过配置的参数打开编码器
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">h</span> = <span style="color:#268bd2">x264_encoder_open</span>(<span style="color:#268bd2">param</span>);
+
+    <span style="color:#268bd2">x264_picture_init</span>(<span style="color:#268bd2">pic_out</span>);
+    <span style="color:#268bd2">x264_picture_alloc</span>(<span style="color:#268bd2">pic_in</span>, <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_csp</span>, <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_width</span>, <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_height</span>);
+    <span style="color:#93a1a1;font-style:italic">// 编码前每一帧的字节大小
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">size</span> = <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_width</span> * <span style="color:#268bd2">param</span>-&gt;<span style="color:#268bd2">i_height</span>;
+
+    <span style="color:#93a1a1;font-style:italic">// 计算视频帧数
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">fseek</span>(<span style="color:#268bd2">yuv_file</span>, <span style="color:#2aa198;font-weight:bold">0</span>, <span style="color:#268bd2">SEEK_END</span>);
+    <span style="color:#859900">switch</span> (<span style="color:#268bd2">csp</span>) {
+        <span style="color:#859900">case</span> <span style="color:#268bd2">X264_CSP_I444</span>:
+            <span style="color:#93a1a1;font-style:italic">// YUV444
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">frame_number</span> = <span style="color:#268bd2">ftell</span>(<span style="color:#268bd2">yuv_file</span>) / (<span style="color:#268bd2">size</span> * <span style="color:#2aa198;font-weight:bold">3</span>);
+            <span style="color:#859900">break</span>;
+        <span style="color:#859900">case</span> <span style="color:#268bd2">X264_CSP_I422</span>:
+            <span style="color:#93a1a1;font-style:italic">// YUV422
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">frame_number</span> = <span style="color:#268bd2">ftell</span>(<span style="color:#268bd2">yuv_file</span>) / (<span style="color:#268bd2">size</span> * <span style="color:#2aa198;font-weight:bold">2</span>);
+            <span style="color:#859900">break</span>;
+        <span style="color:#859900">case</span> <span style="color:#268bd2">X264_CSP_I420</span>:
+            <span style="color:#93a1a1;font-style:italic">//YUV420
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">frame_number</span> = <span style="color:#268bd2">ftell</span>(<span style="color:#268bd2">yuv_file</span>) / (<span style="color:#268bd2">size</span> * <span style="color:#2aa198;font-weight:bold">3</span> / <span style="color:#2aa198;font-weight:bold">2</span>);
+            <span style="color:#859900">break</span>;
+        <span style="color:#859900">default</span>:
+            <span style="color:#268bd2">LOGE</span>(<span style="color:#2aa198">&#34;Colorspace Not Support.&#34;</span>);
+            <span style="color:#859900">return</span> -<span style="color:#2aa198;font-weight:bold">1</span>;
+    }
+    <span style="color:#268bd2">fseek</span>(<span style="color:#268bd2">yuv_file</span>, <span style="color:#2aa198;font-weight:bold">0</span>, <span style="color:#268bd2">SEEK_SET</span>);
+    <span style="color:#93a1a1;font-style:italic">// 循环执行编码
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#2aa198;font-weight:bold">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">frame_number</span>; <span style="color:#268bd2">i</span>++) {
+        <span style="color:#859900">switch</span> (<span style="color:#268bd2">csp</span>) {
+            <span style="color:#859900">case</span> <span style="color:#268bd2">X264_CSP_I444</span>:
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">0</span>], <span style="color:#268bd2">size</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">1</span>], <span style="color:#268bd2">size</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">2</span>], <span style="color:#268bd2">size</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">case</span> <span style="color:#268bd2">X264_CSP_I422</span>:
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">0</span>], <span style="color:#268bd2">size</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">1</span>], <span style="color:#268bd2">size</span> / <span style="color:#2aa198;font-weight:bold">2</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">2</span>], <span style="color:#268bd2">size</span> / <span style="color:#2aa198;font-weight:bold">2</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">case</span> <span style="color:#268bd2">X264_CSP_I420</span>:
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">0</span>], <span style="color:#268bd2">size</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">1</span>], <span style="color:#268bd2">size</span> / <span style="color:#2aa198;font-weight:bold">4</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">img</span>.<span style="color:#268bd2">plane</span>[<span style="color:#2aa198;font-weight:bold">2</span>], <span style="color:#268bd2">size</span> / <span style="color:#2aa198;font-weight:bold">4</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">yuv_file</span>);
+                <span style="color:#859900">break</span>;
+        }
+        <span style="color:#268bd2">pic_in</span>-&gt;<span style="color:#268bd2">i_pts</span> = <span style="color:#268bd2">i</span>;
+        <span style="color:#93a1a1;font-style:italic">// 对每一帧执行编码
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">ret</span> = <span style="color:#268bd2">x264_encoder_encode</span>(<span style="color:#268bd2">h</span>, &amp;<span style="color:#268bd2">nal</span>, &amp;<span style="color:#268bd2">i_nal</span>, <span style="color:#268bd2">pic_in</span>, <span style="color:#268bd2">pic_out</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">ret</span> &lt; <span style="color:#2aa198;font-weight:bold">0</span>) {
+            <span style="color:#268bd2">LOGE</span>(<span style="color:#2aa198">&#34;x264 encode error&#34;</span>);
+            <span style="color:#859900">return</span> -<span style="color:#2aa198;font-weight:bold">1</span>;
+        }
+        <span style="color:#268bd2">LOGI</span>(<span style="color:#2aa198">&#34;encode frame:%5d&#34;</span>, <span style="color:#268bd2">i</span>);
+        <span style="color:#93a1a1;font-style:italic">// 将编码数据循环写入目标文件
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">j</span> = <span style="color:#2aa198;font-weight:bold">0</span>; <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">i_nal</span>; ++<span style="color:#268bd2">j</span>) {
+            <span style="color:#268bd2">fwrite</span>(<span style="color:#268bd2">nal</span>[<span style="color:#268bd2">j</span>].<span style="color:#268bd2">p_payload</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">nal</span>[<span style="color:#268bd2">j</span>].<span style="color:#268bd2">i_payload</span>, <span style="color:#268bd2">h264_file</span>);
+        }
+    }
+
+    <span style="color:#93a1a1;font-style:italic">// 冲刷缓冲区，不执行可能造成数据不完整
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#2aa198;font-weight:bold">0</span>;
+    <span style="color:#859900">while</span> (<span style="color:#2aa198;font-weight:bold">1</span>) {
+        <span style="color:#268bd2">ret</span> = <span style="color:#268bd2">x264_encoder_encode</span>(<span style="color:#268bd2">h</span>, &amp;<span style="color:#268bd2">nal</span>, &amp;<span style="color:#268bd2">i_nal</span>, <span style="color:#cb4b16">NULL</span>, <span style="color:#268bd2">pic_out</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">ret</span> == <span style="color:#2aa198;font-weight:bold">0</span>) {
+            <span style="color:#859900">break</span>;
+        }
+        <span style="color:#268bd2">LOGD</span>(<span style="color:#2aa198">&#34;flush 1 frame&#34;</span>);
+        <span style="color:#93a1a1;font-style:italic">// 将编码数据循环写入目标文件
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">j</span> = <span style="color:#2aa198;font-weight:bold">0</span>; <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">i_nal</span>; ++<span style="color:#268bd2">j</span>) {
+            <span style="color:#268bd2">fwrite</span>(<span style="color:#268bd2">nal</span>[<span style="color:#268bd2">j</span>].<span style="color:#268bd2">p_payload</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">nal</span>[<span style="color:#268bd2">j</span>].<span style="color:#268bd2">i_payload</span>, <span style="color:#268bd2">h264_file</span>);
+        }
+        <span style="color:#268bd2">i</span>++;
+    }
+
+    <span style="color:#268bd2">x264_picture_clean</span>(<span style="color:#268bd2">pic_in</span>);
+    <span style="color:#268bd2">x264_encoder_close</span>(<span style="color:#268bd2">h</span>);
+    <span style="color:#93a1a1;font-style:italic">// 释放分配的空间
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">free</span>(<span style="color:#268bd2">pic_in</span>);
+    <span style="color:#268bd2">free</span>(<span style="color:#268bd2">pic_out</span>);
+    <span style="color:#268bd2">free</span>(<span style="color:#268bd2">param</span>);
+    <span style="color:#93a1a1;font-style:italic">// 关闭文件输入
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">fclose</span>(<span style="color:#268bd2">yuv_file</span>);
+    <span style="color:#268bd2">fclose</span>(<span style="color:#268bd2">h264_file</span>);
+
+    <span style="color:#859900">return</span> <span style="color:#268bd2">ret</span>;
+}
+</code></pre></div><p>这段代码有点长，而且还是C语言相关代码，读不懂没有关系，将上述代码直接粘贴到你的项目中即可。</p>
+<blockquote>
+<p>注意：</p>
+<ol>
+<li>当前程序只支持<code>YUV420</code>、<code>YUV422</code>以及<code>YUV444</code>三种裸流处理。</li>
+<li><code>Java_com_coder_x264cmake_X264Encode_encode</code>这个意思是指在<code>com.coder.x264cmake</code>的包名下的<code>X264Encode</code>类中的<code>encode</code>的方法。需要对应成你自己的完整路径。</li>
+</ol>
+</blockquote>
+<ol start="5">
+<li>配置<code>CmakeLists.txt</code>，一定要注意这个的配置，稍微一点点配置错误，就会出现如下错误</li>
+</ol>
+<p><img src="https://comert007.github.io/img/media/x264-android-cmake-error.png" alt="CmakeLists配置错误"></p>
+<p>为了防止大家配置错误，我将CmakeLists.txt的配置粘贴如下：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmake" data-lang="cmake"><span style="color:#93a1a1;font-style:italic"># For more information about using CMake with Android Studio, read the
+</span><span style="color:#93a1a1;font-style:italic"># documentation: https://d.android.com/studio/projects/add-native-code.html
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#93a1a1;font-style:italic"># Sets the minimum version of CMake required to build the native library.
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#cb4b16">cmake_minimum_required</span>(<span style="color:#2aa198">VERSION</span> <span style="color:#2aa198">3.10.2</span>)
+
+<span style="color:#93a1a1;font-style:italic"># Declares and names the project.
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#cb4b16">project</span>(<span style="color:#2aa198">&#34;x264cmake&#34;</span>)
+
+<span style="color:#cb4b16">set</span>( <span style="color:#2aa198">JNI_LIBS_DIR</span> <span style="color:#2aa198">src/main/nativeLibs</span>)
+<span style="color:#93a1a1;font-style:italic"># Creates and names a library, sets it as either STATIC
+</span><span style="color:#93a1a1;font-style:italic"># or SHARED, and provides the relative paths to its source code.
+</span><span style="color:#93a1a1;font-style:italic"># You can define multiple libraries, and CMake builds them for you.
+</span><span style="color:#93a1a1;font-style:italic"># Gradle automatically packages shared libraries with your APK.
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#cb4b16">add_library</span>(
+        <span style="color:#2aa198">h264</span>
+        <span style="color:#2aa198">STATIC</span>
+        <span style="color:#2aa198">IMPORTED</span>
+)
+<span style="color:#93a1a1;font-style:italic">#
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#cb4b16">set_target_properties</span>(
+        <span style="color:#2aa198">h264</span>
+        <span style="color:#2aa198">PROPERTIES</span> <span style="color:#2aa198">IMPORTED_LOCATION</span>
+        ${<span style="color:#268bd2">CMAKE_SOURCE_DIR</span>}<span style="color:#2aa198">/</span>${<span style="color:#268bd2">JNI_LIBS_DIR</span>}<span style="color:#2aa198">/</span>${<span style="color:#268bd2">CMAKE_ANDROID_ARCH_ABI</span>}<span style="color:#2aa198">/libx264.a</span>
+)
+
+<span style="color:#cb4b16">include_directories</span>(<span style="color:#2aa198">src/main/cpp</span>)
+
+<span style="color:#cb4b16">add_library</span>(
+        <span style="color:#2aa198">h264-encode</span>
+        <span style="color:#2aa198">SHARED</span>
+        <span style="color:#2aa198">src/main/cpp/h264-encode.cpp</span>
+)
+
+<span style="color:#cb4b16">add_library</span>(
+        <span style="color:#2aa198">native-lib</span>
+        <span style="color:#2aa198">SHARED</span>
+        <span style="color:#2aa198">src/main/cpp/native-lib.cpp</span>
+)
+
+<span style="color:#93a1a1;font-style:italic"># Searches for a specified prebuilt library and stores the path as a
+</span><span style="color:#93a1a1;font-style:italic"># variable. Because CMake includes system libraries in the search path by
+</span><span style="color:#93a1a1;font-style:italic"># default, you only need to specify the name of the public NDK library
+</span><span style="color:#93a1a1;font-style:italic"># you want to add. CMake verifies that the library exists before
+</span><span style="color:#93a1a1;font-style:italic"># completing its build.
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#cb4b16">find_library</span>( <span style="color:#93a1a1;font-style:italic"># Sets the name of the path variable.
+</span><span style="color:#93a1a1;font-style:italic"></span>              <span style="color:#2aa198">log-lib</span>
+
+              <span style="color:#93a1a1;font-style:italic"># Specifies the name of the NDK library that
+</span><span style="color:#93a1a1;font-style:italic"></span>              <span style="color:#93a1a1;font-style:italic"># you want CMake to locate.
+</span><span style="color:#93a1a1;font-style:italic"></span>              <span style="color:#2aa198">log</span> )
+
+<span style="color:#93a1a1;font-style:italic"># Specifies libraries CMake should link to your target library. You
+</span><span style="color:#93a1a1;font-style:italic"># can link multiple libraries, such as libraries you define in this
+</span><span style="color:#93a1a1;font-style:italic"># build script, prebuilt third-party libraries, or system libraries.
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#cb4b16">target_link_libraries</span>( <span style="color:#93a1a1;font-style:italic"># Specifies the target library.
+</span><span style="color:#93a1a1;font-style:italic"></span>                       <span style="color:#2aa198">h264-encode</span>
+                       <span style="color:#2aa198">h264</span>
+                       <span style="color:#93a1a1;font-style:italic"># Links the target library to the log library
+</span><span style="color:#93a1a1;font-style:italic"></span>                       <span style="color:#93a1a1;font-style:italic"># included in the NDK.
+</span><span style="color:#93a1a1;font-style:italic"></span>                       ${<span style="color:#268bd2">log-lib</span>} )
+</code></pre></div><ol start="6">
+<li>在<code>X264Cmake</code>中添加加载二进制库，并添加编码方法。
+<img src="https://comert007.github.io/img/media/x264-android-encode.png" alt="编码方法"></li>
+</ol>
+<p>这样就可以直接运行了，如果出现错误，可以参考<a href="https://github.com/AnJoiner/X264Cmake">X264Cmake</a></p>
+<blockquote>
+<p>注意：
+<code>X264Cmake</code>项目中assets目录下<code>test.yuv</code>文件由于太大，所以无法上传，可在终端通过下面命令将任意视频转为YUV420格式的裸流。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ffmpeg -i input.mp4 test.yuv
+</code></pre></div><p>这里可能就会有人问了：
+不是说不使用FFmpeg了吗？你这里怎么还自己用上了？
+<!-- raw HTML omitted --><!-- raw HTML omitted -->注意：上文说的是在APP中使用的时候<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->还有一个地方需要注意，当我们把mp4的视频文件转为yuv的时候，视频体积会增大数十倍，打个比方：就是1M的mp4视频，转成yuv的视频裸流后，视频大小大概是几百M。
+而且yuv只有视频数据，音频内容被去掉了<!-- raw HTML omitted --></p>
+<h2 id="ndk-build">ndk-build</h2>
+<p>通过ndk-build的方式，直接编译成动态链接文件，可以直接放在<code>jniLibs</code>目录下以供使用，就行正常的时候引入二进制文件一样。不需要再创建原生项目，也不需要配置<code>CmakeLists.txt</code>文件。
+<img src="https://comert007.github.io/img/emoji/ok_nice_strong.jpg" alt="OK"></p>
+<ol>
+<li>在<code>x264</code>下创建一个build文件夹，然后进入<code>build</code>文件夹，在创建一个<code>jni</code>文件夹。</li>
+</ol>
+<p><img src="https://comert007.github.io/img/media/x264-ndk-build-dir.png" alt="创建build文件"></p>
+<ol start="2">
+<li>进入<code>jni</code>文件夹，将上面用到的几个文件拷贝进当前目录。</li>
+</ol>
+<ul>
+<li>x264.h</li>
+<li>x264_config.h</li>
+<li>h264-encode.cpp</li>
+</ul>
+<ol start="3">
+<li>在<code>jni</code>目录下创建<code>prebuilt</code>文件夹，将<code>Cmake</code>方式中<code>nativeLibs</code>下的内容全部拷入。</li>
+</ol>
+<p><img src="https://comert007.github.io/img/media/x264-ndk-prebuit.png" alt=""></p>
+<ol start="4">
+<li>在<code>jni</code>目录下创建<code>Android.mk</code>文件，并添加如下内容。</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">LOCAL_PATH := $(call my-dir)
+
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := h264
+LOCAL_SRC_FILES := prebuilt/$(TARGET_ARCH_ABI)/lib/libx264.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := h264-encode
+LOCAL_SRC_FILES :=h264-encode.cpp
+                
+
+# LOCAL_C_INCLUDES := /home/relo/coder/android/plugins/FFmpegCommand/ffmpeg-4.2.1
+LOCAL_C_INCLUDES := ./
+
+LOCAL_LDLIBS := -llog -ljnigraphics -lz -landroid -lm -pthread -L$(SYSROOT)/usr/lib
+LOCAL_STATIC_LIBRARIES := h264
+
+include $(BUILD_SHARED_LIBRARY)
+</code></pre></div><ol start="5">
+<li>在<code>jni</code>目录下创建<code>Application.mk</code>文件，并添加如下内容。</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">APP_ABI := armeabi-v7a arm64-v8a
+APP_PLATFORM := android-21
+APP_OPTIM := release
+APP_STL := stlport_static
+</code></pre></div><ol start="6">
+<li>最终<code>jni</code>目录如下</li>
+</ol>
+<p><img src="https://comert007.github.io/img/media/x264-ndk-build-jni.png" alt=""></p>
+<ol start="7">
+<li>激动人心的时候来到了，编译我们的动态链接库
+使用<code>Terminal</code>进入<code>jni</code>目录。</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// 执行ndk-build
+~/Library/Android/sdk/ndk/android-ndk-r14b/ndk-build 
+</code></pre></div><p>如果出现如下提示就表示成功，如果不成功请在下方评论区留言。</p>
+<p><img src="https://comert007.github.io/img/media/x264-ndk-build-success.png" alt=""></p>
+<p>并且在<code>build</code>目录下，会出现<code>obj</code>和<code>libs</code>两个文件，<code>libs</code>下装的就是最终编译成功的动态链接库。
+<img src="https://comert007.github.io/img/media/x264-ndk-build-libs.png" alt=""></p>
+<blockquote>
+<p>注意：
+使用方式与<code>Cmake</code>方式一样，需要创建在<code>com.coder.x264cmake</code>的包名下的<code>X264Encode</code>类中的<code>encode</code>的方法。通过调用<code>encode</code>方法才能使用。</p>
+</blockquote>
+<h2 id="验证">验证</h2>
+<p>如果需要验证你通过H.264编码的视频是否正确，可以通过<code>VLC</code>播放器进行播放。</p>
+<blockquote>
+<p><a href="https://www.videolan.org/vlc/">https://www.videolan.org/vlc/</a></p>
+</blockquote>
+<p><img src="https://comert007.github.io/img/media/x264-vlc-h264.png" alt=""></p>
+<p>还可以通过导入<code>mp4parser</code>的方式将h264转为mp4</p>
+<ol>
+<li>在module下导入<code>mp4parser</code></li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#268bd2">implementation</span> <span style="color:#2aa198">&#39;com.googlecode.mp4parser:isoparser:1.1.22&#39;</span>
+</code></pre></div><ol start="2">
+<li>然后新增将h264转为mp4的Java代码即可</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">h264ToMp4</span>(){
+    <span style="color:#268bd2">H264TrackImpl</span> <span style="color:#268bd2">h264Track</span>;
+    <span style="color:#859900">try</span> {
+        <span style="color:#268bd2">h264Track</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">H264TrackImpl</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">FileDataSourceImpl</span>(<span style="color:#268bd2">h264Path</span>));
+    } <span style="color:#859900">catch</span> (<span style="color:#268bd2">IOException</span> <span style="color:#268bd2">e</span>) {
+        <span style="color:#268bd2">e</span>.<span style="color:#268bd2">printStackTrace</span>();
+        <span style="color:#859900">return</span>;
+    }
+    <span style="color:#268bd2">Movie</span> <span style="color:#268bd2">movie</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Movie</span>();
+    <span style="color:#268bd2">movie</span>.<span style="color:#268bd2">addTrack</span>(<span style="color:#268bd2">h264Track</span>);
+
+    <span style="color:#268bd2">Container</span> <span style="color:#268bd2">mp4file</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">DefaultMp4Builder</span>().<span style="color:#268bd2">build</span>(<span style="color:#268bd2">movie</span>);
+
+    <span style="color:#268bd2">FileChannel</span> <span style="color:#268bd2">fc</span> = <span style="color:#859900;font-weight:bold">null</span>;
+    <span style="color:#859900">try</span> {
+        <span style="color:#268bd2">fc</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">FileOutputStream</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">File</span>(<span style="color:#268bd2">mp4Path</span>)).<span style="color:#268bd2">getChannel</span>();
+        <span style="color:#268bd2">mp4file</span>.<span style="color:#268bd2">writeContainer</span>(<span style="color:#268bd2">fc</span>);
+        <span style="color:#268bd2">fc</span>.<span style="color:#268bd2">close</span>();
+    } <span style="color:#859900">catch</span> (<span style="color:#268bd2">IOException</span> <span style="color:#268bd2">e</span>) {
+       <span style="color:#268bd2">e</span>.<span style="color:#268bd2">printStackTrace</span>();
+    }
+}
+</code></pre></div><h2 id="结尾">结尾</h2>
+<ol>
+<li>
+<p>以上就是就是编译<code>libx264</code>并在Android上使用的全过程，如果有不正确地方请指出。</p>
+</li>
+<li>
+<p>最后还是像开篇说的那样，需要用到的一些库的时候，我们再通过编译的方式进行添加，这样可以让你的APP更加健康。</p>
+</li>
+</ol>
+<p>你的鼓励是我的动力，感谢支持🙏🙏🙏</p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/">编译Android使用的libx264并使用进行H.264编码</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">华为机器学习-图像分割</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/">FFmpegAPI的I/O</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">FFmpegAPI介绍以及日志系统</a></li>
+    
+    <li><a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/">Cloudflare优选IP</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/">IP或Port被墙检测</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">自建VPS-防火长城</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/">【转载】解决Hexo博客分页展示为HTML代码的问题</a></li>
+    
+    <li><a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">Android逆向-初识反编译工具</a></li>
+    
+    <li><a href="https://comert007.github.io/post/audio-encod/">Android音视频开发:音频非压缩编码和压缩编码</a></li>
+    
+    <li><a href="https://comert007.github.io/post/basic-media/">Android音视频开发:踩一踩“门槛”</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/" data-toggle="tooltip" data-placement="top" title="华为机器学习-图像分割">&larr; 前一篇</a>
+            </li>
+          
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

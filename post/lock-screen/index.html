@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>Android 音乐播放锁屏界面</title>
+  <meta property="og:title" content="Android 音乐播放锁屏界面" />
+  <meta name="twitter:title" content="Android 音乐播放锁屏界面" />
+
+  <meta name="description" content="
+如果写过Android相关的音乐播放器，我们都知道可以从锁屏界面控制音乐的播放、暂停、上／下一曲等操作，那如何打造一个自己应用的锁屏界面呢？
+">
+  <meta property="og:description" content="
+如果写过Android相关的音乐播放器，我们都知道可以从锁屏界面控制音乐的播放、暂停、上／下一曲等操作，那如何打造一个自己应用的锁屏界面呢？
+">
+  <meta name="twitter:description" content="
+如果写过Android相关的音乐播放器，我们都知道可以从锁屏界面控制音乐的播放、暂停、上／下一曲等操作，那如何打造一个自己应用的锁屏界面呢？
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/lock-screen/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/lock-screen/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>Android 音乐播放锁屏界面</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/view/">view</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <blockquote>
+<p>如果写过<code>Android</code>相关的音乐播放器，我们都知道可以从锁屏界面控制音乐的播放、暂停、上／下一曲等操作，那如何打造一个自己应用的锁屏界面呢？</p>
+</blockquote>
+<p><img src="https://comert007.github.io/img/lockscreen/lockscreen.jpg" alt="LockScreen"></p>
+<h2 id="锁屏监听">锁屏监听</h2>
+<p>如果想要进行锁屏展示，就需要对锁屏进行监听，那如何进行监听？</p>
+<p>那就先需要一个BroadcastReceiver去接收系统发出的是否已经处于锁屏状态？如果锁屏，那么就启动自己的锁屏界面．</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LockScreenReceiver</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">BroadcastReceiver</span> {
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onReceive</span>(<span style="color:#268bd2">Context</span> <span style="color:#268bd2">context</span>, <span style="color:#268bd2">Intent</span> <span style="color:#268bd2">intent</span>) {
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">action</span> = <span style="color:#268bd2">intent</span>.<span style="color:#268bd2">getAction</span>();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">Intent</span>.<span style="color:#268bd2">ACTION_SCREEN_OFF</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">action</span>)){
+            <span style="color:#268bd2">Intent</span> <span style="color:#268bd2">lockIntent</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Intent</span>(<span style="color:#268bd2">context</span>, <span style="color:#268bd2">LockScreenActivity</span>.<span style="color:#268bd2">class</span>);
+            <span style="color:#268bd2">lockIntent</span>.<span style="color:#268bd2">addFlags</span>(<span style="color:#268bd2">Intent</span>.<span style="color:#268bd2">FLAG_ACTIVITY_NEW_TASK</span> | <span style="color:#268bd2">Intent</span>.<span style="color:#268bd2">FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS</span>);
+            <span style="color:#268bd2">context</span>.<span style="color:#268bd2">startActivity</span>(<span style="color:#268bd2">lockIntent</span>);
+        }
+    }
+}
+</code></pre></div><p>然后我们得运行一个Service，只有这样才能在APP运行期间进行监听是否锁屏了</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LockScreenService</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">Service</span> {
+
+    <span style="color:#859900">private</span> <span style="color:#268bd2">LockScreenReceiver</span> <span style="color:#268bd2">mReceiver</span>;
+
+    <span style="color:#268bd2">@Nullable</span>
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">IBinder</span> <span style="color:#268bd2">onBind</span>(<span style="color:#268bd2">Intent</span> <span style="color:#268bd2">intent</span>) {
+        <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
+    }
+
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onCreate</span>() {
+        <span style="color:#859900">super</span>.<span style="color:#268bd2">onCreate</span>();
+        <span style="color:#268bd2">mReceiver</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">LockScreenReceiver</span>();
+        <span style="color:#268bd2">IntentFilter</span> <span style="color:#268bd2">filter</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">IntentFilter</span>();
+        <span style="color:#268bd2">filter</span>.<span style="color:#268bd2">addAction</span>(<span style="color:#268bd2">Intent</span>.<span style="color:#268bd2">ACTION_SCREEN_OFF</span>);
+        <span style="color:#268bd2">filter</span>.<span style="color:#268bd2">addAction</span>(<span style="color:#268bd2">Intent</span>.<span style="color:#268bd2">ACTION_USER_PRESENT</span>);
+        <span style="color:#268bd2">registerReceiver</span>(<span style="color:#268bd2">mReceiver</span>,<span style="color:#268bd2">filter</span>);
+    }
+
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onDestroy</span>() {
+        <span style="color:#859900">super</span>.<span style="color:#268bd2">onDestroy</span>();
+        <span style="color:#268bd2">unregisterReceiver</span>(<span style="color:#268bd2">mReceiver</span>);
+    }
+}
+</code></pre></div><p>注意需要在<code>AndroidManifest</code>中加入</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;service</span> <span style="color:#268bd2">android:name=</span><span style="color:#2aa198">&#34;.base.service.LockScreenService&#34;</span>
+            <span style="color:#268bd2">android:exported=</span><span style="color:#2aa198">&#34;false&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+
+<span style="color:#268bd2;font-weight:bold">&lt;receiver</span> <span style="color:#268bd2">android:name=</span><span style="color:#2aa198">&#34;.base.service.NotificationClickReceiver&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+</code></pre></div><h2 id="绘制锁屏">绘制锁屏</h2>
+<p>我们这里是使用Activity作为锁屏界面，也就是我们这里的LockScreenActivity，Activity能够直接作为锁屏界面？当然是不能的，我们得为其赋予足够的权限</p>
+<ul>
+<li>在<code>AndroidManifest</code>中增加锁屏所需的权限</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#93a1a1;font-style:italic">&lt;!--锁屏权限--&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;uses-permission</span> <span style="color:#268bd2">android:name=</span><span style="color:#2aa198">&#34;android.permission.DISABLE_KEYGUARD&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+</code></pre></div><ul>
+<li>给锁屏界面设置Flag，在onCreate()方法中添加如下代码</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Window</span> <span style="color:#268bd2">window</span> = <span style="color:#268bd2">getWindow</span>();
+<span style="color:#268bd2">window</span>.<span style="color:#268bd2">addFlags</span>(<span style="color:#268bd2">WindowManager</span>.<span style="color:#268bd2">LayoutParams</span>.<span style="color:#268bd2">FLAG_DISMISS_KEYGUARD</span>|<span style="color:#268bd2">WindowManager</span>.<span style="color:#268bd2">LayoutParams</span>.<span style="color:#268bd2">FLAG_SHOW_WHEN_LOCKED</span>);
+</code></pre></div><p>其实为APP添加一个锁屏界面到这里基本已经完成了，但是这是不够的，在解锁的时候，我们发现这个锁屏界面不会跟随我们手指的移动进行滑动，所以我们还需要让我们的锁屏界面进行滑动．</p>
+<h2 id="滑动解锁">滑动解锁</h2>
+<p>我们需要自定义一个<code>ViewGroup</code>，将我们自定义布局包裹起来，这里选择FrameLayout，实现将包裹内容可以滑动，所以这个自定义的<code>ViewGroup</code>只需要一个ChildView．</p>
+<h3 id="自定义view">自定义View</h3>
+<p>重写其中的<code>onTouchEvent</code>方法，在进行滑动的时候跟着手指移动，在滑动到临界点的时候，将当前锁屏界面finish掉就行，实现代码如下．</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LockScreenView</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">FrameLayout</span> {
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">mStartX</span>;
+    <span style="color:#859900">private</span> <span style="color:#268bd2">View</span> <span style="color:#268bd2">mMovieView</span>;
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">mWidth</span>;
+
+    <span style="color:#859900">private</span> <span style="color:#268bd2">Handler</span> <span style="color:#268bd2">mHandler</span>;
+
+    <span style="color:#859900">public</span> <span style="color:#268bd2">LockScreenView</span>(<span style="color:#268bd2">@NonNull</span> <span style="color:#268bd2">Context</span> <span style="color:#268bd2">context</span>) {
+        <span style="color:#859900">super</span>(<span style="color:#268bd2">context</span>);
+    }
+
+    <span style="color:#859900">public</span> <span style="color:#268bd2">LockScreenView</span> (<span style="color:#268bd2">@NonNull</span> <span style="color:#268bd2">Context</span> <span style="color:#268bd2">context</span>, <span style="color:#268bd2">@Nullable</span> <span style="color:#268bd2">AttributeSet</span> <span style="color:#268bd2">attrs</span>) {
+        <span style="color:#859900">super</span>(<span style="color:#268bd2">context</span>, <span style="color:#268bd2">attrs</span>);
+    }
+
+    <span style="color:#859900">public</span> <span style="color:#268bd2">LockScreenView</span> (<span style="color:#268bd2">@NonNull</span> <span style="color:#268bd2">Context</span> <span style="color:#268bd2">context</span>, <span style="color:#268bd2">@Nullable</span> <span style="color:#268bd2">AttributeSet</span> <span style="color:#268bd2">attrs</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">defStyleAttr</span>) {
+        <span style="color:#859900">super</span>(<span style="color:#268bd2">context</span>, <span style="color:#268bd2">attrs</span>, <span style="color:#268bd2">defStyleAttr</span>);
+    }
+
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">setHandler</span>(<span style="color:#268bd2">Handler</span> <span style="color:#268bd2">handler</span>) {
+        <span style="color:#268bd2">mHandler</span> = <span style="color:#268bd2">handler</span>;
+    }
+
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">protected</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onLayout</span>(<span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">changed</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">left</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">top</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">right</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">bottom</span>) {
+        <span style="color:#859900">super</span>.<span style="color:#268bd2">onLayout</span>(<span style="color:#268bd2">changed</span>, <span style="color:#268bd2">left</span>, <span style="color:#268bd2">top</span>, <span style="color:#268bd2">right</span>, <span style="color:#268bd2">bottom</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">getChildCount</span>() &gt; <span style="color:#268bd2">0</span>) {
+            <span style="color:#268bd2">mMovieView</span> = <span style="color:#268bd2">getChildAt</span>(<span style="color:#268bd2">0</span>);
+            <span style="color:#268bd2">mWidth</span> = <span style="color:#268bd2">mMovieView</span>.<span style="color:#268bd2">getWidth</span>();
+        }
+    }
+
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">onTouchEvent</span>(<span style="color:#268bd2">MotionEvent</span> <span style="color:#268bd2">event</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">action</span> = <span style="color:#268bd2">event</span>.<span style="color:#268bd2">getAction</span>();
+        <span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">nx</span> = <span style="color:#268bd2">event</span>.<span style="color:#268bd2">getX</span>();
+        <span style="color:#859900">switch</span> (<span style="color:#268bd2">action</span>) {
+            <span style="color:#859900">case</span> <span style="color:#268bd2">MotionEvent</span>.<span style="color:#268bd2">ACTION_DOWN</span>:
+                <span style="color:#268bd2">mStartX</span> = <span style="color:#268bd2">nx</span>;
+                <span style="color:#268bd2">onAnimationEnd</span>();
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">case</span> <span style="color:#268bd2">MotionEvent</span>.<span style="color:#268bd2">ACTION_MOVE</span>:
+                <span style="color:#268bd2">handleMoveView</span>(<span style="color:#268bd2">nx</span>);
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">case</span> <span style="color:#268bd2">MotionEvent</span>.<span style="color:#268bd2">ACTION_CANCEL</span>:
+            <span style="color:#859900">case</span> <span style="color:#268bd2">MotionEvent</span>.<span style="color:#268bd2">ACTION_UP</span>:
+                <span style="color:#268bd2">doTriggerEvent</span>(<span style="color:#268bd2">nx</span>);
+                <span style="color:#859900">break</span>;
+        }
+        <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">true</span>;
+    }
+
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handleMoveView</span>(<span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">x</span>) {
+        <span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">moveX</span> = <span style="color:#268bd2">x</span> - <span style="color:#268bd2">mStartX</span>;
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">moveX</span> &lt; <span style="color:#268bd2">0</span>) {
+            <span style="color:#268bd2">moveX</span> = <span style="color:#268bd2">0</span>;
+        }
+        <span style="color:#268bd2">mMovieView</span>.<span style="color:#268bd2">setTranslationX</span>(<span style="color:#268bd2">moveX</span>);
+        <span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">mWidthFloat</span> = <span style="color:#268bd2">mWidth</span>;
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">getBackground</span>() != <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#268bd2">getBackground</span>().<span style="color:#268bd2">setAlpha</span>((<span style="color:#859900;font-weight:bold">int</span>) ((<span style="color:#268bd2">mWidthFloat</span> - <span style="color:#268bd2">mMovieView</span>.<span style="color:#268bd2">getTranslationX</span>()) / <span style="color:#268bd2">mWidthFloat</span> * <span style="color:#268bd2">200</span>));
+        }
+    }
+
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">doTriggerEvent</span>(<span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">x</span>){
+        <span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">moveX</span> = <span style="color:#268bd2">x</span>- <span style="color:#268bd2">mStartX</span>;
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">moveX</span> &gt; (<span style="color:#268bd2">mWidth</span>*<span style="color:#268bd2">0</span>.<span style="color:#268bd2">4</span>)){
+            <span style="color:#268bd2">move</span>(<span style="color:#268bd2">mWidth</span> - <span style="color:#268bd2">mMovieView</span>.<span style="color:#268bd2">getLeft</span>(),<span style="color:#859900;font-weight:bold">true</span>);
+        }<span style="color:#859900">else</span> {
+            <span style="color:#268bd2">move</span>(-<span style="color:#268bd2">mMovieView</span>.<span style="color:#268bd2">getLeft</span>(),<span style="color:#859900;font-weight:bold">false</span>);
+        }
+    }
+
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">move</span>(<span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">to</span>, <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">exit</span>){
+        <span style="color:#268bd2">ObjectAnimator</span> <span style="color:#268bd2">animator</span> = <span style="color:#268bd2">ObjectAnimator</span>.<span style="color:#268bd2">ofFloat</span>(<span style="color:#268bd2">mMovieView</span>,<span style="color:#2aa198">&#34;translationX&#34;</span>,<span style="color:#268bd2">to</span>);
+        <span style="color:#268bd2">animator</span>.<span style="color:#268bd2">addUpdateListener</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">ValueAnimator</span>.<span style="color:#268bd2">AnimatorUpdateListener</span>() {
+            <span style="color:#268bd2">@Override</span>
+            <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onAnimationUpdate</span>(<span style="color:#268bd2">ValueAnimator</span> <span style="color:#268bd2">animation</span>) {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">getBackground</span>()!=<span style="color:#859900;font-weight:bold">null</span>){
+                    <span style="color:#268bd2">getBackground</span>().<span style="color:#268bd2">setAlpha</span>((<span style="color:#859900;font-weight:bold">int</span>) ((<span style="color:#268bd2">mWidth</span> - <span style="color:#268bd2">mMovieView</span>.<span style="color:#268bd2">getTranslationX</span>()) / <span style="color:#268bd2">mWidth</span> * <span style="color:#268bd2">200</span>));
+                }
+            }
+        });
+        <span style="color:#268bd2">animator</span>.<span style="color:#268bd2">setDuration</span>(<span style="color:#268bd2">250</span>).<span style="color:#268bd2">start</span>();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">exit</span>){
+            <span style="color:#268bd2">animator</span>.<span style="color:#268bd2">addListener</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">AnimatorListenerAdapter</span>() {
+                <span style="color:#268bd2">@Override</span>
+                <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onAnimationEnd</span>(<span style="color:#268bd2">Animator</span> <span style="color:#268bd2">animation</span>) {
+                    <span style="color:#859900">if</span> (<span style="color:#268bd2">mHandler</span>!=<span style="color:#859900;font-weight:bold">null</span>){
+                        <span style="color:#268bd2">mHandler</span>.<span style="color:#268bd2">obtainMessage</span>(<span style="color:#268bd2">LockScreenActivity</span>.<span style="color:#268bd2">MSG_LAUNCH_HOME</span>).<span style="color:#268bd2">sendToTarget</span>();
+                    }
+                    <span style="color:#859900">super</span>.<span style="color:#268bd2">onAnimationEnd</span>(<span style="color:#268bd2">animation</span>);
+                }
+            });
+        }
+    }
+}
+</code></pre></div><p>以上大概３个流程：</p>
+<ul>
+<li>onLayout中获取当前子View和它的宽</li>
+<li>onTouchEvent中滑动处理</li>
+<li>当滑动到临界点的时候，就finish当前<code>LockScreenActivity</code></li>
+</ul>
+<h3 id="屏蔽物理返回">屏蔽物理返回</h3>
+<p>我们还需将物理返回键屏蔽掉，才能在我们侧滑的时候不至于还没移动到临界点就被finish了．</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Override</span>
+<span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onBackPressedSupport</span>() {
+    
+}
+</code></pre></div><h2 id="参考">参考</h2>
+<p><a href="https://www.jianshu.com/p/6c3a6b0f145e">Android锁屏实现与总结</a></p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/ffmpeg-android/" data-toggle="tooltip" data-placement="top" title="FFmpeg编译4.1.4并移植到Android">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/hexo-blog/" data-toggle="tooltip" data-placement="top" title="使用 Hexo 搭建个人博客">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

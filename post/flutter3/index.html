@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>Flutter(三)-如何实现登录动画效果</title>
+  <meta property="og:title" content="Flutter(三)-如何实现登录动画效果" />
+  <meta name="twitter:title" content="Flutter(三)-如何实现登录动画效果" />
+
+  <meta name="description" content="
+在上一篇的时候，我们讲解了怎么做一个登录界面，但是之后呢？完全是草草结尾的感觉嘛，这不，接下来就是给大家详细说说，这个登录里面不得鸟的故事。先来看一个登录的过程~~
+">
+  <meta property="og:description" content="
+在上一篇的时候，我们讲解了怎么做一个登录界面，但是之后呢？完全是草草结尾的感觉嘛，这不，接下来就是给大家详细说说，这个登录里面不得鸟的故事。先来看一个登录的过程~~
+">
+  <meta name="twitter:description" content="
+在上一篇的时候，我们讲解了怎么做一个登录界面，但是之后呢？完全是草草结尾的感觉嘛，这不，接下来就是给大家详细说说，这个登录里面不得鸟的故事。先来看一个登录的过程~~
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/flutter3/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/flutter3/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>Flutter(三)-如何实现登录动画效果</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/flutter/">flutter</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#materialpageroute">MaterialPageRoute</a></li>
+    <li><a href="#pushnamed">pushNamed</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#animationcontroller">AnimationController</a></li>
+    <li><a href="#animation">Animation</a></li>
+    <li><a href="#curvedanimation">CurvedAnimation</a></li>
+  </ul>
+</nav>
+</aside>
+
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <blockquote>
+<p>在上一篇的时候，我们讲解了怎么做一个登录界面，但是之后呢？完全是草草结尾的感觉嘛，这不，接下来就是给大家详细说说，这个登录里面不得鸟的故事。先来看一个登录的过程~~</p>
+</blockquote>
+<p><img src="https://comert007.github.io/img/flutter/flutter-login.gif" alt="登录失败"></p>
+<h1 id="分析">分析</h1>
+<p>可能上面的<code>gif</code>图不是很真切，这上面展示了两个功能：</p>
+<ul>
+<li>颜色变换的闪屏页面</li>
+<li>动画效果的登录页面</li>
+</ul>
+<p>有没有感觉这样的登录好像还不错呢，哈哈哈，接下来就详细分析一下这其中的玄机~~</p>
+<h1 id="路由">路由</h1>
+<p>一般我们的页面跳转都会涉及到路由，路由就是从一个页面跳转到另一个页面的过程，就比如Android中的<code>Activity</code>或IOS中的<code>ViewController</code>的跳转。</p>
+<p>在Flutter中所以的路由都使用<code>Navigator</code>来进行管理的，换句话说它就是让这些本来相对独立的个体形成一个完美的整体。那么<code>Navigator</code>是直接管理的就是页面吗？当然不是，实际上它管理是<code>Route</code>对象，而且提供了管理堆栈的相关方法，比如：</p>
+<ul>
+<li>Navigator.push （入栈）</li>
+<li>Navigator.pop （出栈）</li>
+</ul>
+<p>虽然能够直接创建一个<code>navigator</code>，但是呢，一般不建议这样直接使用，我们常常通过<code>WidgetsApp</code>或者<code>MaterialApp</code>去创建。还记得<a href="https://juejin.im/post/5c7b8f8fe51d456995151769">第一篇</a>的时候，就跟大家提过，Flutter提供了许多widgets，可帮助您构建遵循<code>Material Design</code>的应用程序。Material应用程序以MaterialApp widget开始， 该widget在应用程序的根部创建了一些有用的widget，其中包括一个<code>Navigator</code>， 它管理由字符串标识的Widget栈（即页面路由栈）。Navigator可以让您的应用程序在页面之间的平滑的过渡。 所以我们的应用启动一般这样写：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>() {
+	<span style="color:#268bd2">runApp</span>(<span style="color:#268bd2">MaterialApp</span>(<span style="color:#268bd2">home</span>: <span style="color:#268bd2">MyAppHome</span>()));
+}
+</code></pre></div><p>那么，<code>home</code>所指向的页面也就是我们栈中最底层的路由，那<code>MaterialApp</code>到底是怎么创建这个底层路由的呢？它遵循以下几个原则：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">const</span> <span style="color:#268bd2">MaterialApp</span>({
+    <span style="color:#268bd2">Key</span> <span style="color:#268bd2">key</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">navigatorKey</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">home</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">routes</span> = <span style="color:#859900">const</span> &lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">WidgetBuilder</span>&gt;{},
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">initialRoute</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">onGenerateRoute</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">onUnknownRoute</span>,
+    <span style="color:#93a1a1;font-style:italic">//省略无关代码
+</span><span style="color:#93a1a1;font-style:italic"></span>    ...
+})
+</code></pre></div><ul>
+<li>首先使用我们的<code>home</code>所指向的</li>
+<li>如果失败，那么就会使用<code>routes</code>路由表</li>
+<li>如果路由表为空，那么就会调用<code>onGenerateRoute</code></li>
+<li>如果以上所有都失败了，那么<code>onUnknownRoute</code>将会被调用</li>
+</ul>
+<p>所以说如果要创建<code>Navigator</code>，那么以上四个必须有一个被使用。</p>
+<h2 id="materialpageroute">MaterialPageRoute</h2>
+<p>一般我们可以使用<code>MaterialPageRoute</code>去进行路由：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">push</span>(<span style="color:#268bd2">context</span>, <span style="color:#268bd2">MaterialPageRoute</span>&lt;<span style="color:#859900;font-weight:bold">void</span>&gt;(
+	<span style="color:#268bd2">builder</span>: (<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+		<span style="color:#859900">return</span> <span style="color:#268bd2">Scaffold</span>(
+			<span style="color:#268bd2">appBar</span>: <span style="color:#268bd2">AppBar</span>(<span style="color:#268bd2">title</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">My</span> <span style="color:#268bd2">Page</span>&#39;)),
+			<span style="color:#268bd2">body</span>: <span style="color:#268bd2">Center</span>(
+				<span style="color:#268bd2">child</span>: <span style="color:#268bd2">FlatButton</span>(
+					<span style="color:#268bd2">child</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">POP</span>&#39;),
+					<span style="color:#268bd2">onPressed</span>: () {
+						<span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pop</span>(<span style="color:#268bd2">context</span>);
+					},
+				),
+			),
+		);
+	},
+));
+</code></pre></div><p>这种方式的就很明显了，它是使用一种<code>build</code>的方式去入栈（或者出栈）。如上可以看出，当我点击 <code>POP</code>按钮的时候又可以将这个页面进行出栈，又可以回到我们的<code>home</code>页面。但是，通常我们不这么去返回上一个页面，在<a href="https://juejin.im/post/5c837d63f265da2de450aa79">上一章</a>的时候就使用<code>Scaffold</code>的<code>AppBar</code>中可以直接添加一个返回，究其根本这个返回最终也是调用的这个</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pop</span>(<span style="color:#268bd2">context</span>);
+</code></pre></div><p>当我们需要在返回的时候带一个返回值的时候，可以像如下的方式进行使用，那么这个时候就不能使用<code>Scaffold</code>的<code>AppBar</code>中的返回了，因为它是不会返回任何结果的。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pop</span>(<span style="color:#268bd2">context</span>, <span style="color:#859900;font-weight:bold">true</span>);
+</code></pre></div><h2 id="pushnamed">pushNamed</h2>
+<p>上面是通过一个动态的方式去进行路由，我们也可以使用一种静态的方式去路由，那就是<code>pushNamed</code>，从字面意思就是通过页面的名字进行路由的，那么这个名字是从哪里来的呢？这就需要使用我们上面在<code>MaterialApp</code>中的<code>routes</code>路由表了。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">MyApp</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">StatelessWidget</span> {
+  <span style="color:#93a1a1;font-style:italic">// This widget is the root of your application.
+</span><span style="color:#93a1a1;font-style:italic"></span>  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">MaterialApp</span>(
+      <span style="color:#268bd2">title</span>: &#39;<span style="color:#268bd2">Flutter</span> <span style="color:#268bd2">Demo</span>&#39;,
+      <span style="color:#268bd2">theme</span>: <span style="color:#268bd2">ThemeData</span>(
+        <span style="color:#268bd2">primaryColor</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF786E</span>),
+        <span style="color:#268bd2">primaryColorLight</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF978F</span>),
+        <span style="color:#268bd2">accentColor</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFFFFFF</span>)
+      ),
+      <span style="color:#268bd2">home</span>: <span style="color:#268bd2">Start</span>(),
+      <span style="color:#268bd2">debugShowCheckedModeBanner</span>: <span style="color:#859900;font-weight:bold">false</span>,
+        <span style="color:#268bd2">routes</span>:{
+          <span style="color:#2aa198">&#34;scaffold_page&#34;</span>:(<span style="color:#268bd2">context</span>)=&gt;<span style="color:#268bd2">ScaffoldTest</span>(),
+          <span style="color:#2aa198">&#34;snack_page&#34;</span>:(<span style="color:#268bd2">context</span>)=&gt; <span style="color:#268bd2">SnackTest</span>(),
+          <span style="color:#2aa198">&#34;login_page&#34;</span>:(<span style="color:#268bd2">context</span>)=&gt; <span style="color:#268bd2">LoginPage</span>(),
+          <span style="color:#2aa198">&#34;start_page&#34;</span>:(<span style="color:#268bd2">context</span>)=&gt; <span style="color:#268bd2">Start</span>(),
+        }
+    );
+  }
+}
+</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pushNamed</span>(<span style="color:#268bd2">context</span>, <span style="color:#2aa198">&#34;snack_page&#34;</span>);
+</code></pre></div><p>那么，我们能不能携带参数呢？当然是可以的咯</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">_showBerlinWeather</span>() {
+   <span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pushNamed</span>(
+     <span style="color:#268bd2">context</span>,
+     &#39;/<span style="color:#268bd2">weather</span>&#39;,
+     <span style="color:#268bd2">arguments</span>: &lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt;{
+       &#39;<span style="color:#268bd2">city</span>&#39;: &#39;<span style="color:#268bd2">Berlin</span>&#39;,
+       &#39;<span style="color:#268bd2">country</span>&#39;: &#39;<span style="color:#268bd2">Germany</span>&#39;,
+     },
+   );
+}
+</code></pre></div><p>也能携带一个自定义的对象进行遨游~~</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">WeatherRouteArguments</span> {
+  <span style="color:#268bd2">WeatherRouteArguments</span>({ <span style="color:#859900">this</span>.<span style="color:#268bd2">city</span>, <span style="color:#859900">this</span>.<span style="color:#268bd2">country</span> });
+  <span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">city</span>;
+  <span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">country</span>;
+
+  <span style="color:#268bd2">bool</span> <span style="color:#268bd2">get</span> <span style="color:#268bd2">isGermanCapital</span> {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">country</span> == &#39;<span style="color:#268bd2">Germany</span>&#39; &amp;&amp; <span style="color:#268bd2">city</span> == &#39;<span style="color:#268bd2">Berlin</span>&#39;;
+  }
+}
+
+<span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">_showWeather</span>() {
+  <span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pushNamed</span>(
+    <span style="color:#268bd2">context</span>,
+    &#39;/<span style="color:#268bd2">weather</span>&#39;,
+    <span style="color:#268bd2">arguments</span>: <span style="color:#268bd2">WeatherRouteArguments</span>(<span style="color:#268bd2">city</span>: &#39;<span style="color:#268bd2">Berlin</span>&#39;, <span style="color:#268bd2">country</span>: &#39;<span style="color:#268bd2">Germany</span>&#39;),
+  );
+}
+</code></pre></div><p>当然还有一些其他的方式：</p>
+<ol>
+<li>pushReplacementNamed 和 pushReplacement 替换当前页面</li>
+<li>popAndPushNamed  当前页面出栈，入栈新的页面</li>
+<li>pushNamedAndRemoveUntil 和 pushAndRemoveUntil 入栈新页面并关闭之前的所有页面</li>
+</ol>
+<h1 id="动画">动画</h1>
+<p>在前面<code>gif</code>图中我们可以看到在闪屏页在不同的时间颜色有不同的变化（图片模糊，效果不明显），还有点击登录的时候，按钮的样子也有变化，那么这个是怎么实现的呢？当然是我们的动画了~~</p>
+<h2 id="animationcontroller">AnimationController</h2>
+<p><code>AnimationController</code>用来控制一个动画的正向播放、反向播放和停止动画等操作。在默认情况下<code>AnimationController</code>是按照线性进行动画播放的。
+需要注意的是在使用<code>AnimationController</code>的时候需要结合<code>TickerProvider</code>，因为只有在<code>TickerProvider</code>下才能配置<code>AnimationController</code>中的构造参数<code>vsync</code>。<code>TickerProvider</code>是一个抽象类，所以我们一般使用它的实现类<code>TickerProviderStateMixin</code>和<code>SingleTickerProviderStateMixin</code>。</p>
+<p>那么，这两种方式有什么不同呢？
+如果整个生命周期中，只有一个<code>AnimationController</code>，那么就使用<code>SingleTickerProviderStateMixin</code>，因为此种情况下，它的效率相对来说要高很多。反之，如果有多个<code>AnimationController</code>，就是用<code>TickerProviderStateMixin</code>。</p>
+<p>需要注意的是，如果<code>AnimationController</code>不需要使用的时候，一定要将其释放掉，不然有可能造成内存泄露。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">StartState</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">State</span>&lt;<span style="color:#268bd2">Start</span>&gt; <span style="color:#268bd2">with</span> <span style="color:#268bd2">SingleTickerProviderStateMixin</span> {
+
+  <span style="color:#268bd2">AnimationController</span> <span style="color:#268bd2">colorController</span>;
+
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">initState</span>() {
+    <span style="color:#93a1a1;font-style:italic">// TODO: implement initState
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">super</span>.<span style="color:#268bd2">initState</span>();
+    <span style="color:#268bd2">colorController</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">AnimationController</span>(
+        <span style="color:#268bd2">vsync</span>: <span style="color:#859900">this</span>, <span style="color:#268bd2">duration</span>: <span style="color:#859900">new</span> <span style="color:#268bd2">Duration</span>(<span style="color:#268bd2">seconds</span>: <span style="color:#268bd2">3</span>));
+  }
+  
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">Scaffold</span>(
+      <span style="color:#268bd2">body</span>: <span style="color:#268bd2">Container</span>(
+      <span style="color:#93a1a1;font-style:italic">//省略部分代码
+</span><span style="color:#93a1a1;font-style:italic"></span>      ...
+        ),
+    );
+  }
+
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">dispose</span>() {
+    <span style="color:#93a1a1;font-style:italic">// TODO: implement dispose
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">colorController</span>.<span style="color:#268bd2">dispose</span>();
+    <span style="color:#859900">super</span>.<span style="color:#268bd2">dispose</span>();
+  }
+}
+</code></pre></div><h2 id="animation">Animation</h2>
+<p>有了动画控制器之后，就需要我们的动画效果了哦。但是我们可以发现<code>Animation</code>本身是个抽象类，所以我们需要的是它的实现类。我们可以直接使用<code>Tween</code>或者它的子类去实现一个<code>Animation</code>，在<code>AnimationController</code>中提供了一个<code>drive</code>方法，这个是用来干什么的呢？这个是用来链接一个<code>Tween</code>到<code>Animation</code>并返回一个<code>Animation</code>的实例。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Animation</span>&lt;<span style="color:#268bd2">Alignment</span>&gt; <span style="color:#268bd2">_alignment1</span> = <span style="color:#268bd2">_controller</span>.<span style="color:#268bd2">drive</span>(
+  <span style="color:#268bd2">AlignmentTween</span>(
+    <span style="color:#268bd2">begin</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">topLeft</span>,
+    <span style="color:#268bd2">end</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">topRight</span>,
+  ),
+);
+</code></pre></div><p>为什么要使用<code>Tween</code>呢？<code>Tween</code>就是一个线性的插值器，可以实现一个完整的变化过程</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">Tween</span>&lt;<span style="color:#268bd2">T</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">dynamic</span>&gt; <span style="color:#859900">extends</span> <span style="color:#268bd2">Animatable</span>&lt;<span style="color:#268bd2">T</span>&gt; {
+  <span style="color:#268bd2">Tween</span>({ <span style="color:#859900">this</span>.<span style="color:#268bd2">begin</span>, <span style="color:#859900">this</span>.<span style="color:#268bd2">end</span> });
+  <span style="color:#268bd2">T</span> <span style="color:#268bd2">begin</span>;
+  <span style="color:#268bd2">T</span> <span style="color:#268bd2">end</span>;
+  <span style="color:#268bd2">@protected</span>
+  <span style="color:#268bd2">T</span> <span style="color:#268bd2">lerp</span>(<span style="color:#859900;font-weight:bold">double</span> <span style="color:#268bd2">t</span>) {
+    <span style="color:#859900">assert</span>(<span style="color:#268bd2">begin</span> != <span style="color:#859900;font-weight:bold">null</span>);
+    <span style="color:#859900">assert</span>(<span style="color:#268bd2">end</span> != <span style="color:#859900;font-weight:bold">null</span>);
+    <span style="color:#859900">return</span> <span style="color:#268bd2">begin</span> + (<span style="color:#268bd2">end</span> - <span style="color:#268bd2">begin</span>) * <span style="color:#268bd2">t</span>;
+  }
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">T</span> <span style="color:#268bd2">transform</span>(<span style="color:#859900;font-weight:bold">double</span> <span style="color:#268bd2">t</span>) {
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">t</span> == <span style="color:#268bd2">0</span>.<span style="color:#268bd2">0</span>)
+      <span style="color:#859900">return</span> <span style="color:#268bd2">begin</span>;
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">t</span> == <span style="color:#268bd2">1</span>.<span style="color:#268bd2">0</span>)
+      <span style="color:#859900">return</span> <span style="color:#268bd2">end</span>;
+    <span style="color:#859900">return</span> <span style="color:#268bd2">lerp</span>(<span style="color:#268bd2">t</span>);
+  }
+
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">String</span> <span style="color:#268bd2">toString</span>() =&gt; &#39;<span style="color:#268bd2">$runtimeType</span>(<span style="color:#268bd2">$begin</span> \<span style="color:#268bd2">u2192</span> <span style="color:#268bd2">$end</span>)&#39;;
+}
+</code></pre></div><p><code>Tween</code>的构造提供了两个参数，一个开始<code>bengin</code> ，一个结束<code>end</code>，就是说让动画可以在这个区间内进行变化，当然它也提供了很多子类，比如：<code>ColorTween</code>、<code>SizeTween</code>、<code>IntTween</code>和<code>CurveTween</code>等等</p>
+<ul>
+<li><code>ColorTween</code> 可以实现两个颜色的变化</li>
+<li><code>SizeTween</code> 可以实现两个<code>size</code>的变化</li>
+<li><code>IntTween</code> 可以实现两个int 值之间的变化</li>
+<li><code>CurveTween</code> 可以实现动画非线性变化</li>
+</ul>
+<h2 id="curvedanimation">CurvedAnimation</h2>
+<p><code>CurvedAnimation</code>就是将一个曲线（非线性）变化应用到另一个动画，如果想使用 <code>Curve</code>应用到<code>Tween</code>就可以直接使用上面所说的<code>CurveTween</code>，可以不<code>CurvedAnimation</code>。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">final</span> <span style="color:#268bd2">Animation</span>&lt;<span style="color:#859900;font-weight:bold">double</span>&gt; <span style="color:#268bd2">animation</span> = <span style="color:#268bd2">CurvedAnimation</span>(
+  <span style="color:#268bd2">parent</span>: <span style="color:#268bd2">controller</span>,
+  <span style="color:#268bd2">curve</span>: <span style="color:#268bd2">Curves</span>.<span style="color:#268bd2">ease</span>,
+);
+</code></pre></div><p>这里需要两个参数一个是动画控制，也就是我们的<code>AnimationController</code>，另一个就是<code>curve</code>，它描述了到底是按照什么样的曲线进行变化的。在<code>Curves</code>中提供了很多的变化过程，有兴趣的童鞋可以自己去研究一下~~</p>
+<p><img src="https://comert007.github.io/img/flutter/flutter-process.jpg" alt="动画关系">
+这里总结一下：</p>
+<ul>
+<li>AnimationController 控制整个动画的播放，停止等操作</li>
+<li>Tween 动画的变化区间</li>
+<li>CurvedAniamtion 控制动画按照非线性进行变化</li>
+</ul>
+<h1 id="闪屏动画实现">闪屏动画实现</h1>
+<p>要实现一个动画的，首先肯定需要上面所说的<code>AniamtionController</code> 和 <code>Animation</code>，有这个还不够，还需要一个可以根据
+在闪屏页面中，我们的动画是颜色根据时间不同的进行变化，那肯定会用到我们的<code>Tween</code>，这里是颜色的变化，所以使用到了<code>ColorTween</code>。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#268bd2">@override</span>
+  <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">initState</span>() {
+    <span style="color:#93a1a1;font-style:italic">// TODO: implement initState
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">super</span>.<span style="color:#268bd2">initState</span>();
+    <span style="color:#268bd2">colorController</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">AnimationController</span>(
+        <span style="color:#268bd2">vsync</span>: <span style="color:#859900">this</span>, <span style="color:#268bd2">duration</span>: <span style="color:#859900">new</span> <span style="color:#268bd2">Duration</span>(<span style="color:#268bd2">seconds</span>: <span style="color:#268bd2">3</span>));
+
+    <span style="color:#268bd2">colorAnimation</span> = <span style="color:#268bd2">colorController</span>
+        .<span style="color:#268bd2">drive</span>(<span style="color:#268bd2">ColorTween</span>(<span style="color:#268bd2">begin</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF786E</span>), <span style="color:#268bd2">end</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFFA07A</span>)));
+}
+</code></pre></div><p>一般我们对AniamtionController和Animation的初始化在<code>initState()</code>方法中，然后就需要在动画的运行过程中将<code>widget</code>进行更新，就会使用到我们的<code>setState()</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">colorAnimation</span> = <span style="color:#268bd2">colorController</span>
+        .<span style="color:#268bd2">drive</span>(<span style="color:#268bd2">ColorTween</span>(<span style="color:#268bd2">begin</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF786E</span>), <span style="color:#268bd2">end</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFFA07A</span>)))
+          ..<span style="color:#268bd2">addListener</span>(() {
+            <span style="color:#268bd2">setState</span>(() {});
+          });
+
+</code></pre></div><p>那么接下来就是让整个动画跑起来了~~</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Future</span>&lt;<span style="color:#268bd2">Null</span>&gt; <span style="color:#268bd2">playAnimation</span>() <span style="color:#268bd2">async</span> {
+  <span style="color:#859900">try</span> {
+    <span style="color:#268bd2">await</span> <span style="color:#268bd2">colorController</span>.<span style="color:#268bd2">forward</span>();
+    <span style="color:#268bd2">await</span> <span style="color:#268bd2">colorController</span>.<span style="color:#268bd2">reverse</span>();
+  } <span style="color:#268bd2">on</span> <span style="color:#268bd2">TickerCanceled</span> {}
+}
+</code></pre></div><p>这里使用到了<code>dart</code>语言中的异步，有两个特点：</p>
+<ul>
+<li><code>await </code>返回一定是<code>Future</code>，如果不是会报错</li>
+<li><code>await </code> 所在的方法必须在有<code>async</code>标记的函数中运行。</li>
+</ul>
+<p>上面的意思就是让动画先正向进行，然后在反向进行~~		
+但是发现动画写完之后运行，但是没有任何作用，这是因为你没有将动画的变化应用到<code>widget</code>上</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">Scaffold</span>(
+      <span style="color:#268bd2">body</span>: <span style="color:#268bd2">Container</span>(
+        <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">BoxDecoration</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">colorAnimation</span>.<span style="color:#268bd2">value</span>),
+        <span style="color:#268bd2">child</span>: <span style="color:#268bd2">Center</span>(
+        ...
+        <span style="color:#93a1a1;font-style:italic">//省略无关代码
+</span><span style="color:#93a1a1;font-style:italic"></span>        ),
+     ),
+   );
+}
+</code></pre></div><p>在上述代码中的<code>BoxDecoration(color: colorAnimation.value)</code>就是将颜色的值作用于整个<code>Container</code>上，所以颜色就随之变化而变化。</p>
+<p>在动画结束的时候不是要进行路由跳转到下一个页面的嘛？这就需要在对动画的监听，当动画结束的时候就进行跳转，就需要修改<code>colorAnimation</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">colorAnimation</span> = <span style="color:#268bd2">colorController</span>
+        .<span style="color:#268bd2">drive</span>(<span style="color:#268bd2">ColorTween</span>(<span style="color:#268bd2">begin</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF786E</span>), <span style="color:#268bd2">end</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFFA07A</span>)))
+          ..<span style="color:#268bd2">addListener</span>(() {
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">colorController</span>.<span style="color:#268bd2">isDismissed</span>) {
+              <span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pushAndRemoveUntil</span>(<span style="color:#268bd2">context</span>,
+                  <span style="color:#859900">new</span> <span style="color:#268bd2">MaterialPageRoute</span>(<span style="color:#268bd2">builder</span>: (<span style="color:#268bd2">context</span>) {
+                <span style="color:#859900">return</span> <span style="color:#268bd2">LoginPage</span>();
+              }), <span style="color:#268bd2">ModalRoute</span>.<span style="color:#268bd2">withName</span>(<span style="color:#2aa198">&#34;start_page&#34;</span>));
+            }
+            <span style="color:#268bd2">setState</span>(() {});
+          });
+</code></pre></div><p>这里需要注意的是，在判断结束的时候，这里使用的是<code>colorController.isDismissed</code>，没有使用<code>colorController.isCompleted</code>是因为在正向动画完成的时候就会调用，还没让这个动画流程运行完成~~</p>
+<p>如果需要完整代码，就可以来<a href="https://github.com/AnJoiner/Flutter/blob/master/lib/start.dart">这儿</a>。</p>
+<h1 id="登录动画实现">登录动画实现</h1>
+<p>这里和上面是一样的实现动动画，但是直接使用的是<code>Tween</code>，而且使用了另一种将<code>Tween</code>关联到Animation的方式，而且使用</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@override</span>
+<span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">initState</span>() {
+  <span style="color:#93a1a1;font-style:italic">// TODO: implement initState
+</span><span style="color:#93a1a1;font-style:italic"></span>  <span style="color:#859900">super</span>.<span style="color:#268bd2">initState</span>();
+  <span style="color:#268bd2">_animationController</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">AnimationController</span>(
+      <span style="color:#268bd2">vsync</span>: <span style="color:#859900">this</span>, <span style="color:#268bd2">duration</span>: <span style="color:#859900">new</span> <span style="color:#268bd2">Duration</span>(<span style="color:#268bd2">milliseconds</span>: <span style="color:#268bd2">1500</span>));
+
+  <span style="color:#268bd2">_buttonLengthAnimation</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Tween</span>&lt;<span style="color:#859900;font-weight:bold">double</span>&gt;(
+    <span style="color:#268bd2">begin</span>: <span style="color:#268bd2">312</span>.<span style="color:#268bd2">0</span>,
+    <span style="color:#268bd2">end</span>: <span style="color:#268bd2">42</span>.<span style="color:#268bd2">0</span>,
+  ).<span style="color:#268bd2">animate</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">CurvedAnimation</span>(
+      <span style="color:#268bd2">parent</span>: <span style="color:#268bd2">_animationController</span>, <span style="color:#268bd2">curve</span>: <span style="color:#859900">new</span> <span style="color:#268bd2">Interval</span>(<span style="color:#268bd2">0</span>.<span style="color:#268bd2">3</span>, <span style="color:#268bd2">0</span>.<span style="color:#268bd2">6</span>)))
+    ..<span style="color:#268bd2">addListener</span>(() {
+      <span style="color:#859900">if</span> (<span style="color:#268bd2">_buttonLengthAnimation</span>.<span style="color:#268bd2">isCompleted</span>) {
+        <span style="color:#859900">if</span>(<span style="color:#268bd2">isLogin</span>){
+          <span style="color:#268bd2">Navigator</span>.<span style="color:#268bd2">pushNamedAndRemoveUntil</span>(<span style="color:#268bd2">context</span>, <span style="color:#2aa198">&#34;snack_page&#34;</span>,<span style="color:#268bd2">ModalRoute</span>.<span style="color:#268bd2">withName</span>(&#39;<span style="color:#268bd2">login_page</span>&#39;));
+        }<span style="color:#859900">else</span>{
+          <span style="color:#268bd2">showTips</span>(<span style="color:#2aa198">&#34;登录失败&#34;</span>);
+        }
+      }
+      <span style="color:#268bd2">setState</span>(() {});
+    });
+}
+</code></pre></div><p>这里有一点需要注意，使用的<code>curve</code>是<code>Interval</code>，这个的作用就是根据你提供的时间区间进行动画展示。就如上面定的动画时间大小是1500ms，那么只有在1500*0.3 = 500 ms的时候开始，并在1500*0.6=900ms的时候完成。</p>
+<p>那么接下来就直接看改变动画的对<code>widget</code>处理</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">InkWell</span>(
+  <span style="color:#268bd2">onTap</span>: <span style="color:#268bd2">login</span>,
+  <span style="color:#268bd2">child</span>: <span style="color:#268bd2">Container</span>(
+     <span style="color:#268bd2">margin</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">only</span>(<span style="color:#268bd2">top</span>: <span style="color:#268bd2">30</span>),
+     <span style="color:#268bd2">height</span>: <span style="color:#268bd2">42</span>,
+     <span style="color:#268bd2">width</span>: <span style="color:#268bd2">_buttonLengthAnimation</span>.<span style="color:#268bd2">value</span>,
+     <span style="color:#268bd2">decoration</span>:<span style="color:#268bd2">BoxDecoration</span>(<span style="color:#268bd2">borderRadius</span>: <span style="color:#268bd2">radius</span>, <span style="color:#268bd2">color</span>: <span style="color:#268bd2">colorWhite</span>),
+     <span style="color:#268bd2">alignment</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">center</span>,
+     <span style="color:#268bd2">child</span>: <span style="color:#268bd2">_buttonLengthAnimation</span>.<span style="color:#268bd2">value</span> &gt; <span style="color:#268bd2">75</span>? <span style="color:#859900">new</span> <span style="color:#268bd2">Text</span>(<span style="color:#2aa198">&#34;立即登录&#34;</span>,
+            <span style="color:#268bd2">style</span>: <span style="color:#268bd2">TextStyle</span>(
+            <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">15</span>,
+            <span style="color:#268bd2">fontWeight</span>: <span style="color:#268bd2">FontWeight</span>.<span style="color:#268bd2">bold</span>,
+            <span style="color:#268bd2">color</span>: <span style="color:#268bd2">colorRegular</span>))
+            : <span style="color:#268bd2">CircularProgressIndicator</span>( <span style="color:#268bd2">valueColor</span>:
+                  <span style="color:#859900">new</span> <span style="color:#268bd2">AlwaysStoppedAnimation</span>&lt;<span style="color:#268bd2">Color</span>&gt;(<span style="color:#268bd2">colorRegular</span>),
+                  <span style="color:#268bd2">strokeWidth</span>: <span style="color:#268bd2">2</span>,
+            ),
+    ),
+),
+</code></pre></div><p>① 当点击登录按钮后，动画开始进行，并且对这个按钮的宽度就开始进行变化</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#268bd2">width</span>: <span style="color:#268bd2">_buttonLengthAnimation</span>.<span style="color:#268bd2">value</span>,
+</code></pre></div><p>② 当动画的值还大于75的时候，中间就显示<code>Text</code>，但是如果小于或等于75的时候，那它的child就是一个就是一个圆形的进度<code>CircularProgressIndicator</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">child:</span> <span style="color:#268bd2">_buttonLengthAnimation</span>.<span style="color:#268bd2">value</span> &gt; <span style="color:#268bd2">75</span>? <span style="color:#859900">new</span> <span style="color:#268bd2">Text</span>(<span style="color:#2aa198">&#34;立即登录&#34;</span>,
+            <span style="color:#268bd2">style</span>: <span style="color:#268bd2">TextStyle</span>(
+            <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">15</span>,
+            <span style="color:#268bd2">fontWeight</span>: <span style="color:#268bd2">FontWeight</span>.<span style="color:#268bd2">bold</span>,
+            <span style="color:#268bd2">color</span>: <span style="color:#268bd2">colorRegular</span>))
+            : <span style="color:#268bd2">CircularProgressIndicator</span>( <span style="color:#268bd2">valueColor</span>:
+                  <span style="color:#859900">new</span> <span style="color:#268bd2">AlwaysStoppedAnimation</span>&lt;<span style="color:#268bd2">Color</span>&gt;(<span style="color:#268bd2">colorRegular</span>),
+                  <span style="color:#268bd2">strokeWidth</span>: <span style="color:#268bd2">2</span>,
+            ),
+    ),
+</code></pre></div><p>其实这就是整个动画的过程，只是其中我做了一个对动画运行的判断，当登录失败，就让动画按钮回到最初的状态，并提示登录失败。如果登录成功，就直接跳转到新的页面~~</p>
+<h1 id="总结">总结</h1>
+<p>在这里规整一下，方便大家整理记忆</p>
+<ul>
+<li>路由有很多中方式，可以根据不同的情况进行选择，一般常用的就是<code>push</code>和<code>pushNamed</code>，如果是<code>pushNamed</code>那么一定要在<code>MaterialApp</code>中设置路由表。</li>
+<li>动画的使用一般需要跟<code>TickerProvider</code>配合使用，如果在<code>State</code>中就可以直接使用它的实现类<code>SingleTickerProviderStateMixin</code>或<code>TickerProviderStateMixin</code>。</li>
+<li>如果只有一个<code>AnimationController</code>就是用<code>SingleTickerProviderStateMixin</code>，反之，使用<code>TickerProviderStateMixin</code>。</li>
+<li>动画的建立跟<code>AnimationController</code>、<code>Tween</code>或<code>CurveAnimation</code>有关。</li>
+<li><code>AnimationController</code>在不需要的时候一定要进行释放<code>dispose</code>，不然可能会造成内存溢出。</li>
+</ul>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/flutter1/" data-toggle="tooltip" data-placement="top" title="Flutter(一)-你入门了没？">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/ffmpeg-android/" data-toggle="tooltip" data-placement="top" title="FFmpeg编译4.1.4并移植到Android">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

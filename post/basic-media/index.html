@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>Android音视频开发:踩一踩“门槛”</title>
+  <meta property="og:title" content="Android音视频开发:踩一踩“门槛”" />
+  <meta name="twitter:title" content="Android音视频开发:踩一踩“门槛”" />
+
+  <meta name="description" content="
+
+音视频行业已经发展很多年了，随着近几年移动端越来越多的音视频APP的出现，将音视频推向一个高潮，但是由于音视频的学习成本很高，很多开发者望而却步，为了跟紧时代的步伐，我写了这篇音视频基础，讲解了音视频的相关知识，给大家破除音视频的“高门槛”，希望可以共同进步。
+">
+  <meta property="og:description" content="
+
+音视频行业已经发展很多年了，随着近几年移动端越来越多的音视频APP的出现，将音视频推向一个高潮，但是由于音视频的学习成本很高，很多开发者望而却步，为了跟紧时代的步伐，我写了这篇音视频基础，讲解了音视频的相关知识，给大家破除音视频的“高门槛”，希望可以共同进步。
+">
+  <meta name="twitter:description" content="
+
+音视频行业已经发展很多年了，随着近几年移动端越来越多的音视频APP的出现，将音视频推向一个高潮，但是由于音视频的学习成本很高，很多开发者望而却步，为了跟紧时代的步伐，我写了这篇音视频基础，讲解了音视频的相关知识，给大家破除音视频的“高门槛”，希望可以共同进步。
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/basic-media/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/basic-media/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>Android音视频开发:踩一踩“门槛”</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/audio/">audio</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/video/">video</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <p><img src="https://comert007.github.io/img/top/basic-media.jpeg" alt=""></p>
+<blockquote>
+<p>音视频行业已经发展很多年了，随着近几年移动端越来越多的音视频APP的出现，将音视频推向一个高潮，但是由于音视频的学习成本很高，很多开发者望而却步，为了跟紧时代的步伐，我写了这篇音视频基础，讲解了音视频的相关知识，给大家破除音视频的“高门槛”，希望可以共同进步。</p>
+</blockquote>
+<h2 id="音频">音频</h2>
+<p>将声音保存成音频的过程，其实就是将模拟音频数字化的过程，为了实现这个过程，就需要对模拟音频进行采样、量化和编码。接下来我们详细讲解这一过程。</p>
+<h3 id="采样">采样</h3>
+<p>采样是将信号从连续时间域上的模拟信号转换到离散时间域上的离散信号的过程(离散就是不连续)，根据著名的奈奎斯特定理，需要按声音最高频率2倍进行采样，人耳能听到的声音是20Hz～20kHz，所以一般针对声音的采样率是44.1KHz（为什么是44.1KHz呢，而不是40KHz？因为经过尝试使用这个采样率进行采样效果最好）。下面列表一些其他的采样率，可作为参考。</p>
+<ul>
+<li>8,000 Hz - 电话所用采样率，对于人的说话已经足够</li>
+<li>11,025 Hz</li>
+<li>22,050 Hz - 无线电广播所用采样率</li>
+<li>32,000 Hz - miniDV数字视频camcorder、DAT（LP mode）所用采样率</li>
+<li>44,100 Hz - 音频CD,也常用于MPEG-1音频（VCD, SVCD, MP3）所用采样率</li>
+<li>47,250 Hz - Nippon Columbia（Denon）开发的世界上第一个商用PCM录音机所用采样率</li>
+<li>48,000 Hz - miniDV、数字电视、DVD、DAT、电影和专业音频所用的数字声音所用采样率</li>
+<li>50,000 Hz - 二十世纪七十年代后期出现的3M和Soundstream开发的第一款商用数字录音机所用采样率</li>
+<li>50,400 Hz - 三菱X-80数字录音机所用所用采样率</li>
+<li>96,000或者192,000 Hz - DVD-Audio、一些LPCM DVD音轨、Blu-ray Disc（蓝光光盘）音轨、和HD-DVD（高清晰度DVD）音轨所用所用采样率</li>
+<li>2.8224 MHz - SACD、索尼和飞利浦联合开发的称为Direct Stream Digital的1位sigma-delta modulation过程所用采样率。</li>
+</ul>
+<p><img src="https://comert007.github.io/img/media/audio_sample.jpeg" alt="音频采样"></p>
+<p>如上图所示就是一个采样的过程，将模拟音频在连续的时间域上，切割成不连续的时间域的信号过程，即是对x轴的操作。那么有x轴就有y轴，实际上对y轴的操作就是量化。</p>
+<h3 id="量化">量化</h3>
+<p>量化是什么？就是要将上面分割的信息用具体的数据来进行表示，用形象的话来说，就是给每个x时间轴，对应其y轴的变化数值。那么我们要表示一段声音的具体值，肯定就需要先分配一个可变化区间(这个区间就叫做量化格式)，二进制中的１个单位就是一个比特，通常有８比特，16比特，32比特。</p>
+<p><img src="https://comert007.github.io/img/media/audio_quantify.jpeg" alt="音频采样"></p>
+<p>这里还需引入分贝(单位db)的概念：是描述声音大小的单位，人耳承受的dB范围是：0～90dB，0dB是人耳能听到的最微弱的的声音，在90dB环境中听力会受到严重影响。经过研究，1个比特可以大约记录6分贝的声音，那么我可以得出下图的数据</p>
+<table>
+<thead>
+<tr>
+<th>单位</th>
+<th>范围</th>
+<th>dB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8比特</td>
+<td>0～2^8-1 &lt;=&gt; 0～255</td>
+<td>0～48</td>
+</tr>
+<tr>
+<td>16比特</td>
+<td>0～2^16-1 &lt;=&gt; 0～65535</td>
+<td>0～96</td>
+</tr>
+<tr>
+<td>32比特</td>
+<td>0～2^32 -1 &lt;=&gt; 0～4294967295</td>
+<td>0～192</td>
+</tr>
+</tbody>
+</table>
+<p>由上可知，一般我们使用16比特，因为其有0～65535中变化，而且刚好符合人对声音大小的范围，而8比特处理音频，只有0～255中变化，变化不能够被很精细的记录下来，那为什么不使用32比特呢？</p>
+<p>这是因为32位太消耗存储了，当然如果想使音频更加精细，也是可以使用32比特的。</p>
+<p>由于量化是建立在采样的基础上的，所有一个量化就对应一个采样，那么我们怎么存储呢？这就会涉及到下面的编码了。</p>
+<h3 id="声道">声道</h3>
+<p>什么是声道呢？声道就是声源，意思就是声音的来源，常见的有<code>Mono</code>和<code>Stereo</code>。</p>
+<ul>
+<li>Mono 单声道，单个声源，很多地方已被<code>Stereo</code>取代</li>
+<li>Stereo 立体声，2个及以上多个声源</li>
+</ul>
+<p>当我们站在不同位置听单声道时，它呈现的效果是不一样的，而立体声则不然，在不同方向仍可保持自然与悦耳，现在CD一般都是双声道立体声，那声道数就是2个。</p>
+<h3 id="音频编码">音频编码</h3>
+<p>所谓编码，就是按照一定的格式记录采样和量化后的数字数据，比如顺序存储或压缩存储空间了。从宏观上可以分成两类：压缩编码和非压缩编码。</p>
+<p>一个存储的格式有很多种，通常音频裸数据即是我们所说的PCM，也叫脉冲编码调制（英语：Pulse-code modulation，缩写：PCM）是一种模拟信号的数字化方法，它是一种非压缩编码格式。
+通常描述一段PCM数据需要以下几个概念:</p>
+<ul>
+<li>量化格式 - SampleFormat，默认16比特</li>
+<li>采样率 - SampleRate，默认44.1KHz</li>
+<li>声道数 - Channel ，默认2个</li>
+</ul>
+<p>一般我们使用<code>码率</code>来描述音频，即是1秒内吞吐量，单位bps ：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">码率 = 采样率 * 量化格式 * 声道数
+</code></pre></div><p>如上，我们就可以得出：码率 = 44100 * 16 * 2 = 1411200 bps = 1411.2 kbps
+还可以得出1分钟数据大小：1411.2 * 60 / 8 / 1024 = 10.34M</p>
+<p>下图是我从一个mp3格式上获取的基本信息，可以看到量化格式、采样率和声道数都是一样的，但是它的码率却是 320kbps，这与我们上面计算公式得出的结论不一致呀？这就是涉及到压缩编码格式了。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Duration: 00:00:39.99, start: 0.011995, bitrate: 320 kb/s
+Stream #0:0: Audio: mp3, 44100 Hz, stereo, s16p, 320 kb/s
+</code></pre></div><p>压缩编码就是对数据进行压缩，压缩编码的原理实际上是压缩掉冗余信号，冗余信号是指不能被人耳感知到的信号，包含人耳听觉范围之外的音频信号以及被掩蔽掉的音频信号等，一般压缩分为两种：</p>
+<ul>
+<li>有损压缩，数据经过压缩后，信息不受损失，还能完全恢复到压缩前的原样</li>
+<li>无损压缩，经过此方法压缩、解压的数据会与原始数据不同但是非常接近</li>
+</ul>
+<p>在音乐应用中，我们经常看到“无损音乐”，如果你发现它是mp3格式的，那么它一定是有损压缩，也就是我们所说的假无损。常见的有损压缩如下：</p>
+<ul>
+<li>MP2</li>
+<li>MP3</li>
+<li>AAC</li>
+<li>WMA</li>
+<li>ADPCM</li>
+<li>ATRAC</li>
+<li>Dolby AC-3</li>
+<li>Musepack</li>
+<li>Ogg Vorbis</li>
+<li>Opus</li>
+<li>LDAC</li>
+</ul>
+<h2 id="视频">视频</h2>
+<p>说完音频，我们来说说视频，首先得说说视频是什么？我们都知道视频是由一帧一帧联系图像构成的，所以再介绍视频之前，先得了解一下什么是图像？</p>
+<h3 id="图像">图像</h3>
+<p>我们从小学习物理知识就知道，通过三菱镜就可以将光色散成不同的颜色，经过进一步研究发现，只有红(R)、绿(G)、蓝(B)不能被分解，所以它们被称为光的三原色。</p>
+<p>一般我们买手机的时候会参考它的分辨率，当然是分辨率越大越好，因为越大越清晰，更接近事物的原始样貌，那这是为什么呢？</p>
+<p>其实为了让人能够在手机上感知图像，也采用了这样的RGB模式。以“1080x1920”为例，那就是每一个横向就有1080个像素点，纵向有1920个像素点，那总共就有1080x1920=2073600个像素。每一个像素又包含了红(R)、绿(G)、蓝(B)三个子像素，这样每个像素就可以有自己的全部颜色呈现。</p>
+<p><img src="https://comert007.github.io/img/media/video_rgb.jpg" alt="RGB"></p>
+<h3 id="图像表示">图像表示</h3>
+<p>我们知道红(R)、绿(G)、蓝(B)都可以使用00～FF或者0～255表示，由上面我们知道8比特刚好可以表示0～255，一个像素又包含了红(R)、绿(G)、蓝(B)三个子像素，那一个像素至少需要24位，我们一般还要给颜色加上一个不透明度(A)，所以一个像素其实是32位，这种表示方式就是我们常用的<code>RGBA_8888</code>，那如果一张图片要在上面分辨率的手机上全屏展示出来需要多大的空间呢？</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">1080*1920*4 = 8294400b = 8100kb = 7.91Mb
+</code></pre></div><p>这也是位图（bitmap）在内存中所占用的大小，每一张图像的裸数据都是很大的，所以在手机上如果直接加载bitmap的话，很快就会内存异常。所以如果让图像直接在网络上行走的话肯定是不行的，一般都会进行一个压缩，常见的压缩格式有：</p>
+<ul>
+<li>BMP - 无损压缩</li>
+<li>PNG - 无损压缩</li>
+<li>JPEG - 有损压缩</li>
+</ul>
+<p>这是就是为什么在制作小图（比如icon）的时候使用<code>png</code>格式，而大图采用<code>jpeg</code>的原因，小图经过无损压缩放大之后不让其太过模糊，大图保证其能够清晰即可。</p>
+<h3 id="视频表示">视频表示</h3>
+<p>视频的裸数据我们一般使用YUV来进行表示，YUV也是一种颜色编码方式，为什么不使用RGB呢？与RGB视频信号传输相比，它最大的优点在于只需要占用极少的频宽（RGB要求三个独立的视频信号同时传输）</p>
+<p>“Y”表示明亮度（Luminance、Luma），也称灰阶值；“U”和“V”则是色度，它们的作用是描述影像的色彩及饱和度，用于指定像素的颜色。如果忽略掉UV，那就是只剩下灰(Y)，那就跟以前黑白电视机信号一样了，所以YUV的发明了是为了从黑白电视过渡彩色电视而发明的。</p>
+<p>UV又由Cb和Cr来描述，Cb反映的则是RGB输入信号蓝色部分与RGB信号亮度值之间的差异，而Cr反映了RGB输入信号红色部分与RGB信号亮度值之间的差异。UV信号告诉了显示器使得某个颜色亮度依某个基准偏移， UV的值越高，代表该像素会有更饱和的颜色。</p>
+<p>为节省带宽起见，大多数YUV格式平均使用的每像素位数都少于24位。主要的抽样（subsample）格式有YCbCr 4:2:0、YCbCr 4:2:2、YCbCr 4:1:1和YCbCr 4:4:4。YUV的表示法称为A:B:C表示法：</p>
+<ul>
+<li>4:4:4表示完全取样，与RGB类似</li>
+<li>4:2:2表示2:1的水平取样，垂直完全采样。</li>
+<li>4:2:0表示2:1的水平取样，垂直2：1采样。</li>
+<li>4:1:1表示4:1的水平取样，垂直完全采样。</li>
+</ul>
+<p>我们再对1080x1920手机上展示视频一帧的数据量大小如下：</p>
+<table>
+<thead>
+<tr>
+<th>YUV格式</th>
+<th>大小 （1080x1920分辨率）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>444</td>
+<td>1080* 1920* 3=6220800b = 6075 kb =  5.93Mb</td>
+</tr>
+<tr>
+<td>422</td>
+<td>1080* 1920* (1+0.5+0.5) = 4147200 b = 4050 kb =  3.96Mb</td>
+</tr>
+<tr>
+<td>420</td>
+<td>1080* 1920* (1+0.5+0) = 3110400 b = 3037.5 kb =  2.97Mb</td>
+</tr>
+<tr>
+<td>411</td>
+<td>1080* 1920* (1+0.25+0.25) = 3110400 b = 3037.5 kb =  2.97Mb</td>
+</tr>
+</tbody>
+</table>
+<p>从上图中我们可以看到，如果使用YUV420一帧会比直接使用RGB少了近3M，这也就是为什么使用YUV而不是用RGB的主要原因。</p>
+<p>需要注意点是一般视频都是使用的YUV4:2:0，YUV4:2:0并不是说只有U（即Cb）, V（即Cr）一定为0，而是指U：V互相援引，时见时隐，也就是说对于每一个行，只有一个U或者V分量，如果一行是4:2:0的话，下一行就是4:0:2，再下一行是4:2:0&hellip;以此类推。</p>
+<p>怎么让YUV转化成RGB数据在手机上呈现呢？这就需要一个转化公式了</p>
+<!-- raw HTML omitted -->
+<p>到此我们就知道视频是怎么回事了，视频的是由一帧一帧图像组成，一帧图像又是由YUV裸数据组成，而YUV裸数据是可以与RGB互相转化的，最终呈现在手机上的是转化后的RGB。</p>
+<h3 id="视频编码">视频编码</h3>
+<p>在介绍编码之前，我们先介绍两个概念：</p>
+<ul>
+<li>帧率（fps） - 测量单位时间(s)显示的帧数，一般视频中使用24fps就可以了。对于游戏来讲，如果帧率少于30fps就会出现不连贯，也就是我们平常说的卡顿。</li>
+<li>比特率 - 测量单位时间(s)数据量大小。</li>
+</ul>
+<p>我们就可以计算一下在1080* 1920的手机上播放YUV420视频数据的比特率：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">bitRate = 1080* 1920* (1+0.5+0)* 24 = 71.2 Mbps
+</code></pre></div><p>还可以得出90分钟电影数据量:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">total = bitRate * 60 * 90 = 375.42 GB
+</code></pre></div><p>这对于我们来说是肯定不能接受的，所以就必须对其进行编码，跟音频编码类似，一般采用压缩编码，不然就没得玩咯～</p>
+<p>与音频编码不同，视频数据之间有很强的关联性，也就是由大量的冗余信息，包括时间上的冗余信息和空间上的冗余信息。</p>
+<ul>
+<li>时间上的冗余信息（temporal redundancy）- 在视频数据中，相邻的帧（frame）与帧之间通常有很强的关连性，这样的关连性即为时间上的冗余信息。</li>
+<li>空间上的冗余信息（spatial redundancy）- 在同一张帧之中，相邻的像素之间通常有很强的关连性，这样的关连性即为空间上的冗余信息。</li>
+</ul>
+<p>现在常见的视频编码有两个系列：</p>
+<ul>
+<li>MPEG系列 - 包括 Mpeg1（用于VCD）、Mpeg2（用于DVD）、Mpeg4 AVC（现在流媒体使用最多的就是它了）</li>
+<li>H.26x系列 - 包括 H.261、H.262、H.263、H.264（现在视频使用的最多就是它了）</li>
+</ul>
+<h4 id="ipb帧">IPB帧</h4>
+<p>MPEG定义了I帧、P帧、B帧，并根据不同帧实现了不同的压缩算法</p>
+<ul>
+<li>I帧 - 帧内编码帧，就是通过压缩算法压成一张单独的完整视频画面，也是一组的第一帧，所以I帧去掉的是视频帧在空间维度上的冗余信息。</li>
+<li>P帧 - 前向预测编码帧，需要参考其前面的一个I帧或者P帧来解码成一张完整的视频画面 。</li>
+<li>B帧 - 双向预测内插编码帧，需要参考其前一个I帧或者P帧及其后面的一个P帧来生成一张完整的视频画面,所以P帧与B帧去掉的是视频帧在时间维度上的冗余信息。</li>
+</ul>
+<p>注意：		
+在I帧中有一个特殊的帧<code>IDR</code>，它也是一个I帧，如果在视频编码过程中出现一个IDR帧，那么就意味着之后所有的帧不能再参考前面的帧了，其作用就相当于一个分水岭。</p>
+<p>前面我们说到，视频是由一系列图像组成，每个图像就是一帧。图像是一组一组处理的，一组帧常用的结构由15个帧组成，具有IBBPBBPBBPBBPBB形式，一组帧又叫<code>GOP</code>，可以参考下图</p>
+<p><img src="https://comert007.github.io/img/media/video_gop.jpeg" alt="GOP"></p>
+<p>从上图可以看到解码顺序和显示顺序是不一样的，但是如果没有B帧的话，那就是相同的了。</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://book.douban.com/subject/30124646/">音视频开发进阶指南:基于Android与iOS平台的实践</a></p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/basic-media/">Android音视频开发:踩一踩“门槛”</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-command/">Android上的FFmpeg命令行</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a></li>
+    
+    <li><a href="https://comert007.github.io/post/hexo-blog/">使用 Hexo 搭建个人博客</a></li>
+    
+    <li><a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/ffmpeg-command/" data-toggle="tooltip" data-placement="top" title="Android上的FFmpeg命令行">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/audio-encod/" data-toggle="tooltip" data-placement="top" title="Android音视频开发:音频非压缩编码和压缩编码">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

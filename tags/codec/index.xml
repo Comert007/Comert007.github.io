@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>codec on 移动技术分享</title>
+    <link>https://comert007.github.io/tags/codec/</link>
+    <description>Recent content in codec on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 20 Dec 2019 09:28:48 +0000</lastBuildDate><atom:link href="https://comert007.github.io/tags/codec/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>FFmpeg命令行入门基础</title>
+      <link>https://comert007.github.io/post/ffmpeg-basic/</link>
+      <pubDate>Fri, 20 Dec 2019 09:28:48 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-basic/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在手机端越来越多的应用涉及到音视频，直播类、短视频类等等，大大小小都会涉及到音视频的处理工具，音视频的处理工具有很多，这里简单介绍一下全球知名的&lt;code&gt;FFmpeg&lt;/code&gt;，FFmpeg是一个强大的音视频处理库，既可以使用它的API对音视频进行处理，也可以使用它提供的工具，如 ffmpeg, ffplay, ffprobe，来编辑你的音视频文件。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

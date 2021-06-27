@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>FFmpegAPI介绍以及日志系统</title>
+  <meta property="og:title" content="FFmpegAPI介绍以及日志系统" />
+  <meta name="twitter:title" content="FFmpegAPI介绍以及日志系统" />
+
+  <meta name="description" content="
+音视频的文章已经断更很久了，在这里说声抱歉。
+
+不论是Android，还是现在国内很火的HarmonyOS-鸿蒙系统，其实都不能脱离音视频的范畴，鸿蒙也实现了对FFmpeg、openGL等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。">
+  <meta property="og:description" content="
+音视频的文章已经断更很久了，在这里说声抱歉。
+
+不论是Android，还是现在国内很火的HarmonyOS-鸿蒙系统，其实都不能脱离音视频的范畴，鸿蒙也实现了对FFmpeg、openGL等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。">
+  <meta name="twitter:description" content="
+音视频的文章已经断更很久了，在这里说声抱歉。
+
+不论是Android，还是现在国内很火的HarmonyOS-鸿蒙系统，其实都不能脱离音视频的范畴，鸿蒙也实现了对FFmpeg、openGL等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>FFmpegAPI介绍以及日志系统</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/ffmpeg/">ffmpeg</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/log/">log</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <blockquote>
+<p>音视频的文章已经断更很久了，在这里说声抱歉。</p>
+</blockquote>
+<p>不论是Android，还是现在国内很火的<code>HarmonyOS-鸿蒙系统</code>，其实都不能脱离音视频的范畴，<code>鸿蒙</code>也实现了对<code>FFmpeg</code>、<code>openGL</code>等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。</p>
+<h1 id="ffmpeg-api">FFmpeg API</h1>
+<p>FFmpeg为了能够让更多的人使用它，所以它提供了很多API接口，方便开发人员直接使用，不需要再重新自己书写，可以点击下方的连接跳转到API接口文档地址</p>
+<blockquote>
+<p><a href="http://ffmpeg.org/doxygen/trunk/index.html">http://ffmpeg.org/doxygen/trunk/index.html</a></p>
+</blockquote>
+<p>对于<code>FFmpeg</code>的组成，在以前的博客也讲过，大致分为了以下几个部分：</p>
+<ul>
+<li><strong>libavcodec</strong> 编解码库</li>
+<li><strong>libavfilter</strong> 过滤器库</li>
+<li><strong>libavformat</strong> I/O、复用以及解复用库</li>
+<li><strong>libdevice</strong> 特殊设备复用/解复用库</li>
+<li><strong>libavutil</strong> 公用工具库</li>
+<li><strong>libswresample</strong> 音频重采样，格式转换和混合</li>
+<li><strong>libpostproc</strong> 处理库</li>
+<li><strong>libswscals</strong> 颜色转换和缩放库</li>
+</ul>
+<p>对于我们今天所要讲述的FFmpeg的日志系统，是在<code>libavutil</code>库中，毕竟日志系统是个公共部分，在任何地方都可使用。</p>
+<h1 id="安装">安装</h1>
+<p>要想使用<code>FFmpeg</code>就需要将其安装到本地，<code>FFmpeg</code>的安装是比较简单的，有两种方式：</p>
+<ul>
+<li>直接使用编译完成的<a href="https://github.com/BtbN/FFmpeg-Builds/releases">【FFmpeg-Builds】</a>解压到本地进行使用。</li>
+<li>自行编译安装</li>
+</ul>
+<p>第一种方式比较简单就相当于直接使用，我们这里使用第二种方式</p>
+<ul>
+<li>先将<a href="http://ffmpeg.org/download.html">【FFmpeg源码】</a>下载到本地</li>
+</ul>
+<blockquote>
+<p><a href="http://ffmpeg.org/download.html">http://ffmpeg.org/download.html</a></p>
+</blockquote>
+<ul>
+<li>解压并进入ffmpeg目录</li>
+<li>执行如下代码进行安装</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">./configure
+make -j4
+make install
+</code></pre></div><p>安装完成之后就可以在以下目录中看到头文件和可执行文件了
+<code>usr/local/include</code>
+<code>usr/local/bin</code></p>
+<blockquote>
+<p><!-- raw HTML omitted -->Notice：<!-- raw HTML omitted --> <!-- raw HTML omitted -->第二种方式只适用于Linux和MacOS系统<!-- raw HTML omitted --></p>
+</blockquote>
+<h1 id="ffmpeg-日志">FFmpeg 日志</h1>
+<p>日志是一个程序的基础，但是在代码过程中却一直离不开它。关于FFmpeg日志的定义位置：<code>libavutil/log.h</code>，可以打开如下链接进入。</p>
+<blockquote>
+<p><a href="http://ffmpeg.org/doxygen/trunk/log_8h_source.html">http://ffmpeg.org/doxygen/trunk/log_8h_source.html</a></p>
+</blockquote>
+<p>关于日志的使用，我们在这里只讲解重要的三个函数。</p>
+<ul>
+<li>av_log_set_level</li>
+<li>av_log</li>
+<li>av_err2str</li>
+</ul>
+<h2 id="av_log_set_level">av_log_set_level</h2>
+<p>通过名字就可以知道是设置日志的级别，等级的类型也定义在<code>log.h</code>中</p>
+<ul>
+<li>AV_LOG_QUIET 不打印错误</li>
+<li>AV_LOG_PANIC 奔溃错误</li>
+<li>AV_LOG_FATAL 致命错误</li>
+<li><code>AV_LOG_ERROR</code> 普通错误</li>
+<li><code>AV_LOG_WARNING</code> 警告</li>
+<li><code>AV_LOG_INFO</code> 标准信息</li>
+<li><code>AV_LOG_VERBOSE</code> 详细信息</li>
+<li><code>AV_LOG_DEBUG</code> 调试信息，针对开发人员</li>
+<li>AV_LOG_TRACE 冗长的调试信息，针对开发人员</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// level即为上述等级
+ void  av_log_set_level（int level）;
+</code></pre></div><blockquote>
+<p>Notice:
+等级级别按照上述顺序从高到低
+设置了某个等级，只能打印当前等级级别以及比它高的级别日志信息</p>
+</blockquote>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">// 设置当前日志为标准打印信息
+// 只能打印`<span style="color:#268bd2">AV_LOG_INFO</span>`和`<span style="color:#268bd2">AV_LOG_INFO</span>`之上的日志
+<span style="color:#268bd2">av_log_set_level</span>(<span style="color:#268bd2">AV_LOG_INFO</span>);
+</code></pre></div><h2 id="av_log">av_log</h2>
+<p><code>av_log</code>打印日志，先看一下定义：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">void av_vlog(void *avcl, int level, const char *fmt, va_list vl);
+</code></pre></div><ul>
+<li>avcl指向任意的指针结构，一般为NULL</li>
+<li>level与上述的等级级别一致</li>
+<li>fmt格式字符串</li>
+<li>fmt字符串引用的参数</li>
+</ul>
+<p>举个栗子🌰</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">av_log(NULL,AV_LOG_INFO,&#34;ffmpeg log can be used by %s\n&#34;,&#34;cimuboy&#34;);
+</code></pre></div><p>这样就打印出了一个标准的输出日志。</p>
+<blockquote>
+<ul>
+<li>如果<code>av_log_set_level</code>中设置的等级级别比<code>AV_LOG_INFO</code>高的话，这条日志是不打印的。</li>
+</ul>
+</blockquote>
+<h2 id="av_err2str">av_err2str</h2>
+<p>需要注意的是当前函数定义在<code>libavutil/error.h</code>中。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">av_err2str(errnum)
+</code></pre></div><p>需要传入的参数是一个错误类型的枚举，并返回一个错误字符串。</p>
+<blockquote>
+<p>错误枚举不是随便填写的，是根据FFmpeg提供的某些API返回的。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">int ret = avformat_open_input(&amp;ctx,input,NULL,NULL);
+if(ret&lt;0){
+	av_log(NULL,AV_LOG_ERROR,&#34;can not open input file: %s\n&#34;,av_err2str(ret));
+	return ret;
+}
+</code></pre></div><p>上述就表示，通过<code>avformat_open_input</code>（后面会介绍到）打开一个文件，但是文件打开失败，返回了一个错误的枚举类型，将这个枚举类型传入<code>av_err2str</code>,就可以直接返回一个错误的字符串，以供我们清楚这个错误是什么！</p>
+<h1 id="编译">编译</h1>
+<p>了解完了具体的用法，肯定需要编译，这里我们以<code>linux</code>系统为例。</p>
+<ul>
+<li>先写一个完整的日志打印，并命名为log.c:</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include&lt;stdio.h&gt;
+#include&lt;libavutil/log.h&gt;
+int main(int argc ,char *argv[])
+{
+	av_log_set_level(AV_LOG_INFO);
+	av_log(NULL,AV_LOG_INFO,&#34;ffmpeg log can be used by %s\n&#34;,&#34;cimuboy&#34;);
+	return 0;
+}
+</code></pre></div><ul>
+<li>执行编译</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">gcc log.c -g -o log `pkg-config --libs libavutil`
+</code></pre></div><ul>
+<li>输出结果
+编译完成之后，就会多处一个<code>log</code>的文件，然后我们执行：</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">./log
+</code></pre></div><p>就会得到一个输出的结果:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ffmpeg log can be used by cimuboy
+</code></pre></div><blockquote>
+<p>如果使用的是mac系统，编译时将<code>gcc</code>替换为<code>clang</code></p>
+</blockquote>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">clang log.c -g -o log `pkg-config --libs libavutil`
+</code></pre></div><p><a href="https://comert007.github.io/code/ffmpeg/log.c">代码下载</a></p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">FFmpegAPI介绍以及日志系统</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-command/">Android上的FFmpeg命令行</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/">Cloudflare优选IP</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/">IP或Port被墙检测</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">自建VPS-防火长城</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/">【转载】解决Hexo博客分页展示为HTML代码的问题</a></li>
+    
+    <li><a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">Android逆向-初识反编译工具</a></li>
+    
+    <li><a href="https://comert007.github.io/post/audio-encod/">Android音视频开发:音频非压缩编码和压缩编码</a></li>
+    
+    <li><a href="https://comert007.github.io/post/basic-media/">Android音视频开发:踩一踩“门槛”</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/" data-toggle="tooltip" data-placement="top" title="Cloudflare优选IP">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/" data-toggle="tooltip" data-placement="top" title="FFmpegAPI的I/O">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

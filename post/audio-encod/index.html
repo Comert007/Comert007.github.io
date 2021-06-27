@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>Android音视频开发:音频非压缩编码和压缩编码</title>
+  <meta property="og:title" content="Android音视频开发:音频非压缩编码和压缩编码" />
+  <meta name="twitter:title" content="Android音视频开发:音频非压缩编码和压缩编码" />
+
+  <meta name="description" content="
+
+音视频在开发中，最重要也是最复杂的就是编解码的过程，在上一篇的《Android音视频开发:踩一踩“门槛”》中，我们说音频的编码根据大小划分有两种：压缩编码和非压缩编码，那到底是怎么实现的这两中编码的呢？这一次就详细了解Android中如何使用这两种方式进行音频编码
+">
+  <meta property="og:description" content="
+
+音视频在开发中，最重要也是最复杂的就是编解码的过程，在上一篇的《Android音视频开发:踩一踩“门槛”》中，我们说音频的编码根据大小划分有两种：压缩编码和非压缩编码，那到底是怎么实现的这两中编码的呢？这一次就详细了解Android中如何使用这两种方式进行音频编码
+">
+  <meta name="twitter:description" content="
+
+音视频在开发中，最重要也是最复杂的就是编解码的过程，在上一篇的《Android音视频开发:踩一踩“门槛”》中，我们说音频的编码根据大小划分有两种：压缩编码和非压缩编码，那到底是怎么实现的这两中编码的呢？这一次就详细了解Android中如何使用这两种方式进行音频编码
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/audio-encod/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/audio-encod/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>Android音视频开发:音频非压缩编码和压缩编码</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/audio/">audio</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前景提要">前景提要</a></li>
+    <li><a href="#audiorecord">AudioRecord</a>
+      <ul>
+        <li><a href="#创建audiorecord">创建AudioRecord</a></li>
+        <li><a href="#切换录制状态">切换录制状态</a></li>
+        <li><a href="#开启录制线程">开启录制线程</a></li>
+        <li><a href="#释放资源">释放资源</a></li>
+      </ul>
+    </li>
+    <li><a href="#audiotrack">AudioTrack</a>
+      <ul>
+        <li><a href="#创建audiotrack">创建AudioTrack</a></li>
+        <li><a href="#切换播放状态">切换播放状态</a></li>
+        <li><a href="#开启播放线程">开启播放线程</a></li>
+        <li><a href="#释放资源-1">释放资源</a></li>
+      </ul>
+    </li>
+    <li><a href="#mediacodec编码aac">MediaCodec编码AAC</a>
+      <ul>
+        <li><a href="#创建mediacodec">创建MediaCodec</a></li>
+        <li><a href="#配置音频参数">配置音频参数</a></li>
+        <li><a href="#启动线程">启动线程</a></li>
+        <li><a href="#aac编码">AAC编码</a></li>
+        <li><a href="#释放资源-2">释放资源</a></li>
+      </ul>
+    </li>
+    <li><a href="#android-ndk">Android NDK</a></li>
+    <li><a href="#编译lame">编译Lame</a>
+      <ul>
+        <li><a href="#cmake编译lame">Cmake编译Lame</a></li>
+        <li><a href="#ndk-build编译lame">ndk-build编译Lame</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+</aside>
+
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <p><img src="https://comert007.github.io/img/top/audio-encode.jpeg" alt=""></p>
+<blockquote>
+<p>音视频在开发中，最重要也是最复杂的就是编解码的过程，在上一篇的<a href="https://readdown.com/2020/01/11/basic-media/">《Android音视频开发:踩一踩“门槛”》</a>中，我们说音频的编码根据大小划分有两种：压缩编码和非压缩编码，那到底是怎么实现的这两中编码的呢？这一次就详细了解Android中如何使用这两种方式进行音频编码</p>
+</blockquote>
+<h2 id="前景提要">前景提要</h2>
+<p>这里先回顾一下音频的压缩编码和非压缩编码:</p>
+<ul>
+<li>非压缩编码：音频裸数据，也即是我们所说的PCM</li>
+<li>压缩编码：对数据进行压缩，压缩不能被人耳感知到的冗余信号</li>
+</ul>
+<p>因为非压缩编码实在是太大了，所以我们生活中所接触的音频编码格式都是压缩编码，而且是有损压缩，比如 MP3或AAC。  <br>
+那如何操作PCM数据呢？Android SDK中提供了一套对PCM操作的API：<code>AudioRecord</code> 和 <code>AudioTrack</code>；</p>
+<p>由于<code>AudioRecord(录音)</code> 和 <code>AudioTrack(播放)</code>操作过于底层而且过于复杂，所以Android SDK 还提供了一套与之对应更加高级的API：<code>MediaRecorder(录音)</code>和<code>MediaPlayer(播放)</code>，用于音视频的操作，当然其更加简单方便。我们这里只介绍前者，通过它来实现对PCM数据的操作。</p>
+<p>对于压缩编码，我们则通过<code>MediaCodec</code>和<code>Lame</code>来分别实现AAC音频和Mp3音频压缩编码。话不多说，请往下看！</p>
+<h2 id="audiorecord">AudioRecord</h2>
+<p>由于<code>AudioRecord</code>更加底层，能够更好的并且直接的管理通过音频录制硬件设备录制后的PCM数据，所以对数据处理更加灵活，但是同时也需要我们自己处理编码的过程。</p>
+<p>AudioRecord的使用流程大致如下：</p>
+<ul>
+<li>根据音频参数创建<code>AudioRecord</code></li>
+<li>调用<code>startRecording</code>开始录制</li>
+<li>开启录制线程，通过<code>AudioRecord</code>将录制的音频数据从缓存中读取并写入文件</li>
+<li>释放资源</li>
+</ul>
+<p>在使用<code>AudioRecord</code>前需要先注意添加<code>RECORD_AUDIO</code>录音权限。</p>
+<h3 id="创建audiorecord">创建AudioRecord</h3>
+<p>我们先看看<code>AudioRecord</code>构造方法</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">AudioRecord</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">audioSource</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sampleRateInHz</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">channelConfig</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">audioFormat</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">bufferSizeInBytes</span>)
+</code></pre></div><ul>
+<li>
+<p>audioSource，从字面意思可知音频来源，由<code>MediaRecorder.AudioSource</code>提供，主要有以下内容</p>
+<p>·  CAMCORDER 与照相机方向相同的麦克风音频源</p>
+<p>·  DEFAULT  默认</p>
+<p>·  MIC 麦克风音频源</p>
+<p>·  VOICE_CALL 语音通话</p>
+<p>这里采用<code>MIC</code>麦克风音频源</p>
+</li>
+<li>
+<p>sampleRateInHz，采样率，即录制的音频每秒钟会有多少次采样，可选用的采样频率列表为：8000、16000、22050、24000、32000、44100、48000等，一般采用人能听到最大音频的2倍，也就是44100Hz。</p>
+</li>
+<li>
+<p>channelConfig，声道数的配置，可选值以常量的形式配置在类AudioFormat中，常用的是CHANNEL_IN_MONO（单声道）、CHANNEL_IN_STEREO（双声道）</p>
+</li>
+<li>
+<p>audioFormat，采样格式，可选值以常量的形式定义在类AudioFormat中，分别为ENCODING_PCM_16BIT（16bit）、ENCODING_PCM_8BIT（8bit），一般采用16bit。</p>
+</li>
+<li>
+<p>bufferSizeInBytes，其配置的是AudioRecord内部的音频缓冲区的大小，可能会因为生产厂家的不同而有所不同，为了方便AudioRecord提供了一个获取该值最小缓冲区大小的方法<code>getMinBufferSize</code>。</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">getMinBufferSize</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sampleRateInHz</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">channelConfig</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">audioFormat</span>)
+</code></pre></div><p>在开发过程中需使用<code>getMinBufferSize</code>此方法计算出最小缓存大小。</p>
+<h3 id="切换录制状态">切换录制状态</h3>
+<p>首先通过调用<code>getState</code>判断AudioRecord是否初始化成功，然后通过<code>startRecording</code>切换成录制状态</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#859900">if</span> (<span style="color:#859900">null</span>!=<span style="color:#268bd2">audioRecord</span> &amp;&amp; <span style="color:#268bd2">audioRecord</span>?.<span style="color:#268bd2">state</span>!=<span style="color:#268bd2">AudioRecord</span>.<span style="color:#268bd2">STATE_UNINITIALIZED</span>){
+    <span style="color:#268bd2">audioRecord</span>?.<span style="color:#268bd2">startRecording</span>()
+}
+</code></pre></div><h3 id="开启录制线程">开启录制线程</h3>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#268bd2">thread</span> = <span style="color:#268bd2">Thread</span>(<span style="color:#268bd2">Runnable</span> {
+   <span style="color:#268bd2">writeData2File</span>()
+})
+<span style="color:#268bd2">thread</span>?.<span style="color:#268bd2">start</span>()
+</code></pre></div><p>开启录音线程将录音数据通过AudioRecord写入文件</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">private fun writeData2File() {
+    var ret = 0
+    val byteArray = ByteArray(bufferSizeInBytes)
+    val file = File(externalCacheDir?.absolutePath + File.separator + filename)
+
+    if (file.exists()) {
+        file.delete()
+    } else {
+        file.createNewFile()
+    }
+    val fos = FileOutputStream(file)
+    while (status == Status.STARTING) {
+        ret = audioRecord?.read(byteArray, 0, bufferSizeInBytes)!!
+        if (ret!=AudioRecord.ERROR_BAD_VALUE || ret!=AudioRecord.ERROR_INVALID_OPERATION|| ret!=AudioRecord.ERROR_DEAD_OBJECT){
+            fos.write(byteArray)
+        }
+    }
+    fos.close()
+}
+</code></pre></div><h3 id="释放资源">释放资源</h3>
+<p>首先停止录制</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#859900">if</span> (<span style="color:#859900">null</span>!=<span style="color:#268bd2">audioRecord</span> &amp;&amp; <span style="color:#268bd2">audioRecord</span>?.<span style="color:#268bd2">state</span>!=<span style="color:#268bd2">AudioRecord</span>.<span style="color:#268bd2">STATE_UNINITIALIZED</span>){
+    <span style="color:#268bd2">audioRecord</span>?.<span style="color:#268bd2">stop</span>()
+}
+</code></pre></div><p>然后停止线程</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">if (thread!=null){
+    thread?.join()
+    thread =null
+}
+</code></pre></div><p>最后释放AudioRecord</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">if (audioRecord != null) {
+    audioRecord?.release()
+    audioRecord = null
+}
+</code></pre></div><p>通过以上一个流程之后，就可以得到一个非压缩编码的PCM数据了。</p>
+<p>但是这个数据在音乐播放器上一般是播放不了的，那么怎么验证我是否录制成功呢？当然是使用我们的<code>AudioTrack</code>进行播放看看是不是刚刚我们录制的声音了。</p>
+<p><a href="https://github.com/AnJoiner/MediaSeries/blob/master/Media01/app/src/main/java/com/coder/media/ui/activity/RecordActivity.kt">【完整代码-AudioRecord】</a></p>
+<h2 id="audiotrack">AudioTrack</h2>
+<p>由于<code>AudioTrack</code>是由Android SDK提供比较底层的播放API，也只能操作PCM裸数据，通过直接渲染PCM数据进行播放。当然如果想要使用<code>AudioTrack</code>进行播放，那就需要自行先将压缩编码格式文件解码。</p>
+<p>AudioTrack的使用流程大致如下：</p>
+<ul>
+<li>根据音频参数创建<code>AudioTrack</code></li>
+<li>调用<code>play</code>开始播放</li>
+<li>开启播放线程，循环想<code>AudioTrack</code>缓存区写入音频数据</li>
+<li>释放资源</li>
+</ul>
+<h3 id="创建audiotrack">创建AudioTrack</h3>
+<p>我们来看看<code>AudioTrack</code>的构造方法</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">AudioTrack</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">streamType</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sampleRateInHz</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">channelConfig</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">audioFormat</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">bufferSizeInBytes</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">mode</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sessionId</span>)
+</code></pre></div><ul>
+<li>
+<p>streamType，Android手机上提供音频管理策略，按下音量键我们会发现由媒体声音管理，闹铃声音管理，通话声音管理等等，当系统有多个进程需要播放音频的时候，管理策略会决定最终的呈现效果，该参数的可选值将以常量的形式定义在类AudioManager中，主要包括以下内容：</p>
+<p>·  STREAM_VOCIE_CALL：电话声音</p>
+<p>·  STREAM_SYSTEM：系统声音</p>
+<p>·  STREAM_RING：铃声</p>
+<p>·  STREAM_MUSCI：音乐声</p>
+<p>·  STREAM_ALARM：警告声</p>
+<p>·  STREAM_NOTIFICATION：通知声</p>
+</li>
+</ul>
+<p>因为这里是播放音频，所以我们选择<code>STREAM_MUSCI</code>。</p>
+<ul>
+<li>
+<p>sampleRateInHz，采样率，即播放的音频每秒钟会有多少次采样，可选用的采样频率列表为：8000、16000、22050、24000、32000、44100、48000等，一般采用人能听到最大音频的2倍，也就是44100Hz。</p>
+</li>
+<li>
+<p>channelConfig，声道数的配置，可选值以常量的形式配置在类AudioFormat中，常用的是CHANNEL_IN_MONO（单声道）、CHANNEL_IN_STEREO（立体双声道）</p>
+</li>
+<li>
+<p>audioFormat，采样格式，可选值以常量的形式定义在类AudioFormat中，分别为ENCODING_PCM_16BIT（16bit）、ENCODING_PCM_8BIT（8bit），一般采用16bit。</p>
+</li>
+<li>
+<p>bufferSizeInBytes，其配置的是AudioTrack内部的音频缓冲区的大小，可能会因为生产厂家的不同而有所不同，为了方便AudioTrack提供了一个获取该值最小缓冲区大小的方法<code>getMinBufferSize</code>。</p>
+</li>
+<li>
+<p>mode，播放模式，AudioTrack提供了两种播放模式，可选的值以常量的形式定义在类AudioTrack中，一个是MODE_STATIC，需要一次性将所有的数据都写入播放缓冲区中，简单高效，通常用于播放铃声、系统提醒的音频片段；另一个是MODE_STREAM，需要按照一定的时间间隔不间断地写入音频数据，理论上它可以应用于任何音频播放的场景。</p>
+</li>
+<li>
+<p>sessionId，AudioTrack都需要关联一个会话Id，在创建AudioTrack时可直接使用<code>AudioManager.AUDIO_SESSION_ID_GENERATE</code>，或者在构造之前通过<code>AudioManager.generateAudioSessionId</code>获取。</p>
+</li>
+</ul>
+<p>上面这种构造方法已经被弃用了，现在基本使用如下构造（最小skd 版本需要&gt;=21）,参数内容与上基本一致：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">AudioTrack</span> (<span style="color:#268bd2">AudioAttributes</span> <span style="color:#268bd2">attributes</span>, 
+                <span style="color:#268bd2">AudioFormat</span> <span style="color:#268bd2">format</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">bufferSizeInBytes</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">mode</span>, 
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sessionId</span>)
+</code></pre></div><p>通过<code>AudioAttributes.Builder</code>设置参数streamType</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#859900">var</span> <span style="color:#268bd2">audioAttributes</span> = <span style="color:#268bd2">AudioAttributes</span>.<span style="color:#268bd2">Builder</span>()
+    .<span style="color:#268bd2">setLegacyStreamType</span>(<span style="color:#268bd2">AudioManager</span>.<span style="color:#268bd2">STREAM_MUSIC</span>)
+    .<span style="color:#268bd2">build</span>()
+</code></pre></div><p>通过<code>AudioFormat.Builder</code>设置channelConfig，sampleRateInHz，audioFormat参数</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#859900">var</span> <span style="color:#268bd2">mAudioFormat</span> = <span style="color:#268bd2">AudioFormat</span>.<span style="color:#268bd2">Builder</span>()
+    .<span style="color:#268bd2">setChannelMask</span>(<span style="color:#268bd2">channel</span>)
+    .<span style="color:#268bd2">setEncoding</span>(<span style="color:#268bd2">audioFormat</span>)
+    .<span style="color:#268bd2">setSampleRate</span>(<span style="color:#268bd2">sampleRate</span>)
+    .<span style="color:#268bd2">build</span>()
+</code></pre></div><h3 id="切换播放状态">切换播放状态</h3>
+<p>首先通过调用<code>getState</code>判断AudioRecord是否初始化成功，然后通过<code>play</code>切换成录播放状态</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#859900">if</span> (<span style="color:#859900">null</span>!=<span style="color:#268bd2">audioTrack</span> &amp;&amp; <span style="color:#268bd2">audioTrack</span>?.<span style="color:#268bd2">state</span> != <span style="color:#268bd2">AudioTrack</span>.<span style="color:#268bd2">STATE_UNINITIALIZED</span>){
+    <span style="color:#268bd2">audioTrack</span>?.<span style="color:#268bd2">play</span>()
+}
+</code></pre></div><h3 id="开启播放线程">开启播放线程</h3>
+<p>开启播放线程</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#268bd2">thread</span>= <span style="color:#268bd2">Thread</span>(<span style="color:#268bd2">Runnable</span> {
+    <span style="color:#268bd2">readDataFromFile</span>()
+})
+<span style="color:#268bd2">thread</span>?.<span style="color:#268bd2">start</span>()
+</code></pre></div><p>将数据不断的送入缓存区并通过AudioTrack播放</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">private fun readDataFromFile() {
+    val byteArray = ByteArray(bufferSizeInBytes)
+
+
+    val file = File(externalCacheDir?.absolutePath + File.separator + filename)
+    if (!file.exists()) {
+        Toast.makeText(this, &#34;请先进行录制PCM音频&#34;, Toast.LENGTH_SHORT).show()
+        return
+    }
+    val fis = FileInputStream(file)
+    var read: Int
+    status = Status.STARTING
+
+    while ({ read = fis.read(byteArray);read }() &gt; 0) {
+        var ret = audioTrack?.write(byteArray, 0, bufferSizeInBytes)!!
+        if (ret == AudioTrack.ERROR_BAD_VALUE || ret == AudioTrack.ERROR_INVALID_OPERATION || ret == AudioManager.ERROR_DEAD_OBJECT) {
+            break
+        }
+    }
+    fis.close()
+}
+</code></pre></div><h3 id="释放资源-1">释放资源</h3>
+<p>首先停止播放</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#859900">if</span> (<span style="color:#268bd2">audioTrack</span> != <span style="color:#859900">null</span> &amp;&amp; <span style="color:#268bd2">audioTrack</span>?.<span style="color:#268bd2">state</span> != <span style="color:#268bd2">AudioTrack</span>.<span style="color:#268bd2">STATE_UNINITIALIZED</span>) {
+    <span style="color:#268bd2">audioTrack</span>?.<span style="color:#268bd2">stop</span>()
+}
+</code></pre></div><p>然后停止线程</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">if (thread!=null){
+    thread?.join()
+    thread =null
+}
+</code></pre></div><p>最后释放AudioTrack</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">if (audioTrack != null) {
+    audioTrack?.release()
+    audioTrack = null
+}
+</code></pre></div><p>经过这样几个步骤，我们就可以听到刚刚我们录制的PCM数据声音啦！这就是使用Android提供的<code>AudioRecord</code>和<code>AudioTrack</code>对PCM数据进行操作。</p>
+<p>但是仅仅这样是不够的，因为我们生活中肯定不是使用PCM进行音乐播放，那么怎么才能让音频在主流播放器上播放呢？这就需要我们进行压缩编码了，比如mp3或aac压缩编码格式。</p>
+<p><a href="https://github.com/AnJoiner/MediaSeries/blob/master/Media01/app/src/main/java/com/coder/media/ui/activity/PlayActivity.kt">【完整代码-AudioTrack】</a></p>
+<h2 id="mediacodec编码aac">MediaCodec编码AAC</h2>
+<p><code>AAC</code>压缩编码是一种高压缩比的音频压缩算法，AAC压缩比通常为18：1；采样率范围通常是8KHz～96KHz，这个范围比MP3更广一些（MP3的范围一般是：16KHz～48KHz），所以在16bit的采样格式上比MP3更精细。</p>
+<p>方便我们处理AAC编码，Android SDK中提供了<code>MediaCodec</code>API，可以将PCM数据编码成AAC数据。大概需要以下几个步骤：</p>
+<ul>
+<li>创建<code>MediaCodec</code></li>
+<li>为<code>MediaCodec</code>配置音频参数</li>
+<li>启动线程，循环往缓冲区送入数据</li>
+<li>通过<code>MediaCodec</code>将缓冲区的数据进行编码</li>
+<li>释放资源</li>
+</ul>
+<h3 id="创建mediacodec">创建MediaCodec</h3>
+<p>通过<code>MediaCodec.createEncoderByType</code>创建编码MediaCodec</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#268bd2">mediaCodec</span> = <span style="color:#268bd2">MediaCodec</span>.<span style="color:#268bd2">createEncoderByType</span>(<span style="color:#268bd2">MediaFormat</span>.<span style="color:#268bd2">MIMETYPE_AUDIO_AAC</span>)
+</code></pre></div><h3 id="配置音频参数">配置音频参数</h3>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#93a1a1;font-style:italic">// 配置采样率和声道数
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">mediaFormat</span> = <span style="color:#268bd2">MediaFormat</span>.<span style="color:#268bd2">createAudioFormat</span>(<span style="color:#268bd2">MINE_TYPE</span>,<span style="color:#268bd2">sampleRate</span>,<span style="color:#268bd2">channel</span>)
+<span style="color:#93a1a1;font-style:italic">// 配置比特率
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">mediaFormat</span>?.<span style="color:#268bd2">setInteger</span>(<span style="color:#268bd2">MediaFormat</span>.<span style="color:#268bd2">KEY_BIT_RATE</span>,<span style="color:#268bd2">bitRate</span>)
+<span style="color:#93a1a1;font-style:italic">// 配置PROFILE，其中属AAC-LC兼容性最好
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">mediaFormat</span>?.<span style="color:#268bd2">setInteger</span>(<span style="color:#268bd2">MediaFormat</span>.<span style="color:#268bd2">KEY_AAC_PROFILE</span>, <span style="color:#268bd2">MediaCodecInfo</span>.<span style="color:#268bd2">CodecProfileLevel</span>.<span style="color:#268bd2">AACObjectLC</span>)
+<span style="color:#93a1a1;font-style:italic">// 最大输入大小
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">mediaFormat</span>?.<span style="color:#268bd2">setInteger</span>(<span style="color:#268bd2">MediaFormat</span>.<span style="color:#268bd2">KEY_MAX_INPUT_SIZE</span>, <span style="color:#2aa198;font-weight:bold">10</span> * <span style="color:#2aa198;font-weight:bold">1024</span>)
+    
+<span style="color:#268bd2">mediaCodec</span>!!.<span style="color:#268bd2">configure</span>(<span style="color:#268bd2">mediaFormat</span>,<span style="color:#859900">null</span>,<span style="color:#859900">null</span>,<span style="color:#268bd2">MediaCodec</span>.<span style="color:#268bd2">CONFIGURE_FLAG_ENCODE</span>)
+<span style="color:#268bd2">mediaCodec</span>?.<span style="color:#268bd2">start</span>()
+
+<span style="color:#268bd2">inputBuffers</span> = <span style="color:#268bd2">mediaCodec</span>?.<span style="color:#268bd2">inputBuffers</span>
+<span style="color:#268bd2">outputBuffers</span> = <span style="color:#268bd2">mediaCodec</span>?.<span style="color:#268bd2">outputBuffers</span>
+</code></pre></div><h3 id="启动线程">启动线程</h3>
+<p>启动线程，循环读取PCM数据送入缓冲区</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#268bd2">thread</span> = <span style="color:#268bd2">Thread</span>(<span style="color:#268bd2">Runnable</span> {
+    <span style="color:#859900">val</span> <span style="color:#268bd2">fis</span> = <span style="color:#268bd2">FileInputStream</span>(<span style="color:#268bd2">pcmFile</span>)
+    <span style="color:#268bd2">fos</span> = <span style="color:#268bd2">FileOutputStream</span>(<span style="color:#268bd2">aacFile</span>)
+    <span style="color:#859900">var</span> <span style="color:#268bd2">read</span>: <span style="color:#268bd2">Int</span>
+    <span style="color:#859900">while</span> ({ <span style="color:#268bd2">read</span> = <span style="color:#268bd2">fis</span>.<span style="color:#268bd2">read</span>(<span style="color:#268bd2">byteArray</span>);<span style="color:#268bd2">read</span> }() &gt; <span style="color:#2aa198;font-weight:bold">0</span>) {
+        <span style="color:#268bd2">encode</span>(<span style="color:#268bd2">byteArray</span>)
+    }
+})
+<span style="color:#268bd2">thread</span>?.<span style="color:#268bd2">start</span>()
+</code></pre></div><h3 id="aac编码">AAC编码</h3>
+<p>将送入的PCM数据通过<code>MediaCodec</code>进行编码，大致流程如下：</p>
+<ul>
+<li>通过可用缓存去索引，获取可用输入缓冲区</li>
+<li>将pcm数据放入输入缓冲区并提交</li>
+<li>根据输出缓冲区索引，获取输出缓冲区</li>
+<li>创建输出数据<code>data</code>，并添加ADTS头部信息(有7byte)</li>
+<li>将<code>outputBuffer</code>编码后数据写入<code>data</code>（data有7byte偏移）</li>
+<li>将编码数据<code>data</code>写入文件</li>
+<li>重复以上过程</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">private fun encode(byteArray: ByteArray){
+    mediaCodec?.run {
+        //返回要用有效数据填充的输入缓冲区的索引， -1 无限期地等待输入缓冲区的可用性
+        val inputIndex = dequeueInputBuffer(-1)
+        if (inputIndex &gt; 0){
+            // 根据索引获取可用输入缓存区
+            val inputBuffer = this@AACEncoder.inputBuffers!![inputIndex]
+            // 清空缓冲区
+            inputBuffer.clear()
+            // 将pcm数据放入缓冲区
+            inputBuffer.put(byteArray)
+            // 提交放入数据缓冲区索引以及大小
+            queueInputBuffer(inputIndex,0,byteArray.size,System.nanoTime(),0)
+        }
+        // 指定编码器缓冲区中有效数据范围
+        val bufferInfo = MediaCodec.BufferInfo()
+        // 获取输出缓冲区索引
+        var outputIndex = dequeueOutputBuffer(bufferInfo,0)
+        
+        while (outputIndex&gt;0){
+            // 根据索引获取可用输出缓存区
+            val outputBuffer =this@AACEncoder.outputBuffers!![outputIndex]
+            // 测量输出缓冲区大小
+            val bufferSize = bufferInfo.size
+            // 输出缓冲区实际大小，ADTS头部长度为7
+            val bufferOutSize = bufferSize+7
+            
+            // 指定输出缓存区偏移位置以及限制大小
+            outputBuffer.position(bufferInfo.offset)
+            outputBuffer.limit(bufferInfo.offset+bufferSize)
+            // 创建输出空数据
+            val data = ByteArray(bufferOutSize)
+            // 向空数据先增加ADTS头部
+            addADTStoPacket(data, bufferOutSize)
+            // 将编码输出数据写入已加入ADTS头部的数据中
+            outputBuffer.get(data,7,bufferInfo.size)
+            // 重新指定输出缓存区偏移
+            outputBuffer.position(bufferInfo.offset)
+            // 将获取的数据写入文件
+            fos?.write(data)
+            // 释放输出缓冲区
+            releaseOutputBuffer(outputIndex,false)
+            // 重新获取输出缓冲区索引
+            outputIndex=dequeueOutputBuffer(bufferInfo,0)
+        }
+    }
+}
+</code></pre></div><h3 id="释放资源-2">释放资源</h3>
+<p>编码完成后，一定要释放所有资源，首先关闭输入输出流</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">fos?.close()
+fis.close()
+</code></pre></div><p>停止编码</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">if (mediaCodec!=null){
+     mediaCodec?.stop()
+}
+</code></pre></div><p>然后就是关闭线程</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">if (thread!=null){
+    thread?.join()
+    thread =null
+}
+</code></pre></div><p>最后释放MediaCodec</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">if (mediaCodec!=null){
+    mediaCodec?.release()
+    mediaCodec = null
+
+    mediaFormat = null
+    inputBuffers = null
+    outputBuffers = null
+}
+</code></pre></div><p>通过以上一个流程，我们就可以得到一个AAC压缩编码的音频文件，可以听一听是不是自己刚刚录制的。我听了一下我自己唱的一首歌，觉得我的还是可以的嘛，也不是那么五音不全～～</p>
+<p><a href="https://github.com/AnJoiner/MediaSeries/blob/master/Media01/app/src/main/java/com/coder/media/codec/AACEncoder.kt">【完整代码-MediaCodec】</a></p>
+<h2 id="android-ndk">Android NDK</h2>
+<p>但是有个问题，毕竟AAC音频不是主流的音频文件呀，我们最常见的是MP3的嘛，可不可以将PCM编码成MP3呢？     <br>
+当然是可以的，但是Android SDK没有直接提供这样的API，只能使用Android NDK，通过交叉编译其他C或C++库来进行实现。</p>
+<p>Android NDK 是由Google提供一个工具集，可让您使用 C 和 C++ 等语言实现应用。</p>
+<p>Android NDK 一般有两个用途，一个是进一步提升设备性能，以降低延迟，或运行计算密集型应用，如游戏或物理模拟；另一个是重复使用您自己或其他开发者的 C 或 C++ 库。当然我们使用最多的应该还是后者。</p>
+<p>想使用Android NDK调试代码需要以下工具：</p>
+<ul>
+<li>Android 原生开发套件 (NDK)：这套工具使您能在 Android 应用中使用 C 和 C++ 代码。</li>
+<li>CMake：一款外部编译工具，可与 Gradle 搭配使用来编译原生库。如果您只计划使用 ndk-build，则不需要此组件。</li>
+<li>LLDB：Android Studio 用于调试原生代码的调试程序。</li>
+</ul>
+<p>可以进入Tools &gt; SDK Manager &gt; SDK Tools 选择  NDK (Side by side) 和 CMake 应用安装</p>
+<p><img src="https://comert007.github.io/img/media/ndk-down" alt=""></p>
+<p>在应用以上选项之后，我们可以看到SDK的目录中多了一个<code>ndk-bundle</code>的文件夹，大致目录结构如下</p>
+<p><img src="https://comert007.github.io/img/media/ndk-bundle" alt=""></p>
+<ul>
+<li>
+<p>ndk-build：该Shell脚本是Android NDK构建系统的起始点，一般在项目中仅仅执行这一个命令就可以编译出对应的动态链接库了，后面的编译mp3lame 就会使用到。</p>
+</li>
+<li>
+<p>platforms：该目录包含支持不同Android目标版本的头文件和库文件，NDK构建系统会根据具体的配置来引用指定平台下的头文件和库文件。</p>
+</li>
+<li>
+<p>toolchains：该目录包含目前NDK所支持的不同平台下的交叉编译器——ARM、x86、MIPS，其中比较常用的是ARM和x86。不论是哪个平台都会提供以下工具：</p>
+<p>·CC：编译器，对C源文件进行编译处理，生成汇编文件。</p>
+<p>·AS：将汇编文件生成目标文件（汇编文件使用的是指令助记符，AS将它翻译成机器码）。</p>
+<p>·AR：打包器，用于库操作，可以通过该工具从一个库中删除或者增加目标代码模块。</p>
+<p>·LD：链接器，为前面生成的目标代码分配地址空间，将多个目标文件链接成一个库或者是可执行文件。</p>
+<p>·GDB：调试工具，可以对运行过程中的程序进行代码调试工作。</p>
+<p>·STRIP：以最终生成的可执行文件或者库文件作为输入，然后消除掉其中的源码。</p>
+<p>·NM：查看静态库文件中的符号表。</p>
+<p>·Objdump：查看静态库或者动态库的方法签名。</p>
+</li>
+</ul>
+<p>了解Android NDK 之后，就可新建一个支持C/C++ 的Android项目了：</p>
+<ul>
+<li>在向导的 Choose your project 部分中，选择 Native C++ 项目类型。</li>
+<li>点击 Next。</li>
+<li>填写向导下一部分中的所有其他字段。</li>
+<li>点击 Next。</li>
+<li>在向导的 Customize C++ Support 部分中，您可以使用 C++ Standard 字段来自定义项目。使用下拉列表选择您想要使用哪种 C++ 标准化。选择 Toolchain Default 可使用默认的 CMake 设置。</li>
+<li>点击 Finish，同步完成之后会出现如下图所示的目录结构，即表示原生项目创建完成</li>
+</ul>
+<p><img src="https://comert007.github.io/img/media/native-project" alt=""></p>
+<h2 id="编译lame">编译Lame</h2>
+<p>LAME是一个开源的MP3音频压缩库，当前是公认有损质量MP3中压缩效果最好的编码器，所以我们选择它来进行压缩编码，那如何进行压缩编码呢？主流的由两种方式：</p>
+<ul>
+<li>Cmake</li>
+<li>ndk-build</li>
+</ul>
+<p>下面就详细讲解这两种方式</p>
+<h3 id="cmake编译lame">Cmake编译Lame</h3>
+<p>配置Cmake之后可以直接将Lame代码运行于Android中</p>
+<h4 id="准备">准备</h4>
+<p>下载<a href="https://sourceforge.net/projects/lame/files/lame/3.100/">Lame-3.100</a>并解压大概得到如下目录</p>
+<p><img src="https://comert007.github.io/img/media/mp3-lame" alt=""></p>
+<p>然后将里面的<code>libmp3lame</code>文件夹拷贝到我们上面创建的支持c/c++项目，删除其中的i386和vector文件夹，以及其他非.c 和 .h 后缀的文件</p>
+<p><img src="https://comert007.github.io/img/media/mp3-lame-copy" alt=""></p>
+<p>需要将以下文件进行修改，否则会报错</p>
+<ul>
+<li>将util.h中570行</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">extern ieee754_float32_t fast_log2(ieee754_float32_t x)
+</code></pre></div><p>替换成</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">extern float fast_log2(float x)
+</code></pre></div><ul>
+<li>在id3tag.c和machine.h两个文件中，将<code>HAVE_STRCHR</code>和<code>HAVE_MEMCPY</code>注释</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#93a1a1;font-style:italic">#ifdef STDC_HEADERS
+</span><span style="color:#93a1a1;font-style:italic"># include &lt;stddef.h&gt;
+</span><span style="color:#93a1a1;font-style:italic"># include &lt;stdlib.h&gt;
+</span><span style="color:#93a1a1;font-style:italic"># include &lt;string.h&gt;
+</span><span style="color:#93a1a1;font-style:italic"># include &lt;ctype.h&gt;
+</span><span style="color:#93a1a1;font-style:italic">#else
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#93a1a1;font-style:italic">/*# ifndef HAVE_STRCHR
+</span><span style="color:#93a1a1;font-style:italic">#  define strchr index
+</span><span style="color:#93a1a1;font-style:italic">#  define strrchr rindex
+</span><span style="color:#93a1a1;font-style:italic"># endif
+</span><span style="color:#93a1a1;font-style:italic"> */</span>
+<span style="color:#859900;font-weight:bold">char</span> *<span style="color:#268bd2">strchr</span>(), *<span style="color:#268bd2">strrchr</span>();
+
+<span style="color:#93a1a1;font-style:italic">/*# ifndef HAVE_MEMCPY
+</span><span style="color:#93a1a1;font-style:italic">#  define memcpy(d, s, n) bcopy ((s), (d), (n))
+</span><span style="color:#93a1a1;font-style:italic"># endif*/</span>
+<span style="color:#93a1a1;font-style:italic">#endif
+</span></code></pre></div><ul>
+<li>在fft.c中，将47行注释</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#93a1a1;font-style:italic">//#include &#34;vector/lame_intrin.h&#34;
+</span></code></pre></div><ul>
+<li>将set_get.h中24行</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;lame.h&gt;
+</code></pre></div><p>替换成</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &#34;lame.h&#34;
+</code></pre></div><h4 id="编写mp3解码器">编写Mp3解码器</h4>
+<p>首先在自己的包下（我这里是<code>com.coder.media</code>，这个很重要，后面会用到），新建<code>Mp3Encoder</code>的文件，大概如下几个方法</p>
+<ul>
+<li>init，将声道，比特率，采样率等信息传入</li>
+<li>encode，根据init中提供的信息进行编码</li>
+<li>destroy，释放资源</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#859900">class</span> <span style="color:#cb4b16">Mp3Encoder</span> {
+
+    <span style="color:#859900">companion</span> <span style="color:#859900">object</span> {
+        <span style="color:#859900">init</span> {
+            <span style="color:#268bd2">System</span>.<span style="color:#268bd2">loadLibrary</span>(<span style="color:#2aa198">&#34;mp3encoder&#34;</span>)
+        }
+    }
+
+    <span style="color:#859900">external</span> <span style="color:#859900">fun</span> <span style="color:#268bd2">init</span>(
+        <span style="color:#268bd2">pcmPath</span>: <span style="color:#268bd2">String</span>,
+        <span style="color:#268bd2">channel</span>: <span style="color:#268bd2">Int</span>,
+        <span style="color:#268bd2">bitRate</span>: <span style="color:#268bd2">Int</span>,
+        <span style="color:#268bd2">sampleRate</span>: <span style="color:#268bd2">Int</span>,
+        <span style="color:#268bd2">mp3Path</span>: <span style="color:#268bd2">String</span>
+    ): <span style="color:#268bd2">Int</span>
+
+    <span style="color:#859900">external</span> <span style="color:#859900">fun</span> <span style="color:#268bd2">encode</span>()
+
+    <span style="color:#859900">external</span> <span style="color:#859900">fun</span> <span style="color:#268bd2">destroy</span>()
+}
+</code></pre></div><p>在cpp目录下新建两个文件</p>
+<ul>
+<li>mp3-encoder.h</li>
+<li>mp3-encoder.cpp</li>
+</ul>
+<p>这两个文件中可能会提示错误异常，先不要管它，这是因为我们还没有配置<code>CMakeList.txt</code>导致的。</p>
+<p>在<code>mp3-encoder.h</code>中定义三个变量</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">FILE</span>* <span style="color:#268bd2">pcmFile</span>;
+<span style="color:#268bd2">FILE</span>* <span style="color:#268bd2">mp3File</span>;
+<span style="color:#268bd2">lame_t</span> <span style="color:#268bd2">lameClient</span>;
+</code></pre></div><p>然后在<code>mp3-encoder.c</code>中分别实现我们在<code>Mp3Encoder</code>中定义的三个方法</p>
+<p>首先导入需要的文件</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&lt;jni.h&gt;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&lt;string&gt;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&#34;android/log.h&#34;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&#34;libmp3lame/lame.h&#34;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic">#include</span> <span style="color:#93a1a1;font-style:italic">&#34;mp3-encoder.h&#34;</span><span style="color:#93a1a1;font-style:italic">
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#93a1a1;font-style:italic">#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG  , &#34;mp3-encoder&#34;, __VA_ARGS__)
+</span></code></pre></div><p>然后实现init方法</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#859900">extern</span> <span style="color:#2aa198">&#34;C&#34;</span> <span style="color:#268bd2">JNIEXPORT</span> <span style="color:#268bd2">jint</span> <span style="color:#268bd2">JNICALL</span>
+<span style="color:#268bd2">Java_com_coder_media_Mp3Encoder_init</span>(<span style="color:#268bd2">JNIEnv</span> *<span style="color:#268bd2">env</span>, <span style="color:#268bd2">jobject</span> <span style="color:#268bd2">obj</span>, <span style="color:#268bd2">jstring</span> <span style="color:#268bd2">pcmPathParam</span>, <span style="color:#268bd2">jint</span> <span style="color:#268bd2">channels</span>,
+                                     <span style="color:#268bd2">jint</span> <span style="color:#268bd2">bitRate</span>, <span style="color:#268bd2">jint</span> <span style="color:#268bd2">sampleRate</span>, <span style="color:#268bd2">jstring</span> <span style="color:#268bd2">mp3PathParam</span>) {
+    <span style="color:#268bd2">LOGD</span>(<span style="color:#2aa198">&#34;encoder init&#34;</span>);
+    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">ret</span> = -<span style="color:#2aa198;font-weight:bold">1</span>;
+    <span style="color:#859900">const</span> <span style="color:#859900;font-weight:bold">char</span>* <span style="color:#268bd2">pcmPath</span> = <span style="color:#268bd2">env</span>-&gt;<span style="color:#268bd2">GetStringUTFChars</span>(<span style="color:#268bd2">pcmPathParam</span>, <span style="color:#cb4b16">NULL</span>);
+    <span style="color:#859900">const</span> <span style="color:#859900;font-weight:bold">char</span>* <span style="color:#268bd2">mp3Path</span> = <span style="color:#268bd2">env</span>-&gt;<span style="color:#268bd2">GetStringUTFChars</span>(<span style="color:#268bd2">mp3PathParam</span>, <span style="color:#cb4b16">NULL</span>);
+    <span style="color:#268bd2">pcmFile</span> = <span style="color:#268bd2">fopen</span>(<span style="color:#268bd2">pcmPath</span>,<span style="color:#2aa198">&#34;rb&#34;</span>);
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">pcmFile</span>){
+        <span style="color:#268bd2">mp3File</span> = <span style="color:#268bd2">fopen</span>(<span style="color:#268bd2">mp3Path</span>,<span style="color:#2aa198">&#34;wb&#34;</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">mp3File</span>){
+            <span style="color:#268bd2">lameClient</span> = <span style="color:#268bd2">lame_init</span>();
+            <span style="color:#268bd2">lame_set_in_samplerate</span>(<span style="color:#268bd2">lameClient</span>, <span style="color:#268bd2">sampleRate</span>);
+            <span style="color:#268bd2">lame_set_out_samplerate</span>(<span style="color:#268bd2">lameClient</span>,<span style="color:#268bd2">sampleRate</span>);
+            <span style="color:#268bd2">lame_set_num_channels</span>(<span style="color:#268bd2">lameClient</span>,<span style="color:#268bd2">channels</span>);
+            <span style="color:#268bd2">lame_set_brate</span>(<span style="color:#268bd2">lameClient</span>,<span style="color:#268bd2">bitRate</span>);
+            <span style="color:#268bd2">lame_init_params</span>(<span style="color:#268bd2">lameClient</span>);
+            <span style="color:#268bd2">ret</span> = <span style="color:#2aa198;font-weight:bold">0</span>;
+        }
+    }
+    <span style="color:#268bd2">env</span>-&gt;<span style="color:#268bd2">ReleaseStringUTFChars</span>(<span style="color:#268bd2">mp3PathParam</span>, <span style="color:#268bd2">mp3Path</span>);
+    <span style="color:#268bd2">env</span>-&gt;<span style="color:#268bd2">ReleaseStringUTFChars</span>(<span style="color:#268bd2">pcmPathParam</span>, <span style="color:#268bd2">pcmPath</span>);
+    <span style="color:#859900">return</span> <span style="color:#268bd2">ret</span>;
+}
+
+</code></pre></div><p>这个方法的作用就是将我们的音频参数信息送入<code>lameClient</code></p>
+<p>需要注意我这里的方法<code>Java_com_coder_media_Mp3Encoder_init</code>中的<code>com_coder_media</code>需要替换成你自己的对应包名，下面的encode和destroy也是如此，切记！！！</p>
+<p>实现通过<code>lame</code>编码encode</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#859900">extern</span> <span style="color:#2aa198">&#34;C&#34;</span> <span style="color:#268bd2">JNIEXPORT</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">JNICALL</span>
+<span style="color:#268bd2">Java_com_coder_media_Mp3Encoder_encode</span>(<span style="color:#268bd2">JNIEnv</span> *<span style="color:#268bd2">env</span>, <span style="color:#268bd2">jobject</span> <span style="color:#268bd2">obj</span>) {
+    <span style="color:#268bd2">LOGD</span>(<span style="color:#2aa198">&#34;encoder encode&#34;</span>);
+    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">bufferSize</span> = <span style="color:#2aa198;font-weight:bold">1024</span> * <span style="color:#2aa198;font-weight:bold">256</span>;
+    <span style="color:#859900;font-weight:bold">short</span>* <span style="color:#268bd2">buffer</span> = <span style="color:#268bd2">new</span> <span style="color:#859900;font-weight:bold">short</span>[<span style="color:#268bd2">bufferSize</span> / <span style="color:#2aa198;font-weight:bold">2</span>];
+    <span style="color:#859900;font-weight:bold">short</span>* <span style="color:#268bd2">leftBuffer</span> = <span style="color:#268bd2">new</span> <span style="color:#859900;font-weight:bold">short</span>[<span style="color:#268bd2">bufferSize</span> / <span style="color:#2aa198;font-weight:bold">4</span>];
+    <span style="color:#859900;font-weight:bold">short</span>* <span style="color:#268bd2">rightBuffer</span> = <span style="color:#268bd2">new</span> <span style="color:#859900;font-weight:bold">short</span>[<span style="color:#268bd2">bufferSize</span> / <span style="color:#2aa198;font-weight:bold">4</span>];
+
+    <span style="color:#859900;font-weight:bold">unsigned</span> <span style="color:#859900;font-weight:bold">char</span>* <span style="color:#268bd2">mp3_buffer</span> = <span style="color:#268bd2">new</span> <span style="color:#859900;font-weight:bold">unsigned</span> <span style="color:#859900;font-weight:bold">char</span>[<span style="color:#268bd2">bufferSize</span>];
+    <span style="color:#268bd2">size_t</span> <span style="color:#268bd2">readBufferSize</span> = <span style="color:#2aa198;font-weight:bold">0</span>;
+
+    <span style="color:#859900">while</span> ((<span style="color:#268bd2">readBufferSize</span> = <span style="color:#268bd2">fread</span>(<span style="color:#268bd2">buffer</span>, <span style="color:#2aa198;font-weight:bold">2</span>, <span style="color:#268bd2">bufferSize</span> / <span style="color:#2aa198;font-weight:bold">2</span>, <span style="color:#268bd2">pcmFile</span>)) &gt; <span style="color:#2aa198;font-weight:bold">0</span>) {
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#2aa198;font-weight:bold">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">readBufferSize</span>; <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">i</span> % <span style="color:#2aa198;font-weight:bold">2</span> == <span style="color:#2aa198;font-weight:bold">0</span>) {
+                <span style="color:#268bd2">leftBuffer</span>[<span style="color:#268bd2">i</span> / <span style="color:#2aa198;font-weight:bold">2</span>] = <span style="color:#268bd2">buffer</span>[<span style="color:#268bd2">i</span>];
+            } <span style="color:#859900">else</span> {
+                <span style="color:#268bd2">rightBuffer</span>[<span style="color:#268bd2">i</span> / <span style="color:#2aa198;font-weight:bold">2</span>] = <span style="color:#268bd2">buffer</span>[<span style="color:#268bd2">i</span>];
+            }
+        }
+        <span style="color:#268bd2">size_t</span> <span style="color:#268bd2">wroteSize</span> = <span style="color:#268bd2">lame_encode_buffer</span>(<span style="color:#268bd2">lameClient</span>, (<span style="color:#859900;font-weight:bold">short</span> <span style="color:#859900;font-weight:bold">int</span> *) <span style="color:#268bd2">leftBuffer</span>, (<span style="color:#859900;font-weight:bold">short</span> <span style="color:#859900;font-weight:bold">int</span> *) <span style="color:#268bd2">rightBuffer</span>,
+                                              (<span style="color:#859900;font-weight:bold">int</span>)(<span style="color:#268bd2">readBufferSize</span> / <span style="color:#2aa198;font-weight:bold">2</span>), <span style="color:#268bd2">mp3_buffer</span>, <span style="color:#268bd2">bufferSize</span>);
+        <span style="color:#268bd2">fwrite</span>(<span style="color:#268bd2">mp3_buffer</span>, <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">wroteSize</span>, <span style="color:#268bd2">mp3File</span>);
+    }
+    <span style="color:#268bd2">delete</span>[] <span style="color:#268bd2">buffer</span>;
+    <span style="color:#268bd2">delete</span>[] <span style="color:#268bd2">leftBuffer</span>;
+    <span style="color:#268bd2">delete</span>[] <span style="color:#268bd2">rightBuffer</span>;
+    <span style="color:#268bd2">delete</span>[] <span style="color:#268bd2">mp3_buffer</span>;
+}
+
+</code></pre></div><p>最后释放资源</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">extern &#34;C&#34; JNIEXPORT void JNICALL
+Java_com_coder_media_Mp3Encoder_destroy(JNIEnv *env, jobject obj) {
+    LOGD(&#34;encoder destroy&#34;);
+    if(pcmFile) {
+        fclose(pcmFile);
+    }
+    if(mp3File) {
+        fclose(mp3File);
+        lame_close(lameClient);
+    }
+}
+</code></pre></div><h4 id="配置cmake">配置Cmake</h4>
+<p>打开CPP目录下的CMakeList.txt文件，向其中添加如下代码</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// 引入目录
+include_directories(libmp3lame)
+// 将libmp3lame下所有文件路径赋值给 SRC_LIST
+aux_source_directory(libmp3lame SRC_LIST)
+
+// 加入libmp3lame所有c文件
+add_library(mp3encoder
+        SHARED
+        mp3-encoder.cpp ${SRC_LIST})
+</code></pre></div><p>并且向<code>target_link_libraries</code>添加<code>mp3encoder</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">target_link_libraries( 
+        mp3encoder
+        native-lib
+        ${log-lib})
+</code></pre></div><p>修改CMakeList.txt之后，点击右上角<code>Sync Now</code>就可以看到我们<code>mp3-encoder.cpp</code>和<code>mp3-encoder.h</code>中的错误提示不见了，至此已基本完成</p>
+<p>然后在我们的代码中调用<code>Mp3Encoder</code>中的方法就可以将<code>PCM</code>编码成<code>Mp3</code>了</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">private fun encodeAudio() {
+    var pcmPath = File(externalCacheDir, &#34;record.pcm&#34;).absolutePath
+    var target = File(externalCacheDir, &#34;target.mp3&#34;).absolutePath
+    var encoder = Mp3Encoder()
+    if (!File(pcmPath).exists()) {
+        Toast.makeText(this, &#34;请先进行录制PCM音频&#34;, Toast.LENGTH_SHORT).show()
+        return
+    }
+    var ret = encoder.init(pcmPath, 2, 128, 44100, target)
+    if (ret == 0) {
+        encoder.encode()
+        encoder.destroy()
+        Toast.makeText(this, &#34;PCM-&gt;MP3编码完成&#34;, Toast.LENGTH_SHORT).show()
+    } else {
+        Toast.makeText(this, &#34;Lame初始化失败&#34;, Toast.LENGTH_SHORT).show()
+    }
+}
+</code></pre></div><p><a href="https://github.com/AnJoiner/MediaSeries/tree/master/LameNative">【完整代码-LameNative】</a></p>
+<h3 id="ndk-build编译lame">ndk-build编译Lame</h3>
+<p>ndk-build编译Lame，其实就是生成一个.so后缀的动态文件库供大家使用</p>
+<ul>
+<li>首先在任何目录下创建<code>jni</code>文件夹</li>
+</ul>
+<p><img src="https://comert007.github.io/img/media/ndk-jni" alt=""></p>
+<ul>
+<li>将上面Android项目中cpp目录下修改好的libmp3lame、mp3-encoder.cpp和mp3-encoder.h拷贝至<code>jni</code>下</li>
+</ul>
+<p><img src="https://comert007.github.io/img/media/ndk-jni-copy" alt=""></p>
+<ul>
+<li>创建<code>Android.mk</code>文件</li>
+</ul>
+<p>其中有几个重要配置说明如下</p>
+<p>· LOCAL_PATH：=$（call my-dir），返回当前文件在系统中的路径，Android.mk文件开始时必须定义该变量。</p>
+<p>· include$（CLEAR_VARS），表明清除上一次构建过程的所有全局变量，因为在一个Makefile编译脚本中，会使用大量的全局变量，使用这行脚本表明需要清除掉所有的全局变量</p>
+<p>· LOCAL_MODULE，编译目标项目名，如果是so文件，则结果会以lib项目名.so呈现</p>
+<p>· LOCAL_SRC_FILES，要编译的C或者Cpp的文件，注意这里不需要列举头文件，构建系统会自动帮助开发者依赖这些文件。</p>
+<p>· LOCAL_LDLIBS，所依赖的NDK动态和静态库。</p>
+<p>· Linclude $(BUILD_SHARED_LIBRARY)，构建动态库</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := mp3encoder
+
+LOCAL_SRC_FILES := mp3-encoder.cpp \
+                 libmp3lame/bitstream.c \
+                 libmp3lame/psymodel.c \
+                 libmp3lame/lame.c \
+                 libmp3lame/takehiro.c \
+                 libmp3lame/encoder.c \
+                 libmp3lame/quantize.c \
+                 libmp3lame/util.c \
+                 libmp3lame/fft.c \
+                 libmp3lame/quantize_pvt.c \
+                 libmp3lame/vbrquantize.c \
+                 libmp3lame/gain_analysis.c \
+                 libmp3lame/reservoir.c \
+                 libmp3lame/VbrTag.c \
+                 libmp3lame/mpglib_interface.c \
+                 libmp3lame/id3tag.c \
+                 libmp3lame/newmdct.c \
+                 libmp3lame/set_get.c \
+                 libmp3lame/version.c \
+                 libmp3lame/presets.c \
+                 libmp3lame/tables.c \
+
+LOCAL_LDLIBS := -llog -ljnigraphics -lz -landroid -lm -pthread -L$(SYSROOT)/usr/lib
+
+include $(BUILD_SHARED_LIBRARY)
+</code></pre></div><ul>
+<li>创建<code>Application.mk</code></li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">APP_ABI := all 
+APP_PLATFORM := android-21
+APP_OPTIM := release
+APP_STL := c++_static
+</code></pre></div><p>最终效果如下：</p>
+<p><img src="https://comert007.github.io/img/media/ndk-jni-result" alt=""></p>
+<p>最后在当前目录下以command命令运行<code>ndk-build</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/home/relo/Android/Sdk/ndk-bundle/ndk-build
+</code></pre></div><p>如果不出意外，就可以在<code>jni</code>同级目录<code>libs</code>下面看到各个平台的so文件</p>
+<p><img src="https://comert007.github.io/img/media/ndk-jni-libs" alt=""></p>
+<p>将so文件拷贝至我们普通Android项目jniLibs下面，然后在自己的包下（我这里是<code>com.coder.media</code>），新建如上<code>Mp3Encoder</code>的文件，最后在需要使用编码MP3的位置使用<code>Mp3Encoder</code>中的三个方法就可以了。</p>
+<p><img src="https://comert007.github.io/img/media/import-libmp3lame" alt=""></p>
+<p>但是需要注意的是需要在app下的build.gradle配置与jniLibs下对应的APP_ABI</p>
+<p><img src="https://comert007.github.io/img/media/ndk-app-abi" alt=""></p>
+<p><a href="https://github.com/AnJoiner/MediaSeries/tree/master/Media01">【完整代码-ndk-build】</a></p>
+<p>到此音频非压缩编码和压缩编码基本讲解完毕了，如有不明白或者不正确的地方，请在下方评论区留言，望共勉之。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://book.douban.com/subject/30124646/">音视频开发进阶指南:基于Android与iOS平台的实践</a></p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/audio-encod/">Android音视频开发:音频非压缩编码和压缩编码</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/basic-media/">Android音视频开发:踩一踩“门槛”</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-command/">Android上的FFmpeg命令行</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a></li>
+    
+    <li><a href="https://comert007.github.io/post/hexo-blog/">使用 Hexo 搭建个人博客</a></li>
+    
+    <li><a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/basic-media/" data-toggle="tooltip" data-placement="top" title="Android音视频开发:踩一踩“门槛”">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/" data-toggle="tooltip" data-placement="top" title="Android逆向-初识反编译工具">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

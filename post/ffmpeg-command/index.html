@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>Android上的FFmpeg命令行</title>
+  <meta property="og:title" content="Android上的FFmpeg命令行" />
+  <meta name="twitter:title" content="Android上的FFmpeg命令行" />
+
+  <meta name="description" content="
+在我们的开发中，经常会用到音视频相关内容，一般我们都会选择FFmpeg，但是其交叉编译对于我们来说是一件很麻烦的事情．所以这里方便日后使用，集成了关于FFmpeg相关库(mp3lame&#43;libx264&#43;fdk-aac)FFmpegCommand,话不多说，请往下看～～
+">
+  <meta property="og:description" content="
+在我们的开发中，经常会用到音视频相关内容，一般我们都会选择FFmpeg，但是其交叉编译对于我们来说是一件很麻烦的事情．所以这里方便日后使用，集成了关于FFmpeg相关库(mp3lame&#43;libx264&#43;fdk-aac)FFmpegCommand,话不多说，请往下看～～
+">
+  <meta name="twitter:description" content="
+在我们的开发中，经常会用到音视频相关内容，一般我们都会选择FFmpeg，但是其交叉编译对于我们来说是一件很麻烦的事情．所以这里方便日后使用，集成了关于FFmpeg相关库(mp3lame&#43;libx264&#43;fdk-aac)FFmpegCommand,话不多说，请往下看～～
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/ffmpeg-command/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/ffmpeg-command/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>Android上的FFmpeg命令行</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/ffmpeg/">ffmpeg</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/command/">command</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <blockquote>
+<p>在我们的开发中，经常会用到音视频相关内容，一般我们都会选择<code>FFmpeg</code>，但是其交叉编译对于我们来说是一件很麻烦的事情．所以这里方便日后使用，集成了关于<code>FFmpeg</code>相关库(mp3lame+libx264+fdk-aac)<a href="https://github.com/AnJoiner/FFmpegCommand">FFmpegCommand</a>,话不多说，请往下看～～</p>
+</blockquote>
+<h2 id="功能">功能</h2>
+<p><a href="https://bintray.com/sourfeng/repositories/ffmpeg/_latestVersion"> <img src="https://api.bintray.com/packages/sourfeng/repositories/ffmpeg/images/download.svg" alt="Download"> </a><a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache%202-success.svg" alt="License"></a><a href="https://ffmpeg.org/releases/ffmpeg-4.2.1.tar.bz2"> <img src="https://img.shields.io/badge/FFmpeg-4.2.1-orange.svg" alt="FFmpeg"></a><a href="http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20191217-2245-stable.tar.bz2"> <img src="https://img.shields.io/badge/X264-20191217.2245-yellow.svg" alt="X264"></a><a href="https://sourceforge.net/projects/lame/files/latest/download"> <img src="https://img.shields.io/badge/mp3lame-3.100-critical.svg" alt="mp3lame"></a><a href="https://downloads.sourceforge.net/opencore-amr/fdk-aac-2.0.1.tar.gz"> <img src="https://img.shields.io/badge/fdkaac-2.0.1-ff69b4.svg" alt="fdk-aac"></a></p>
+<ul>
+<li>使用ffmpeg命令行进行音/视频转码</li>
+<li>使用ffmpeg命令行进行音/视频剪切</li>
+<li>使用ffmpeg命令行进行音/视频拼接</li>
+<li>使用ffmpeg命令行进行抽取音/视频</li>
+<li>使用ffmpeg命令行进行音视频合成</li>
+<li>使用ffmpeg命令行进行视频截图</li>
+<li>使用ffmpeg命令行进行视频转系列图片</li>
+<li>使用ffmpeg命令行给视频添加水印</li>
+<li>使用ffmpeg命令行进行视频转成Gif动图</li>
+<li>使用ffmpeg命令行进行图片合成视频</li>
+<li>使用ffmpeg命令行进行音频编码</li>
+<li>使用ffmpeg命令行进行多画面拼接视频</li>
+<li>使用ffmpeg命令行进行视频反序倒播</li>
+<li>使用ffmpeg命令行进行视频降噪</li>
+<li>使用ffmpeg命令行进行视频抽帧转成图片</li>
+<li>使用ffmpeg命令行进行视频叠加成画中画</li>
+<li>使用ffmpeg命令行进行音频编/解码PCM</li>
+<li>使用ffmpeg命令行进行倍速播放</li>
+<li>使用ffmpeg命令行进行视频解码YUV</li>
+<li>使用ffmpeg命令行进行视频编码H264</li>
+<li>使用ffmpeg命令行进行音频音量控制</li>
+<li>使用ffmpeg命令行进行音频混音</li>
+<li>使用ffmpeg命令行进行音频淡入、淡出效果</li>
+<li>使用ffmpeg命令行进行视频亮度控制</li>
+<li>使用ffmpeg命令行进行视频对比度控制</li>
+<li>使用ffmpeg命令行进行视频旋转</li>
+<li>使用ffmpeg命令进行视频固定宽高缩放</li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="--------------demo-apk-下载地址---------------httpsfirimnfyz"><a href="https://fir.im/nfyz">&mdash;&mdash;&mdash;&mdash;&ndash;Demo APK 下载地址&mdash;&mdash;&mdash;&mdash;&mdash;</a></h3>
+<h2 id="引入">引入</h2>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#268bd2">implementation</span> <span style="color:#2aa198">&#39;com.coder.command:ffmpeg:1.0.7&#39;</span>
+</code></pre></div><h2 id="使用">使用</h2>
+<ol>
+<li>一般我们使用<a href="https://developer.android.com/ndk/guides/application_mk">APP_ABI</a>时只需要<code>armeabi-v7a</code>和<code>arm64-v8a</code>就行了,所以只需要在app的bulid.gradle下加入如下代码：</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#268bd2">android</span> {
+    ...
+    <span style="color:#268bd2">defaultConfig</span> {
+        ...
+        <span style="color:#268bd2">ndk</span> {
+            <span style="color:#268bd2">abiFilters</span> <span style="color:#2aa198">&#39;armeabi-v7a&#39;</span>, <span style="color:#2aa198">&#39;arm64-v8a&#39;</span>
+            <span style="color:#268bd2">moduleName</span> <span style="color:#2aa198">&#34;app&#34;</span>
+        }
+    }
+}
+</code></pre></div><ol start="2">
+<li>直接调用<code>FFmpegCommand.runAsync(String[] cmd, ICallBack callback)</code>方法，其中第一个参数由<code>FFmpegUtils</code>工具类提供．</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">long</span> <span style="color:#268bd2">startTime</span> = <span style="color:#268bd2">System</span>.<span style="color:#268bd2">currentTimeMillis</span>();
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">input</span> =<span style="color:#268bd2">Environment</span>.<span style="color:#268bd2">getExternalStorageDirectory</span>().<span style="color:#268bd2">getPath</span>() + <span style="color:#268bd2">File</span>.<span style="color:#268bd2">separator</span> +
+                        <span style="color:#2aa198">&#34;DCIM&#34;</span> + <span style="color:#268bd2">File</span>.<span style="color:#268bd2">separator</span> + <span style="color:#2aa198">&#34;test.mp3&#34;</span>;
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">output</span> =<span style="color:#268bd2">Environment</span>.<span style="color:#268bd2">getExternalStorageDirectory</span>().<span style="color:#268bd2">getPath</span>() + <span style="color:#268bd2">File</span>.<span style="color:#268bd2">separator</span> +
+                        <span style="color:#2aa198">&#34;DCIM&#34;</span> + <span style="color:#268bd2">File</span>.<span style="color:#268bd2">separator</span> + <span style="color:#2aa198">&#34;output.mp3&#34;</span>;
+
+<span style="color:#268bd2">FFmpegCommand</span>.<span style="color:#268bd2">runAsync</span>(<span style="color:#268bd2">FFmpegUtils</span>.<span style="color:#268bd2">cutAudio</span>(<span style="color:#268bd2">input</span>, <span style="color:#2aa198">&#34;00:00:30&#34;</span>, <span style="color:#2aa198">&#34;00:00:40&#34;</span>,
+     <span style="color:#268bd2">output</span>), <span style="color:#859900">new</span> <span style="color:#268bd2">CommonCallBack</span>() {
+     <span style="color:#268bd2">@Override</span>
+     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onComplete</span>() {
+         <span style="color:#268bd2">Log</span>.<span style="color:#268bd2">d</span>(<span style="color:#2aa198">&#34;FFmpegTest&#34;</span>, <span style="color:#2aa198">&#34;run: 耗时：&#34;</span> + (<span style="color:#268bd2">System</span>.<span style="color:#268bd2">currentTimeMillis</span>() - <span style="color:#268bd2">startTime</span>));
+     }
+});
+
+</code></pre></div><p>这里只是演示了音频剪切，很多如上述功能请自行查阅<a href="https://github.com/AnJoiner/FFmpegCommand/blob/master/ffmpeg/src/main/java/com/coder/ffmpeg/utils/FFmpegUtils.java">FFmpegUtils</a>
+如果其中不满足需求，可添加自己的FFmpeg命令．例如：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">String</span> <span style="color:#268bd2">cmd</span> = <span style="color:#2aa198">&#34;ffmpeg -y -i %s -vn -acodec copy -ss %s -t %s %s&#34;</span>;
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">result</span> = <span style="color:#268bd2">String</span>.<span style="color:#268bd2">format</span>(<span style="color:#268bd2">cmd</span>, <span style="color:#268bd2">input</span>, <span style="color:#2aa198">&#34;00:00:30&#34;</span>, <span style="color:#2aa198">&#34;00:00:40&#34;</span>, <span style="color:#268bd2">output</span>);
+<span style="color:#268bd2">FFmpegCommand</span>.<span style="color:#268bd2">runAsync</span>(<span style="color:#268bd2">result</span>.<span style="color:#268bd2">split</span>(<span style="color:#2aa198">&#34; &#34;</span>), <span style="color:#859900">new</span> <span style="color:#268bd2">CommonCallBack</span>() {
+     <span style="color:#268bd2">@Override</span>
+     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onComplete</span>() {
+         <span style="color:#268bd2">Log</span>.<span style="color:#268bd2">d</span>(<span style="color:#2aa198">&#34;FFmpegTest&#34;</span>, <span style="color:#2aa198">&#34;run: 耗时：&#34;</span> + (<span style="color:#268bd2">System</span>.<span style="color:#268bd2">currentTimeMillis</span>() - <span style="color:#268bd2">startTime</span>));
+     }
+})
+</code></pre></div><h2 id="功能详解">功能详解</h2>
+<p>这里会用到对<code>FFmpeg</code>的命令使用, 如果不熟悉的话可以参考<a href="https://readdown.com/2019/12/20/ffmpeg-basic/">FFmpeg入门基础</a>, 包含对FFmpeg参数说明, 以及部分基础功能的实现.</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transformAudio</td>
+<td>音频转码</td>
+<td>transformVideo</td>
+<td>视频转码</td>
+</tr>
+<tr>
+<td>cutAudio</td>
+<td>音频剪切</td>
+<td>cutVideo</td>
+<td>视频剪切</td>
+</tr>
+<tr>
+<td>concatAudio</td>
+<td>音频拼接</td>
+<td>concatVideo</td>
+<td>视频拼接</td>
+</tr>
+<tr>
+<td>extractAudio</td>
+<td>音频抽取</td>
+<td>extractVideo</td>
+<td>视频抽取</td>
+</tr>
+<tr>
+<td>mixAudioVideo</td>
+<td>音视频合成</td>
+<td>screenShot</td>
+<td>截取视频第一帧</td>
+</tr>
+<tr>
+<td>video2Image</td>
+<td>视频转图片</td>
+<td>video2Gif</td>
+<td>视频转gif</td>
+</tr>
+<tr>
+<td>decodeAudio</td>
+<td>音频解码PCM</td>
+<td>decode2YUV</td>
+<td>视频解码YUV</td>
+</tr>
+<tr>
+<td>image2Video</td>
+<td>图片转视频</td>
+<td>addWaterMark</td>
+<td>添加视频水印</td>
+</tr>
+<tr>
+<td>encodeAudio</td>
+<td>音频编码</td>
+<td>yuv2H264</td>
+<td>视频编码H264</td>
+</tr>
+<tr>
+<td>multiVideo</td>
+<td>多画面拼接</td>
+<td>reverseVideo</td>
+<td>反向播放</td>
+</tr>
+<tr>
+<td>videoDoubleDown</td>
+<td>视频缩小一倍</td>
+<td>videoDouble</td>
+<td>视频放大一倍</td>
+</tr>
+<tr>
+<td>videoSpeed2</td>
+<td>倍速播放</td>
+<td>denoiseVideo</td>
+<td>视频降噪</td>
+</tr>
+<tr>
+<td>audioFadeIn</td>
+<td>音频淡入</td>
+<td>audioFadeOut</td>
+<td>音频淡出</td>
+</tr>
+<tr>
+<td>videoBright</td>
+<td>修改视频亮度</td>
+<td>videoContrast</td>
+<td>修改视频对比度</td>
+</tr>
+<tr>
+<td>picInPicVideo</td>
+<td>画中画</td>
+<td>videoScale</td>
+<td>视频固定缩放</td>
+</tr>
+</tbody>
+</table>
+<h2 id="常见问题">常见问题</h2>
+<ol>
+<li>
+<p>问: 可不可以不使用arm64-v8a?  <br>
+答: 可以,arm64-v8a只是加快了64位ARMv8(AArch64）的速度, 仅仅使用armeabi-v7a在64位上会稍稍慢一点, 不会有很大影响.</p>
+</li>
+<li>
+<p>问: 如何编译ffmpeg.so系列文件的?<br>
+答: 可以参考这篇<a href="https://juejin.im/post/5d440504f265da03b6388ed2">FFmpeg编译4.1.4并移植到Android</a>文章</p>
+</li>
+<li>
+<p>问: 为什么在Android10上使用FFmpegCommand会报错?  <br>
+答: 检查是否是因为访问了外部文件, 因为Android10变更了申请文件权限处理, 在访问外部文件需特殊处理,如果简单处理的话可以在<code>AndroidManifest</code>的<code>application</code>标签下加入</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">android:requestLegacyExternalStorage=&#34;true&#34;
+</code></pre></div></li>
+<li>
+<p>问: Demo中生成的文件在哪里?     <br>
+答: 在<code>/storage/emulated/0/Android/data/com.coder.ffmpegtest/cache/</code>目录下</p>
+</li>
+</ol>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/ffmpeg-command/">Android上的FFmpeg命令行</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/hexo-blog/">使用 Hexo 搭建个人博客</a></li>
+    
+    <li><a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/ffmpeg-basic/" data-toggle="tooltip" data-placement="top" title="FFmpeg命令行入门基础">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/basic-media/" data-toggle="tooltip" data-placement="top" title="Android音视频开发:踩一踩“门槛”">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

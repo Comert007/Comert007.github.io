@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>移动技术分享</title>
+  <meta name="keywords" content="Graphics,Video,Audio,FFmpeg,Android,Python,C++"/>
+  <meta name="description" content="关注图形、图像、音视频、FFmpeg、Android、Python、C++等技术。">
+  <meta property="og:title" content="移动技术分享" />
+  <meta name="twitter:title" content="移动技术分享" />
+  <meta name="baidu-site-verification" content="pXq00Oz0yr" />
+
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://comert007.github.io/img/head-android.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img" onclick="window.open('https://readdown.com')"> 
+        
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-md-offset-0">
+              <div class="page-heading">
+                <h1>
+                    
+                    
+                    
+                     <a href="https://readdown.com">
+                      <font></font>
+                    </a>
+                    
+                </h1>
+                  
+                    
+                      <hr class="small">
+                      <span class="page-subheading">关注 音视频、直播、图像渲染、FFmpeg、OpenGL、C&#43;&#43;、移动开发等技术</span>
+                    
+                  
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    
+    
+    
+  </header>
+
+
+    
+
+  <div class="main-banner">
+      
+    
+      
+      <div class="minor-banner-box container">
+        <div class="minor-banner row">
+              
+          <li class="minor-item col-md-3">
+            <br />
+            <br />
+            <a href="https://learnopengl-cn.github.io/" title="OpenGL-官方学习网">
+              <img src="img/ad_opengl.png" alt="OpenGL-官方学习网">
+            </a>
+            
+          </li>
+              
+          <li class="minor-item col-md-3">
+            <br />
+            <br />
+            <a href="http://ffmpeg.org/" title="FFmpeg-官网">
+              <img src="img/ad_ffmpeg.jpg" alt="FFmpeg-官网">
+            </a>
+            
+          </li>
+              
+          <li class="minor-item col-md-3">
+            <br />
+            <br />
+            <a href="https://github.com/AnJoiner/FFmpegCommand" title="开源项目">
+              <img src="img/ad_ffmpeg_command.jpg" alt="开源项目">
+            </a>
+            
+          </li>
+              
+          <li class="minor-item col-md-3">
+            <br />
+            <br />
+            <a href="https://github.com/Awesome-HarmonyOS/HarmonyOS" title="鸿蒙系统">
+              <img src="img/ad_harmony.png" alt="鸿蒙系统">
+            </a>
+            
+          </li>
+          
+        </div>
+      </div>
+      
+
+  </div>
+
+  <div class="container">
+    <div class="row">
+      
+      <div class="col-lg-8 col-md-10">
+        <div class="posts-list">
+          
+          
+
+           
+
+
+
+        
+
+        <div class="posts-list">
+          
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/">
+        <h2 class="post-title">编译Android使用的libx264并使用进行H.264编码</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><img src="https://comert007.github.io/img/top/x264.jpg" alt="">
+在日常的音视频开发中，我们经常使用<code>FFmpeg</code>，因为它确实好用呀，囊括了各种功能！但是有个很严重的问题，如果是编译在Android和IOS上使用，会造成APP的包很大。可以看我编译的FFmpeg在Android上的应用程式。</p>
+        <a href="https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/libx264/">libx264</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">
+        <h2 class="post-title">华为机器学习-图像分割</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><!-- raw HTML omitted -->记得以前，经常拍大头贴和寸照，要去专门的照相馆，先是让你站在一个红色或者蓝色的幕布前进行拍照，然后就去电脑上把刚刚拍的照片背景在进行修饰，最后再打印出来。其实这都没什么，最主要的是难以忍受他们拍的照片~~<!-- raw HTML omitted --></p>
+        <a href="https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/%E5%8D%8E%E4%B8%BA/">华为</a>&nbsp;
+        
+        <a href="https://comert007.github.io//tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>&nbsp;
+        
+        <a href="https://comert007.github.io//tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">图像分割</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/">
+        <h2 class="post-title">FFmpegAPI的I/O</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>在<a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">《FFmpegAPI介绍以及日志系统》</a>中我们了解到如何在<code>FFmpeg</code>中使用日志系统，这一小节我们来了解它的I/O处理。我们通过上面提到的<a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">《FFmpegAPI介绍以及日志系统》</a>知道关于I/O的操作是存在于<code>libformat</code>模块下。</p>
+        <a href="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/ffmpeg/">ffmpeg</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">
+        <h2 class="post-title">FFmpegAPI介绍以及日志系统</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <blockquote>
+<p>音视频的文章已经断更很久了，在这里说声抱歉。</p>
+</blockquote>
+<p>不论是Android，还是现在国内很火的<code>HarmonyOS-鸿蒙系统</code>，其实都不能脱离音视频的范畴，<code>鸿蒙</code>也实现了对<code>FFmpeg</code>、<code>openGL</code>等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。</p>
+        <a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/ffmpeg/">ffmpeg</a>&nbsp;
+        
+        <a href="https://comert007.github.io//tags/log/">log</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/">
+        <h2 class="post-title">Cloudflare优选IP</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>在自建VPS之后，我们会发现连接速度并没有那么理想，难度是我们被骗了？其实不然，实质上是我们的VPS所走的线路不是什么高端线路。现在市面上提供的线路一般有：</p>
+<ul>
+<li>163传统骨干网 - 全程都是以202.97开头</li>
+<li>CN2 GT 中端线路 - 去程和回程国内线路都是202.97开头，国际则是59.43开头</li>
+<li>CN2 GIA 独立线路 - 全程59.43开头，表现最好最稳定</li>
+</ul>
+        <a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/hostwinds/">hostwinds</a>&nbsp;
+        
+        <a href="https://comert007.github.io//tags/cloudflare/">cloudflare</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/">
+        <h2 class="post-title">IP或Port被墙检测</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>在<a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">《自建VPS-防火长城》</a>中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？</p>
+        <a href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">
+        <h2 class="post-title">自建VPS-防火长城</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <blockquote>
+<p>相信很多做技术、科研的童鞋，都会找一些资料，但是这些资料毕竟相对于国内，国外跟好一些，所以我们经常会去浏览一些国外的网站，但是你如果想访问一些国外的网站，你会发现“找不到该网页”，这是因为国内为了让我们的孩子茁壮成长，对于一些网站做了封锁，那么我们怎么绕过这些封锁呢？。</p>
+</blockquote>
+        <a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/gfw/">GFW</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/">
+        <h2 class="post-title">【转载】解决Hexo博客分页展示为HTML代码的问题</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>Hexo更新之后，首页的分页展示为HTML代码</p>
+        <a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/hexo/">hexo</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">
+        <h2 class="post-title">Android逆向-初识反编译工具</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><img src="https://comert007.github.io/img/decompile/apktool_decode_apk.png" alt=""></p>
+<blockquote>
+<p>在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？</p>
+</blockquote>
+        <a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+        
+        <a href="https://comert007.github.io//tags/%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">反编译工具</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/audio-encod/">
+        <h2 class="post-title">Android音视频开发:音频非压缩编码和压缩编码</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><img src="https://comert007.github.io/img/top/audio-encode.jpeg" alt=""></p>
+<blockquote>
+<p>音视频在开发中，最重要也是最复杂的就是编解码的过程，在上一篇的<a href="https://readdown.com/2020/01/11/basic-media/">《Android音视频开发:踩一踩“门槛”》</a>中，我们说音频的编码根据大小划分有两种：压缩编码和非压缩编码，那到底是怎么实现的这两中编码的呢？这一次就详细了解Android中如何使用这两种方式进行音频编码</p>
+</blockquote>
+        <a href="https://comert007.github.io/post/audio-encod/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/audio/">audio</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/basic-media/">
+        <h2 class="post-title">Android音视频开发:踩一踩“门槛”</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><img src="https://comert007.github.io/img/top/basic-media.jpeg" alt=""></p>
+<blockquote>
+<p>音视频行业已经发展很多年了，随着近几年移动端越来越多的音视频APP的出现，将音视频推向一个高潮，但是由于音视频的学习成本很高，很多开发者望而却步，为了跟紧时代的步伐，我写了这篇音视频基础，讲解了音视频的相关知识，给大家破除音视频的“高门槛”，希望可以共同进步。</p>
+</blockquote>
+        <a href="https://comert007.github.io/post/basic-media/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/audio/">audio</a>&nbsp;
+        
+        <a href="https://comert007.github.io//tags/video/">video</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://comert007.github.io/post/ffmpeg-command/">
+        <h2 class="post-title">Android上的FFmpeg命令行</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <blockquote>
+<p>在我们的开发中，经常会用到音视频相关内容，一般我们都会选择<code>FFmpeg</code>，但是其交叉编译对于我们来说是一件很麻烦的事情．所以这里方便日后使用，集成了关于<code>FFmpeg</code>相关库(mp3lame+libx264+fdk-aac)<a href="https://github.com/AnJoiner/FFmpegCommand">FFmpegCommand</a>,话不多说，请往下看～～</p>
+</blockquote>
+        <a href="https://comert007.github.io/post/ffmpeg-command/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://comert007.github.io//tags/ffmpeg/">ffmpeg</a>&nbsp;
+        
+        <a href="https://comert007.github.io//tags/command/">command</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+        </div>
+        
+        <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+    <ul class="pagination pagination-default">
+      <li class="page-item">
+        <a href="https://comert007.github.io/post/" aria-label="First" class="page-link" role="button"><span aria-hidden="true">&laquo;&laquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="https://comert007.github.io/post/" aria-label="Previous" class="page-link" role="button"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="https://comert007.github.io/post/" aria-label="Page 1" class="page-link" role="button">1</a>
+      </li>
+      <li class="page-item active">
+        <a href="#" aria-current="page" aria-label="Page 2" class="page-link" role="button">2</a>
+      </li>
+      <li class="page-item disabled">
+        <a href="#" aria-disabled="true" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item disabled">
+        <a href="#" aria-disabled="true" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      </li>
+    </ul>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </div>
+
+
+          
+        </div>
+
+        <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+          
+          
+        </div>
+
+      </div>
+
+      <div class="col-lg-4 col-md-2">
+
+        
+
+        <div class="sidebar-wrap sidebar-about">
+          <div class="about-img">
+            <img src="img/avatar.jpg" alt="AnJoiner" class="rounded-circle">
+          </div>
+          <h4 class="py-2">Hi! -That's Me</h4>
+
+          <p class="about-text">你好，我是AnJoiner，移动端开发工程师，从事Android应用相关方面的开发。日常开发中遇到的问题，会整理一下进行技术分享，也对音视频方面的知识很感兴趣，日常也会分享一些音视频方面相关的知识，希望与君共勉之~~~</p>
+
+
+          
+
+     
+
+  
+
+
+
+        </div>
+
+
+
+
+
+        
+  
+		
+        
+        <div class="sidebar-block">
+          <h4 class="sidebar-title">分类</h4>
+          <ol class="list-unstyled">
+            
+            
+          
+            
+          
+            
+          
+            
+          
+            
+            <li><a href="https://comert007.github.io/tags/ffmpeg">ffmpeg(5)</a></li>
+            
+          
+            
+            <li><a href="https://comert007.github.io/tags/flutter">flutter(3)</a></li>
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+          </ol>
+        </div>
+        
+   
+        
+        <div class="sidebar-wrap">
+          <h4 class="sidebar-title">标签</h4>
+          <div class="list-unstyled tags-cloud">
+          
+            
+            <a href="https://comert007.github.io/tags/audio">audio(2)</a>
+            
+          
+            
+          
+            
+          
+            
+          
+            
+            <a href="https://comert007.github.io/tags/ffmpeg">ffmpeg(5)</a>
+            
+          
+            
+            <a href="https://comert007.github.io/tags/flutter">flutter(3)</a>
+            
+          
+            
+          
+            
+            <a href="https://comert007.github.io/tags/hexo">hexo(2)</a>
+            
+          
+            
+            <a href="https://comert007.github.io/tags/hostwinds">hostwinds(2)</a>
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+  </div>
+
+  
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

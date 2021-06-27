@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ffmpeg on 移动技术分享</title>
+    <link>https://comert007.github.io/categories/ffmpeg/</link>
+    <description>Recent content in ffmpeg on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 07 Apr 2021 16:44:03 +0000</lastBuildDate><atom:link href="https://comert007.github.io/categories/ffmpeg/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>FFmpegAPI的I/O</title>
+      <link>https://comert007.github.io/post/ffmpegapi%E7%9A%84io/</link>
+      <pubDate>Wed, 07 Apr 2021 16:44:03 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpegapi%E7%9A%84io/</guid>
+      <description>&lt;p&gt;在&lt;a href=&#34;https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/&#34;&gt;《FFmpegAPI介绍以及日志系统》&lt;/a&gt;中我们了解到如何在&lt;code&gt;FFmpeg&lt;/code&gt;中使用日志系统，这一小节我们来了解它的I/O处理。我们通过上面提到的&lt;a href=&#34;https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/&#34;&gt;《FFmpegAPI介绍以及日志系统》&lt;/a&gt;知道关于I/O的操作是存在于&lt;code&gt;libformat&lt;/code&gt;模块下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>FFmpegAPI介绍以及日志系统</title>
+      <link>https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Mon, 05 Apr 2021 20:08:01 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;音视频的文章已经断更很久了，在这里说声抱歉。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;不论是Android，还是现在国内很火的&lt;code&gt;HarmonyOS-鸿蒙系统&lt;/code&gt;，其实都不能脱离音视频的范畴，&lt;code&gt;鸿蒙&lt;/code&gt;也实现了对&lt;code&gt;FFmpeg&lt;/code&gt;、&lt;code&gt;openGL&lt;/code&gt;等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android上的FFmpeg命令行</title>
+      <link>https://comert007.github.io/post/ffmpeg-command/</link>
+      <pubDate>Sun, 22 Dec 2019 16:36:17 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-command/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在我们的开发中，经常会用到音视频相关内容，一般我们都会选择&lt;code&gt;FFmpeg&lt;/code&gt;，但是其交叉编译对于我们来说是一件很麻烦的事情．所以这里方便日后使用，集成了关于&lt;code&gt;FFmpeg&lt;/code&gt;相关库(mp3lame+libx264+fdk-aac)&lt;a href=&#34;https://github.com/AnJoiner/FFmpegCommand&#34;&gt;FFmpegCommand&lt;/a&gt;,话不多说，请往下看～～&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>FFmpeg命令行入门基础</title>
+      <link>https://comert007.github.io/post/ffmpeg-basic/</link>
+      <pubDate>Fri, 20 Dec 2019 09:28:48 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-basic/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在手机端越来越多的应用涉及到音视频，直播类、短视频类等等，大大小小都会涉及到音视频的处理工具，音视频的处理工具有很多，这里简单介绍一下全球知名的&lt;code&gt;FFmpeg&lt;/code&gt;，FFmpeg是一个强大的音视频处理库，既可以使用它的API对音视频进行处理，也可以使用它提供的工具，如 ffmpeg, ffplay, ffprobe，来编辑你的音视频文件。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>FFmpeg编译4.1.4并移植到Android</title>
+      <link>https://comert007.github.io/post/ffmpeg-android/</link>
+      <pubDate>Fri, 02 Aug 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-android/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在我们开发音视频的过程中，总是避免不了对音视频的操作，对音视频的操作最常用的就是&lt;code&gt;FFmpeg&lt;/code&gt;了，但是有一个问题就是不能直接使用，所以得进行编译才能在移动端使用，下面就给大家介绍如何在&lt;code&gt;Android&lt;/code&gt;中编译&lt;code&gt;FFmpeg&lt;/code&gt;．&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

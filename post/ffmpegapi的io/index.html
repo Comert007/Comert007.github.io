@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>FFmpegAPI的I/O</title>
+  <meta property="og:title" content="FFmpegAPI的I/O" />
+  <meta name="twitter:title" content="FFmpegAPI的I/O" />
+
+  <meta name="description" content="在《FFmpegAPI介绍以及日志系统》中我们了解到如何在FFmpeg中使用日志系统，这一小节我们来了解它的I/O处理。我们通过上面提到的《FFmpegAPI介绍以及日志系统》知道关于I/O的操作是存在于libformat模块下。">
+  <meta property="og:description" content="在《FFmpegAPI介绍以及日志系统》中我们了解到如何在FFmpeg中使用日志系统，这一小节我们来了解它的I/O处理。我们通过上面提到的《FFmpegAPI介绍以及日志系统》知道关于I/O的操作是存在于libformat模块下。">
+  <meta name="twitter:description" content="在《FFmpegAPI介绍以及日志系统》中我们了解到如何在FFmpeg中使用日志系统，这一小节我们来了解它的I/O处理。我们通过上面提到的《FFmpegAPI介绍以及日志系统》知道关于I/O的操作是存在于libformat模块下。">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>FFmpegAPI的I/O</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/ffmpeg/">ffmpeg</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <p>在<a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">《FFmpegAPI介绍以及日志系统》</a>中我们了解到如何在<code>FFmpeg</code>中使用日志系统，这一小节我们来了解它的I/O处理。我们通过上面提到的<a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">《FFmpegAPI介绍以及日志系统》</a>知道关于I/O的操作是存在于<code>libformat</code>模块下。</p>
+<blockquote>
+<p><a href="http://ffmpeg.org/doxygen/trunk/group__lavf__io.html">http://ffmpeg.org/doxygen/trunk/group__lavf__io.html</a></p>
+</blockquote>
+<p>打开上面的地址，我们就可以知道，关于I/O的操作被定义在了<code>libformat/avio.h</code>下</p>
+<h1 id="移动">移动</h1>
+<p>想要使用<code>FFmpeg</code>移动文件，就需要使用下面的函数:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">int avpriv_io_move(const char *url_src, const char *url_dst);
+</code></pre></div><p>通过上面的函数，我们知道要移动文件，就需要传入两个地址：</p>
+<ul>
+<li><code>url_src</code> 需要移动的源文件路径</li>
+<li><code>url_dst</code> 移动后的目标文件路径</li>
+</ul>
+<blockquote>
+<p>上述函数，有一个返回，如果返回值<code>&gt;=0</code>就表示移动成功，反之移动失败</p>
+</blockquote>
+<p>举个栗子🌰，我们编辑一个<code>move.c</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include&lt;stdio.h&gt;
+#include&lt;libavformat/avio.h&gt;
+#include&lt;libavutil/log.h&gt;
+int main(int argc ,char *argv[])
+{
+	int ret;
+	av_log_set_level(AV_LOG_DEBUG);
+	ret = avpriv_io_move(&#34;./mytest.txt&#34;,&#34;./mytest1.txt&#34;);
+	if(ret&lt;0)
+	{
+		av_log(NULL,AV_LOG_ERROR,&#34;failed to move mytest.txt-&gt;mytest1.txt\n&#34;);
+		return ret;
+	}
+	av_log(NULL,AV_LOG_INFO,&#34;success to move mytest.txt-&gt;mytest1.txt\n&#34;);
+	return 0;
+}
+</code></pre></div><p>上面代码的意思是:</p>
+<ul>
+<li>在当前目录下将移动一个名为<code>mytest.txt</code>的文件</li>
+<li>如果失败就打印错误日志，成功就打印成功的日志信息</li>
+</ul>
+<p>进行编译之后就可以得到一个<code>move</code>的可执行文件</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">gcc move.c -g -o move `pkg-config --libs libavutil libavformat`
+</code></pre></div><blockquote>
+<p>mac系统需要将<code>gcc</code>替换为<code>clang</code></p>
+</blockquote>
+<p><img src="https://comert007.github.io/img/ffmpeg/ffmpeg-move.png" alt="移动文件">
+可以看出，如果在当前目录下没有一个为<code>mytest.txt</code>的文件，执行时结果小于0，就打印了一个错误日志。反之，就将文件进行移动并打印正确信息。</p>
+<blockquote>
+<p>其实这个移动操作也就是一个重命名，上述代码就实现了蒋<code>mytest.txt</code>重命名为<code>mytest1.txt</code></p>
+</blockquote>
+<h1 id="删除">删除</h1>
+<p>想要使用<code>FFmpeg</code>删除文件，就需要使用下面的函数:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">int avpriv_io_delete(const char *url);
+</code></pre></div><p>删除一个文件就需要传入一个源文件的路径，和移动类似，成功就返回一个<code>&gt;=0</code>的值，反之就返回一个<code>&lt;0</code>的值。
+创建一个<code>delete.c</code>文件，并写入代码：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include&lt;stdio.h&gt;
+#include&lt;libavformat/avio.h&gt;
+#include&lt;libavutil/log.h&gt;
+int main(int argc ,char *argv[])
+{
+	int ret;
+	av_log_set_level(AV_LOG_DEBUG);
+	ret = avpriv_io_delete(&#34;./mytest.txt&#34;);
+	if(ret&lt;0)
+	{
+		av_log(NULL,AV_LOG_ERROR,&#34;failed to delete mytest.txt\n&#34;);
+		return ret;
+	}
+	av_log(NULL,AV_LOG_INFO,&#34;success to delete mytest.txt\n&#34;);
+	return 0;
+}
+</code></pre></div><p>编译生成可执行文件</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">gcc delete.c -g -o delete `pkg-config --libs libavutil libavformat`
+</code></pre></div><p>执行删除文件操作
+<img src="https://comert007.github.io/img/ffmpeg/ffmpeg-delete.png" alt="删除文件"></p>
+<p>上述演示与移动类似，当不存在需要删除的文件时，打印一个错误日志，反之删除文件并打印“删除成功”。</p>
+<h1 id="目录">目录</h1>
+<p>在Linux系统上，我们在<code>Terminal</code>执行<code>ls</code>就可以查看当前目录下的文件以及文件夹
+<img src="https://comert007.github.io/img/ffmpeg/ffmpeg-ls.png" alt="LS目录列表">
+像上面的这种ls命令，是否可以通过<code>FFmpeg</code>去实现呢？答案是肯定的，大概需要以下几个函数：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// 打开目录
+int avio_open_dir(AVIODirContext **s, const char *url, AVDictionary **options)
+// 读取每一条目录信息
+int avio_read_dir(AVIODirContext *s, AVIODirEntry **next);
+// 释放一条目录信息
+void avio_free_directory_entry(AVIODirEntry ** entry);
+// 关闭目录
+int avio_close_dir(AVIODirContext **s);
+</code></pre></div><p>简述一下获取目录流程：</p>
+<ul>
+<li>先打开一个目录</li>
+<li>逐条读取目录信息，操作之后在释放</li>
+<li>关闭目录</li>
+</ul>
+<p>代码如下:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include&lt;libavutil/log.h&gt;
+#include&lt;libavformat/avio.h&gt;
+int main(int argc, char *argv[])
+{
+	int ret;
+	AVIODirContext *ctx = NULL;
+	AVIODirEntry *entry = NULL;
+	av_log_set_level(AV_LOG_INFO);
+	// 打开当前目录
+	ret = avio_open_dir(&amp;ctx,&#34;./&#34;,NULL);
+	if(ret&lt;0)
+	{
+		av_log(NULL,AV_LOG_ERROR,&#34;can not open dir:%s\n&#34;,av_err2str(ret));
+		return -1;
+	}
+	while(1){
+		// 读取目录
+		ret = avio_read_dir(ctx,&amp;entry);
+		if(ret&lt;0){
+			av_log(NULL,AV_LOG_ERROR,&#34;can not read dir :%s\n&#34;,av_err2str(ret));
+			goto fail;
+		}
+		if(!entry){
+			break;
+		}
+		// 打印目录信息
+		av_log(NULL,AV_LOG_INFO,&#34;size: %ld, name: %s, type: %s\n&#34;,entry-&gt;size, 
+		entry-&gt;name,
+		entry-&gt;type == 3?&#34;dir&#34;:&#34;file&#34;);
+		// 释放
+		avio_free_directory_entry(&amp;entry);
+	}
+	ret = 0;
+fail:
+	// 关闭目录
+	avio_close_dir(&amp;ctx);
+	return ret;
+}
+</code></pre></div><blockquote>
+<p><!-- raw HTML omitted -->Notice：<!-- raw HTML omitted --> 
+<code>ctx</code>是<code>AVIODirContext</code>类型的上下文，在执行<code>avio_open_dir(&amp;ctx,&quot;./&quot;,NULL)</code>后被分配的一个句柄，执行完程序需要<code>avio_close_dir(&amp;ctx)</code>去释放这个持有句柄。	
+通过<code>avio_read_dir(ctx,&amp;entry)</code>去读取一个目录后，也会让<code>entry</code>持有类型为<code>AVIODirEntry</code>的实例句柄，同样需要通过<code>avio_free_directory_entry(&amp;entry)</code>释放。</p>
+</blockquote>
+<p>编译并生成可执行文件</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">gcc dir.c -g -o dir `pkg-config --libs libavutil libavformat`
+</code></pre></div><p><img src="https://comert007.github.io/img/ffmpeg/ffmpeg-dir.png" alt="获取当前目录文件"></p>
+<p>这样就获取到了当前目录下的文件以及文件夹，不仅如此，我们还获取到了文件大小和类型。
+以上就是<code>FFmpeg</code>对于<code>I/O</code>的简单操作，还有很多可以自己动手试一试！</p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/">FFmpegAPI的I/O</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">FFmpegAPI介绍以及日志系统</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-command/">Android上的FFmpeg命令行</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/">Cloudflare优选IP</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/">IP或Port被墙检测</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">自建VPS-防火长城</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/">【转载】解决Hexo博客分页展示为HTML代码的问题</a></li>
+    
+    <li><a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">Android逆向-初识反编译工具</a></li>
+    
+    <li><a href="https://comert007.github.io/post/audio-encod/">Android音视频开发:音频非压缩编码和压缩编码</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" data-toggle="tooltip" data-placement="top" title="FFmpegAPI介绍以及日志系统">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/" data-toggle="tooltip" data-placement="top" title="华为机器学习-图像分割">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

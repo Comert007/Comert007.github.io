@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>编译 on 移动技术分享</title>
+    <link>https://comert007.github.io/tags/%E7%BC%96%E8%AF%91/</link>
+    <description>Recent content in 编译 on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Aug 2019 08:00:00 +0000</lastBuildDate><atom:link href="https://comert007.github.io/tags/%E7%BC%96%E8%AF%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>FFmpeg编译4.1.4并移植到Android</title>
+      <link>https://comert007.github.io/post/ffmpeg-android/</link>
+      <pubDate>Fri, 02 Aug 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-android/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在我们开发音视频的过程中，总是避免不了对音视频的操作，对音视频的操作最常用的就是&lt;code&gt;FFmpeg&lt;/code&gt;了，但是有一个问题就是不能直接使用，所以得进行编译才能在移动端使用，下面就给大家介绍如何在&lt;code&gt;Android&lt;/code&gt;中编译&lt;code&gt;FFmpeg&lt;/code&gt;．&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

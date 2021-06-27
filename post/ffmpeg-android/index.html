@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>FFmpeg编译4.1.4并移植到Android</title>
+  <meta property="og:title" content="FFmpeg编译4.1.4并移植到Android" />
+  <meta name="twitter:title" content="FFmpeg编译4.1.4并移植到Android" />
+
+  <meta name="description" content="
+在我们开发音视频的过程中，总是避免不了对音视频的操作，对音视频的操作最常用的就是FFmpeg了，但是有一个问题就是不能直接使用，所以得进行编译才能在移动端使用，下面就给大家介绍如何在Android中编译FFmpeg．
+">
+  <meta property="og:description" content="
+在我们开发音视频的过程中，总是避免不了对音视频的操作，对音视频的操作最常用的就是FFmpeg了，但是有一个问题就是不能直接使用，所以得进行编译才能在移动端使用，下面就给大家介绍如何在Android中编译FFmpeg．
+">
+  <meta name="twitter:description" content="
+在我们开发音视频的过程中，总是避免不了对音视频的操作，对音视频的操作最常用的就是FFmpeg了，但是有一个问题就是不能直接使用，所以得进行编译才能在移动端使用，下面就给大家介绍如何在Android中编译FFmpeg．
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/ffmpeg-android/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/ffmpeg-android/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>FFmpeg编译4.1.4并移植到Android</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/ffmpeg/">ffmpeg</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/%E7%BC%96%E8%AF%91/">编译</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#android-编译ffmpeg">Android 编译FFmpeg</a></li>
+    <li><a href="#将编译后的ffmpeg移植到android">将编译后的ffmpeg移植到Android</a>
+      <ul>
+        <li><a href="#准备">准备</a></li>
+        <li><a href="#修改ffmpeg文件">修改ffmpeg文件</a></li>
+        <li><a href="#新建ffmpeg-invoke">新建ffmpeg-invoke</a></li>
+        <li><a href="#新建androidmk">新建Android.mk</a></li>
+        <li><a href="#新建applicationmk">新建Application.mk</a></li>
+      </ul>
+    </li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#使用-ndk-r20-编译ffmpeg">使用 NDK-r20 编译FFmpeg</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+</aside>
+
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <blockquote>
+<p>在我们开发音视频的过程中，总是避免不了对音视频的操作，对音视频的操作最常用的就是<code>FFmpeg</code>了，但是有一个问题就是不能直接使用，所以得进行编译才能在移动端使用，下面就给大家介绍如何在<code>Android</code>中编译<code>FFmpeg</code>．</p>
+</blockquote>
+<h2 id="android-编译ffmpeg">Android 编译FFmpeg</h2>
+<p>我们编译FFmpeg一般在Linux的系统上进行编译，当然windows也是可以的，这里讲解一下在Linux系统上编译。</p>
+<ol>
+<li>从官网下载<a href="http://ffmpeg.org/">FFmpeg</a>（文档编辑时版本 ffmpeg-4.1.4）</li>
+<li>将下载下来的<code>ffmpeg</code>进行解压</li>
+<li>去Android官网下载<a href="https://developer.android.google.cn/ndk/downloads/older_releases.html">ndk</a>（文档编辑时版本 ndk-14b）</li>
+<li>进入已解压的<code>ffmpeg</code>文件目录，修改<code>configure</code>文件</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SLIBNAME_WITH_MAJOR=&#39;$(SLIBNAME).$(LIBMAJOR)&#39;
+LIB_INSTALL_EXTRA_CMD=&#39;$$(RANLIB) &#34;$(LIBDIR)/$(LIBNAME)&#34;&#39;
+SLIB_INSTALL_NAME=&#39;$(SLIBNAME_WITH_VERSION)&#39;
+SLIB_INSTALL_LINKS=&#39;$(SLIBNAME_WITH_MAJOR) $(SLIBNAME)&#39;
+</code></pre></div><p>替换成</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SLIBNAME_WITH_MAJOR=&#39;$(SLIBPREF)$(FULLNAME)-$(LIBMAJOR)$(SLIBSUF)&#39;
+LIB_INSTALL_EXTRA_CMD=&#39;$$(RANLIB)&#34;$(LIBDIR)/$(LIBNAME)&#34;&#39;
+SLIB_INSTALL_NAME=&#39;$(SLIBNAME_WITH_MAJOR)&#39;
+SLIB_INSTALL_LINKS=&#39;$(SLIBNAME)&#39;
+</code></pre></div><ol start="5">
+<li>编写build_android.sh的可执行文件</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic">#!/bin/bash
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#93a1a1;font-style:italic"># 清空上次的编译</span>
+make clean
+<span style="color:#93a1a1;font-style:italic">#你自己的NDK路径.</span>
+<span style="color:#cb4b16">export</span> <span style="color:#268bd2">NDK</span>=/home/anjoiner/Documents/AnJoiner/ffmpeg/ndk
+<span style="color:#859900">function</span> build_android
+{
+<span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;Compiling FFmpeg for </span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198">&#34;</span>
+./configure <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --prefix=<span style="color:#268bd2">$PREFIX</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-neon <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-hwaccels <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-gpl <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-postproc <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-shared <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-jni <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-mediacodec <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-decoder=h264_mediacodec <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-static <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-doc <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-ffmpeg <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-ffplay <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-ffprobe <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-avdevice <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-doc <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-symver <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --cross-prefix=<span style="color:#268bd2">$CROSS_PREFIX</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --target-os=android <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --arch=<span style="color:#268bd2">$ARCH</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --cpu=<span style="color:#268bd2">$CPU</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-cross-compile <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --sysroot=<span style="color:#268bd2">$SYSROOT</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --extra-cflags=<span style="color:#2aa198">&#34;-Os -fpic </span><span style="color:#268bd2">$OPTIMIZE_CFLAGS</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --extra-ldflags=<span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$ADDI_LDFLAGS</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    <span style="color:#268bd2">$ADDITIONAL_CONFIGURE_FLAG</span>
+make clean
+make
+make install
+<span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;The Compilation of FFmpeg for </span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198"> is completed&#34;</span>
+}
+
+<span style="color:#93a1a1;font-style:italic">#armv8-a</span>
+<span style="color:#268bd2">ARCH</span>=arm64
+<span style="color:#268bd2">CPU</span>=armv8-a
+<span style="color:#268bd2">TOOLCHAIN</span>=<span style="color:#268bd2">$NDK</span>/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/platforms/android-21/arch-<span style="color:#268bd2">$ARCH</span>/
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/aarch64-linux-android-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-march=</span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198">&#34;</span>
+build_android
+
+<span style="color:#93a1a1;font-style:italic">#armv7-a</span>
+<span style="color:#268bd2">ARCH</span>=arm
+<span style="color:#268bd2">CPU</span>=armv7-a
+<span style="color:#268bd2">TOOLCHAIN</span>=<span style="color:#268bd2">$NDK</span>/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/platforms/android-21/arch-<span style="color:#268bd2">$ARCH</span>/
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/arm-linux-androideabi-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-mfloat-abi=softfp -mfpu=vfp -marm -march=</span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198"> &#34;</span>
+build_android
+
+<span style="color:#93a1a1;font-style:italic">#x86</span>
+<span style="color:#268bd2">ARCH</span>=x86
+<span style="color:#268bd2">CPU</span>=x86
+<span style="color:#268bd2">TOOLCHAIN</span>=<span style="color:#268bd2">$NDK</span>/toolchains/x86-4.9/prebuilt/linux-x86_64
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/platforms/android-21/arch-<span style="color:#268bd2">$ARCH</span>/
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/i686-linux-android-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32&#34;</span>
+build_android
+
+<span style="color:#93a1a1;font-style:italic">#x86_64</span>
+<span style="color:#268bd2">ARCH</span>=x86_64
+<span style="color:#268bd2">CPU</span>=x86-64
+<span style="color:#268bd2">TOOLCHAIN</span>=<span style="color:#268bd2">$NDK</span>/toolchains/x86_64-4.9/prebuilt/linux-x86_64
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/platforms/android-21/arch-<span style="color:#268bd2">$ARCH</span>/
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/x86_64-linux-android-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-march=</span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198"> -msse4.2 -mpopcnt -m64 -mtune=intel&#34;</span>
+build_android
+</code></pre></div><p>注意：当执行<code>./build_android.sh</code>的时候，出现权限不足，那么一定要给这个文件添加可执行权限</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">chmod 777 build_android.sh
+</code></pre></div><p>这样就可以进行编译生成Android下的<code>ffmpeg</code></p>
+<p>如果在编译的时候出现如下问题：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ffbuild/common.mak:60: recipe for target &#39;libavformat/udp.o&#39; failed
+make: *** [libavformat/udp.o] Error 1
+</code></pre></div><p>将<code>libavformat/udp.c</code> 第290~295行进行注释</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">//         mreqs.imr_multiaddr.s_addr = ((struct sockaddr_in *)addr)-&gt;sin_addr.s_addr;
+//         if (local_addr)
+//             mreqs.imr_interface= ((struct sockaddr_in *)local_addr)-&gt;sin_addr;
+//         else
+//             mreqs.imr_interface.s_addr= INADDR_ANY;
+//         mreqs.imr_sourceaddr.s_addr = ((struct sockaddr_in *)&amp;sources[i])-&gt;sin_addr.s_addr;
+</code></pre></div><p>这样之后，基本就是ok的，在我们<code>ffmpeg</code>的文件夹下，会生成一个<code>ffmpeg/android/armv7-a</code>的文件目录，里面内容如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/2/16c51b53b0a70d26?w=966&amp;h=486&amp;f=png&amp;s=32269" alt=""></p>
+<h2 id="将编译后的ffmpeg移植到android">将编译后的ffmpeg移植到Android</h2>
+<h3 id="准备">准备</h3>
+<ul>
+<li>在任何地方新建一个<code>jni</code>的文件夹。</li>
+<li>将我们刚刚编译的<code>ffmpeg/android/armv7-a/include</code>下的所有文件拷贝进入<code>jni</code>文件夹。</li>
+<li>在<code>jni</code>下新建一个<code>prebuilt</code>的文件夹，将<code>ffmpeg/android/armv7-a/lib</code>下的so文件全部拷贝到<code>prebuilt</code>之下。</li>
+<li>然后将<code>ffmpeg/fftools</code>文件下的如下文件拷贝进入<code>jni</code>
+<ul>
+<li>cmdutils.c</li>
+<li>cmdutils.h</li>
+<li>config.h</li>
+<li>ffmpeg_filter.c</li>
+<li>ffmpeg_hw.c</li>
+<li>ffmpeg_opt.c</li>
+<li>ffmpeg.c</li>
+<li>ffmpeg.h</li>
+</ul>
+</li>
+</ul>
+<h3 id="修改ffmpeg文件">修改ffmpeg文件</h3>
+<ul>
+<li>修改刚刚拷贝的<code>ffmpeg.c</code>文件，找到<code>int main(int argc, char **argv)</code>函数，将其替换为<code>int run(int argc, char **argv)</code></li>
+<li>在修改后的<code>run(int argc, char **argv)</code> 末尾（retrun 之前）加上如上如下代码：</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">nb_filtergraphs = 0;
+progress_avio = NULL;
+
+input_streams = NULL;
+nb_input_streams = 0;
+input_files = NULL;
+nb_input_files = 0;
+
+output_streams = NULL;
+nb_output_streams = 0;
+output_files = NULL;
+nb_output_files = 0;
+</code></pre></div><ul>
+<li>并在<code>ffmpeg.h</code>文件末尾加上</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">int run(int argc, char **argv)；
+</code></pre></div><ul>
+<li>再次打开<code>ffmpeg.c</code>文件，注释掉<code>run(int argc, char **argv)</code>下的所有<code>exit_program</code>函数，大致代码如下：</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">int run(int argc, char **argv)
+{
+    int i, ret;
+    BenchmarkTimeStamps ti;
+
+    init_dynload();
+
+    register_exit(ffmpeg_cleanup);
+
+    setvbuf(stderr,NULL,_IONBF,0); /* win32 runtime needs this */
+
+    av_log_set_flags(AV_LOG_SKIP_REPEATED);
+    parse_loglevel(argc, argv, options);
+
+    if(argc&gt;1 &amp;&amp; !strcmp(argv[1], &#34;-d&#34;)){
+        run_as_daemon=1;
+        av_log_set_callback(log_callback_null);
+        argc--;
+        argv++;
+    }
+
+#if CONFIG_AVDEVICE
+    avdevice_register_all();
+#endif
+    avformat_network_init();
+
+    show_banner(argc, argv, options);
+
+    /* parse options and open all input/output files */
+    ret = ffmpeg_parse_options(argc, argv);
+    if (ret &lt; 0);
+        // exit_program(1);
+
+    if (nb_output_files &lt;= 0 &amp;&amp; nb_input_files == 0) {
+        show_usage();
+        av_log(NULL, AV_LOG_WARNING, &#34;Use -h to get full help or, even better, run &#39;man %s&#39;\n&#34;, program_name);
+        // exit_program(1);
+    }
+
+    /* file converter / grab */
+    if (nb_output_files &lt;= 0) {
+        av_log(NULL, AV_LOG_FATAL, &#34;At least one output file must be specified\n&#34;);
+        // exit_program(1);
+    }
+
+//     if (nb_input_files == 0) {
+//         av_log(NULL, AV_LOG_FATAL, &#34;At least one input file must be specified\n&#34;);
+//         exit_program(1);
+//     }
+
+    for (i = 0; i &lt; nb_output_files; i++) {
+        if (strcmp(output_files[i]-&gt;ctx-&gt;oformat-&gt;name, &#34;rtp&#34;))
+            want_sdp = 0;
+    }
+
+    current_time = ti = get_benchmark_time_stamps();
+    if (transcode() &lt; 0);
+        // exit_program(1);
+    if (do_benchmark) {
+        int64_t utime, stime, rtime;
+        current_time = get_benchmark_time_stamps();
+        utime = current_time.user_usec - ti.user_usec;
+        stime = current_time.sys_usec  - ti.sys_usec;
+        rtime = current_time.real_usec - ti.real_usec;
+        av_log(NULL, AV_LOG_INFO,
+               &#34;bench: utime=%0.3fs stime=%0.3fs rtime=%0.3fs\n&#34;,
+               utime / 1000000.0, stime / 1000000.0, rtime / 1000000.0);
+    }
+    av_log(NULL, AV_LOG_DEBUG, &#34;%&#34;PRIu64&#34; frames successfully decoded, %&#34;PRIu64&#34; decoding errors\n&#34;,
+           decode_error_stat[0], decode_error_stat[1]);
+    if ((decode_error_stat[0] + decode_error_stat[1]) * max_error_rate &lt; decode_error_stat[1]);
+        // exit_program(69);
+
+    // exit_program(received_nb_signals ? 255 : main_return_code);
+
+     nb_filtergraphs = 0;
+     progress_avio = NULL;
+
+     input_streams = NULL;
+     nb_input_streams = 0;
+     input_files = NULL;
+     nb_input_files = 0;
+
+     output_streams = NULL;
+     nb_output_streams = 0;
+     output_files = NULL;
+     nb_output_files = 0;
+    
+
+    return main_return_code;
+}
+</code></pre></div><h3 id="新建ffmpeg-invoke">新建ffmpeg-invoke</h3>
+<p>在<code>jni</code>文件下新建一个<code>ffmpeg-invoke.cpp</code>的c++文件，将如下代码写入</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;jni.h&gt;
+#include &lt;string.h&gt;
+#include &#34;android/log.h&#34;
+
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, &#34;ffmpeg-invoke&#34;, __VA_ARGS__)
+
+extern &#34;C&#34;{
+#include &#34;ffmpeg.h&#34;
+#include &#34;libavcodec/jni.h&#34;
+}
+
+extern &#34;C&#34;
+JNIEXPORT jint JNICALL
+Java_com_coder_ffmpeg_jni_FFmpegCmd_run(JNIEnv *env, jclass type, jint cmdLen,
+                                             jobjectArray cmd) {
+    //set java vm
+    JavaVM *jvm = NULL;
+    env-&gt;GetJavaVM(&amp;jvm);
+    av_jni_set_java_vm(jvm, NULL);
+
+    char *argCmd[cmdLen] ;
+    jstring buf[cmdLen];
+
+    for (int i = 0; i &lt; cmdLen; ++i) {
+        buf[i] = static_cast&lt;jstring&gt;(env-&gt;GetObjectArrayElement(cmd, i));
+        char *string = const_cast&lt;char *&gt;(env-&gt;GetStringUTFChars(buf[i], JNI_FALSE));
+        argCmd[i] = string;
+        LOGD(&#34;argCmd=%s&#34;,argCmd[i]);
+    }
+
+    int retCode = run(cmdLen, argCmd);
+    LOGD(&#34;ffmpeg-invoke: retCode=%d&#34;,retCode);
+
+    return retCode;
+
+}
+</code></pre></div><p>需注意的是 <code>Java_com_coder_ffmpeg_jni_FFmpegCmd_run</code> 中 <code>com_coder_ffmpeg_jni</code>表示<code>FFmpegCmd</code>所在你Android项目的位置。</p>
+<h3 id="新建androidmk">新建Android.mk</h3>
+<p>在<code>jni</code>文件夹下，新建<code>Android.mk</code>的文件，将如下代码拷贝，但是需要注意的是将 <code>LOCAL_C_INCLUDES</code>路径替换成你源码所在位置。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// 将此处的路径改为你ffmepg源码所在位置
+LOCAL_C_INCLUDES := /home/anjoiner/Documents/AnJoiner/ffmpeg
+</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE :=  libavdevice
+LOCAL_SRC_FILES := prebuilt/libavdevice.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE :=  libavutil
+LOCAL_SRC_FILES := prebuilt/libavutil.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE :=  libswresample
+LOCAL_SRC_FILES := prebuilt/libswresample.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE :=  libswscale
+LOCAL_SRC_FILES := prebuilt/libswscale.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libavcodec
+LOCAL_SRC_FILES := prebuilt/libavcodec.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libavformat
+LOCAL_SRC_FILES := prebuilt/libavformat.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libavfilter
+LOCAL_SRC_FILES := prebuilt/libavfilter.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libpostproc
+LOCAL_SRC_FILES := prebuilt/libpostproc.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ffmpeg-invoke
+
+LOCAL_SRC_FILES :=ffmpeg-invoke.cpp \
+                 cmdutils.c \
+                 ffmpeg_filter.c \
+                 ffmpeg_opt.c \
+                 ffmpeg_hw.c \
+                 ffmpeg.c
+
+// 将此处的路径改为你ffmepg源码所在位置
+LOCAL_C_INCLUDES := /home/anjoiner/Documents/AnJoiner/ffmpeg
+
+LOCAL_LDLIBS := -llog -ljnigraphics -lz -landroid -lm -pthread -L$(SYSROOT)/usr/lib
+LOCAL_SHARED_LIBRARIES := libavdevice libavcodec libavfilter libavformat libavutil libswresample libswscale libpostproc
+
+include $(BUILD_SHARED_LIBRARY)
+</code></pre></div><h3 id="新建applicationmk">新建Application.mk</h3>
+<p>在<code>jni</code>文件夹下，新建Application.mk并将如下代码拷贝进入</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">APP_ABI := armeabi-v7a
+APP_PLATFORM := android-21
+APP_OPTIM := release
+APP_STL := stlport_static
+</code></pre></div><p><img src="https://user-gold-cdn.xitu.io/2019/8/2/16c51b6b3b271d36?w=1167&amp;h=627&amp;f=png&amp;s=120251" alt=""></p>
+<p>到此基本上的配置已经完成，然后在<code>jni</code>文件下运行<code>ndk-build</code></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/home/anjoiner/Documents/AnJoiner/build/jni# /home/anjoiner/Documents/AnJoiner/ffmpeg/ndk/ndk-build
+</code></pre></div><p>当出现如下代码就表示成功了</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[armeabi-v7a] SharedLibrary  : libffmpeg-invoke.so
+[armeabi-v7a] Install        : libffmpeg-invoke.so =&gt; libs/armeabi-v7a/libffmpeg-invoke.so
+[armeabi-v7a] Install        : libpostproc.so =&gt; libs/armeabi-v7a/libpostproc.so
+[armeabi-v7a] Install        : libswresample.so =&gt; libs/armeabi-v7a/libswresample.so
+[armeabi-v7a] Install        : libswscale.so =&gt; libs/armeabi-v7a/libswscale.so
+</code></pre></div><h2 id="测试">测试</h2>
+<ul>
+<li>新建一个支持C++项目，注意包名需是上述<code>ava_com_coder_ffmpeg_jni_FFmpegCmd_run</code>中的<code>com.coder.ffmpeg</code>。</li>
+<li>在<code>jni</code>的同级目录下，会生成一个<code>libs</code>的目录，将这个目录下的<code>armeabi-v7a</code>文件拷贝到你所在的Android项目中的<code>app/src/main/jniLibs</code>下</li>
+<li>新建一个jni的文件目录，在此目录下新建一个<code>FFmpegCmd</code></li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/**
+ * @author: AnJoiner
+ * @datetime: 19-7-30
+ */
+public class FFmpegCmd {
+    static {
+        System.loadLibrary(&#34;avdevice&#34;);
+        System.loadLibrary(&#34;avutil&#34;);
+        System.loadLibrary(&#34;avcodec&#34;);
+        System.loadLibrary(&#34;swresample&#34;);
+        System.loadLibrary(&#34;avformat&#34;);
+        System.loadLibrary(&#34;swscale&#34;);
+        System.loadLibrary(&#34;avfilter&#34;);
+        System.loadLibrary(&#34;postproc&#34;);
+        System.loadLibrary(&#34;ffmpeg-invoke&#34;);
+    }
+
+    private static native int run(int cmdLen, String[] cmd);
+
+    public static int runCmd(String[] cmd){
+        return run(cmd.length,cmd);
+    }
+}
+
+</code></pre></div><p>拷贝进来<code>run</code>方法名会出现红色，不用管他,</p>
+<ul>
+<li>在我们的<code>MainActivity</code>中进行调用，此方法是将音频进行剪切</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">public class MainActivity extends AppCompatActivity {
+
+    // Used to load the &#39;native-lib&#39; library on application startup.
+    static {
+        System.loadLibrary(&#34;native-lib&#34;);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    100);
+        }
+
+        // Example of a call to a native method
+        TextView tv = findViewById(R.id.sample_text);
+        tv.setText(stringFromJNI());
+
+        findViewById(R.id.btn_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ffmpegTest();
+            }
+        });
+    }
+
+    /**
+     * A native method that is implemented by the &#39;native-lib&#39; native library,
+     * which is packaged with this application.
+     */
+    public native String stringFromJNI();
+
+
+    private void ffmpegTest() {
+        new Thread() {
+            @Override
+            public void run() {
+                long startTime = System.currentTimeMillis();
+                String input =
+                        Environment.getExternalStorageDirectory().getPath() + File.separator +
+                                &#34;DCIM&#34; + File.separator + &#34;test.mp3&#34;;
+                String output =
+                        Environment.getExternalStorageDirectory().getPath() + File.separator +
+                                &#34;DCIM&#34; + File.separator + &#34;output.mp3&#34;;
+
+                String cmd = &#34;ffmpeg -y -i %s -vn -acodec copy -ss %s -t %s %s&#34;;
+                String result = String.format(cmd, input, &#34;00:00:30&#34;, &#34;00:00:40&#34;, output);
+                FFmpegCmd.runCmd(result.split(&#34; &#34;));
+                Log.d(&#34;FFmpegTest&#34;, &#34;run: 耗时：&#34; + (System.currentTimeMillis() - startTime));
+            }
+        }.start();
+
+
+    }
+</code></pre></div><p>如果上述步骤不出错，基本没什么问题，在资料的参考下，我也弄了好几天，但幸好结果还是好的～</p>
+<h2 id="使用-ndk-r20-编译ffmpeg">使用 NDK-r20 编译FFmpeg</h2>
+<p>前面使用过老版本<code>NDK-r14b</code>编译<code>FFmpeg</code>，其实质是通过gcc去进行编译，但是最新的NDK版本中已经不使用gcc去编译，而是使用clang去进行编译．这里贴上最新配置文件代码</p>
+<ul>
+<li>下载最新版本<a href="https://developer.android.com/ndk/downloads?hl=zh-cn">NDK-r20</a></li>
+<li>下载<a href="https://www.ffmpeg.org/download.html#releases">FFmpeg-4.2.1</a></li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic">#!/bin/bash
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#93a1a1;font-style:italic"># 清空上次的编译</span>
+make clean
+<span style="color:#93a1a1;font-style:italic">#你自己的NDK路径.</span>
+<span style="color:#cb4b16">export</span> <span style="color:#268bd2">NDK</span>=/home/anjoiner/Android/Sdk/ndk-bundle
+<span style="color:#268bd2">TOOLCHAIN</span>=<span style="color:#268bd2">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64/
+<span style="color:#268bd2">API</span>=<span style="color:#2aa198;font-weight:bold">29</span>
+
+<span style="color:#859900">function</span> build_android
+{
+<span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;Compiling FFmpeg for </span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198">&#34;</span>
+./configure <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --prefix=<span style="color:#268bd2">$PREFIX</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-neon <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-hwaccels <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-gpl <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-postproc <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-shared <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-jni <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-mediacodec <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-decoder=h264_mediacodec <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-static <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-doc <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-ffmpeg <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-ffplay <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-ffprobe <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --enable-avdevice <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-doc <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --disable-symver <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --cross-prefix=<span style="color:#268bd2">$CROSS_PREFIX</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --target-os=android <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --arch=<span style="color:#268bd2">$ARCH</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --cpu=<span style="color:#268bd2">$CPU</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --cc=<span style="color:#268bd2">$CC</span>
+    --cxx=<span style="color:#268bd2">$CXX</span>
+    --enable-cross-compile <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --sysroot=<span style="color:#268bd2">$SYSROOT</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --extra-cflags=<span style="color:#2aa198">&#34;-Os -fpic </span><span style="color:#268bd2">$OPTIMIZE_CFLAGS</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    --extra-ldflags=<span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$ADDI_LDFLAGS</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">\
+</span><span style="color:#2aa198"></span>    <span style="color:#268bd2">$ADDITIONAL_CONFIGURE_FLAG</span>
+make clean
+make 
+make install
+<span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;The Compilation of FFmpeg for </span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198"> is completed&#34;</span>
+}
+
+<span style="color:#93a1a1;font-style:italic">#armv8-a</span>
+<span style="color:#268bd2">ARCH</span>=arm64
+<span style="color:#268bd2">CPU</span>=armv8-a
+<span style="color:#268bd2">CC</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/aarch64-linux-android<span style="color:#268bd2">$API</span>-clang
+<span style="color:#268bd2">CXX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/aarch64-linux-android<span style="color:#268bd2">$API</span>-clang++
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/aarch64-linux-android-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-march=</span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198">&#34;</span>
+build_android
+
+<span style="color:#93a1a1;font-style:italic">#armv7-a</span>
+<span style="color:#268bd2">ARCH</span>=arm
+<span style="color:#268bd2">CPU</span>=armv7-a
+<span style="color:#268bd2">CC</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/armv7a-linux-androideabi<span style="color:#268bd2">$API</span>-clang
+<span style="color:#268bd2">CXX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/armv7a-linux-androideabi<span style="color:#268bd2">$API</span>-clang++
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/arm-linux-androideabi-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-mfloat-abi=softfp -mfpu=vfp -marm -march=</span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198"> &#34;</span>
+build_android
+
+<span style="color:#93a1a1;font-style:italic">#x86</span>
+<span style="color:#268bd2">ARCH</span>=x86
+<span style="color:#268bd2">CPU</span>=x86
+<span style="color:#268bd2">CC</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/i686-linux-android<span style="color:#268bd2">$API</span>-clang
+<span style="color:#268bd2">CXX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/i686-linux-android<span style="color:#268bd2">$API</span>-clang++
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/i686-linux-android-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32&#34;</span>
+build_android
+
+<span style="color:#93a1a1;font-style:italic">#x86_64</span>
+<span style="color:#268bd2">ARCH</span>=x86_64
+<span style="color:#268bd2">CPU</span>=x86-64
+<span style="color:#268bd2">CC</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/x86_64-linux-android<span style="color:#268bd2">$API</span>-clang
+<span style="color:#268bd2">CXX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/x86_64-linux-android<span style="color:#268bd2">$API</span>-clang++
+<span style="color:#268bd2">SYSROOT</span>=<span style="color:#268bd2">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+<span style="color:#268bd2">CROSS_PREFIX</span>=<span style="color:#268bd2">$TOOLCHAIN</span>/bin/x86_64-linux-android-
+<span style="color:#268bd2">PREFIX</span>=<span style="color:#859900">$(</span><span style="color:#cb4b16">pwd</span><span style="color:#859900">)</span>/android/<span style="color:#268bd2">$CPU</span>
+<span style="color:#268bd2">OPTIMIZE_CFLAGS</span>=<span style="color:#2aa198">&#34;-march=</span><span style="color:#268bd2">$CPU</span><span style="color:#2aa198"> -msse4.2 -mpopcnt -m64 -mtune=intel&#34;</span>
+build_android
+</code></pre></div><h2 id="参考资料">参考资料</h2>
+<p><a href="https://blog.csdn.net/bobcat_kay/article/details/80889398">编译FFmpeg4.1.3并移植到Android app中使用（最详细的FFmpeg-Android编译教程）</a></p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/flutter3/" data-toggle="tooltip" data-placement="top" title="Flutter(三)-如何实现登录动画效果">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/lock-screen/" data-toggle="tooltip" data-placement="top" title="Android 音乐播放锁屏界面">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

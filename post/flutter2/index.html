@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>Flutter(二)-Hello World?</title>
+  <meta property="og:title" content="Flutter(二)-Hello World?" />
+  <meta name="twitter:title" content="Flutter(二)-Hello World?" />
+
+  <meta name="description" content="
+在上一篇文章中以简单的方式对Flutter自己提供的演示进行了一个简单的分析，当然那是远远不够。本来打算为大家带来官网上的无限下拉刷新的案例，但是发现这里的有些东西实在是太超前了，作为Flutter入门篇，当然不能这么随意，以为了让大家都能够学有所得，所以今天给大家带来了自己手撸的一个登录。
+">
+  <meta property="og:description" content="
+在上一篇文章中以简单的方式对Flutter自己提供的演示进行了一个简单的分析，当然那是远远不够。本来打算为大家带来官网上的无限下拉刷新的案例，但是发现这里的有些东西实在是太超前了，作为Flutter入门篇，当然不能这么随意，以为了让大家都能够学有所得，所以今天给大家带来了自己手撸的一个登录。
+">
+  <meta name="twitter:description" content="
+在上一篇文章中以简单的方式对Flutter自己提供的演示进行了一个简单的分析，当然那是远远不够。本来打算为大家带来官网上的无限下拉刷新的案例，但是发现这里的有些东西实在是太超前了，作为Flutter入门篇，当然不能这么随意，以为了让大家都能够学有所得，所以今天给大家带来了自己手撸的一个登录。
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/flutter2/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/flutter2/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>Flutter(二)-Hello World?</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/flutter/">flutter</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#appbar">AppBar</a></li>
+    <li><a href="#bottomnavigationbar">BottomNavigationBar</a></li>
+    <li><a href="#floatingactionbutton">FloatingActionButton</a></li>
+    <li><a href="#snackbar">SnackBar</a></li>
+  </ul>
+</nav>
+</aside>
+
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <blockquote>
+<p>在上一篇文章中以简单的方式对Flutter自己提供的演示进行了一个简单的分析，当然那是远远不够。本来打算为大家带来官网上的无限下拉刷新的案例，但是发现这里的有些东西实在是太超前了，作为Flutter入门篇，当然不能这么随意，以为了让大家都能够学有所得，所以今天给大家带来了自己手撸的一个登录。</p>
+</blockquote>
+<p><img src="https://comert007.github.io/img/flutter/flutter-login.gif" alt="登录演示"></p>
+<h1 id="简单分析布局">简单分析布局</h1>
+<p>我们都知道，一个简单的登录需要至少需要3步：</p>
+<ul>
+<li>输入账号</li>
+<li>输入密码</li>
+<li>点击登录</li>
+</ul>
+<p>那么我们的布局也就至少需要3个<code>widget</code>，为什么说至少呢？因为往往布局使用的<code>widget</code>都是大于操作步骤的。这里跟大家分享我的布局大概有这么几个：</p>
+<ul>
+<li>整个外层框框，就是那个淡红色的渐变底色，是一个容器<code>widget</code>，可以包裹里面的所有内容。</li>
+<li>在这里面是一个纵向的布局<code>widget</code>，让所有的内容成纵向排列。</li>
+<li>里面输入手机号和输入密码那里都是=容器，可以包裹输入框。为什么要使用这个容器呢，直接使用输入<code>widget</code>不好吗？这里容许我先买个关子~~</li>
+<li>接下来就是一个按钮</li>
+<li>最后就是显示文字的布局</li>
+</ul>
+<h1 id="scaffold">Scaffold</h1>
+<p>为什么要讲解这个呢？这是因为它是实现了<code>Mataril Design</code>的一种简单的“脚手架”，有些也叫“支架”，通过这个翻译也就知道了，其实它就是向我们提供了简单的框架，我们直接使用它就行了。那么问题来了，我们可不可以不使用它呢？当然是可以的，但是不建议这样做，因为我们后面需要使用的很多<code>widget</code>（比如<code>TextField</code>）必须要在它的支持下才能运行，不然就会报错了。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">Scaffold</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">StatefulWidget</span> {
+  <span style="color:#93a1a1;font-style:italic">/// Creates a visual scaffold for material design widgets.
+</span><span style="color:#93a1a1;font-style:italic"></span>  <span style="color:#859900">const</span> <span style="color:#268bd2">Scaffold</span>({
+    <span style="color:#268bd2">Key</span> <span style="color:#268bd2">key</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">appBar</span>, <span style="color:#93a1a1;font-style:italic">//横向水平布局，通常显示在顶部（*）
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">body</span>, <span style="color:#93a1a1;font-style:italic">// 内容（*）
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">floatingActionButton</span>, <span style="color:#93a1a1;font-style:italic">//悬浮按钮，就是上图右下角按钮（*）
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">floatingActionButtonLocation</span>, <span style="color:#93a1a1;font-style:italic">//悬浮按钮位置
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">//悬浮按钮在[floatingActionButtonLocation]出现/消失动画
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">floatingActionButtonAnimator</span>, 
+    <span style="color:#93a1a1;font-style:italic">//在底部呈现一组button，显示于[bottomNavigationBar]之上，[body]之下
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">persistentFooterButtons</span>,
+    <span style="color:#93a1a1;font-style:italic">//一个垂直面板，显示于左侧，初始处于隐藏状态（*）
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">drawer</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">endDrawer</span>,
+    <span style="color:#93a1a1;font-style:italic">//出现于底部的一系列水平按钮（*）
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">bottomNavigationBar</span>,
+    <span style="color:#93a1a1;font-style:italic">//底部持久化提示框
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">bottomSheet</span>,
+    <span style="color:#93a1a1;font-style:italic">//内容背景颜色
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">backgroundColor</span>,
+    <span style="color:#93a1a1;font-style:italic">//弃用，使用[resizeToAvoidBottomInset]
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">resizeToAvoidBottomPadding</span>,
+    <span style="color:#93a1a1;font-style:italic">//重新计算布局空间大小
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">resizeToAvoidBottomInset</span>,
+    <span style="color:#93a1a1;font-style:italic">//是否显示到底部，默认为true将显示到顶部状态栏
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">primary</span> = <span style="color:#859900;font-weight:bold">true</span>,
+    <span style="color:#93a1a1;font-style:italic">//
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">drawerDragStartBehavior</span> = <span style="color:#268bd2">DragStartBehavior</span>.<span style="color:#268bd2">down</span>,
+  }) : <span style="color:#859900">assert</span>(<span style="color:#268bd2">primary</span> != <span style="color:#859900;font-weight:bold">null</span>),
+       <span style="color:#859900">assert</span>(<span style="color:#268bd2">drawerDragStartBehavior</span> != <span style="color:#859900;font-weight:bold">null</span>),
+       <span style="color:#859900">super</span>(<span style="color:#268bd2">key</span>: <span style="color:#268bd2">key</span>);
+</code></pre></div><p>从这里面，我们可以看出<code>Scaffold</code>提供了很多的方式方法，去实现<code>Mataril Design</code>的布局：</p>
+<h2 id="appbar">AppBar</h2>
+<p>一般就用于<code>Scaffold.appBar</code>,是一个置于屏幕顶部的横向布局，为什么是横向呢？可以如下中看出：</p>
+<p><img src="https://comert007.github.io/img/flutter/flutter-appbar.jpg" alt="AppBar-横向布局"></p>
+<p>我在它其中的<code>anctions</code>属性中设置了多个<code>widget</code>，然后就向这样后面那三就一溜的按顺序排好了。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">AppBar</span>(
+   <span style="color:#268bd2">title</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">Sample</span> <span style="color:#268bd2">Code</span>&#39;),
+   <span style="color:#268bd2">leading</span>: <span style="color:#268bd2">IconButton</span>(
+       <span style="color:#268bd2">icon</span>: <span style="color:#268bd2">Icon</span>(<span style="color:#268bd2">Icons</span>.<span style="color:#268bd2">view_quilt</span>),
+       <span style="color:#268bd2">tooltip</span>: &#39;<span style="color:#268bd2">Air</span> <span style="color:#268bd2">it</span>&#39;,
+       <span style="color:#268bd2">onPressed</span>: () {},
+   ),
+   <span style="color:#268bd2">bottom</span>: <span style="color:#268bd2">TabBar</span>(<span style="color:#268bd2">tabs</span>: <span style="color:#268bd2">tabs</span>.<span style="color:#268bd2">map</span>((<span style="color:#268bd2">e</span>) =&gt; <span style="color:#268bd2">Tab</span>(<span style="color:#268bd2">text</span>: <span style="color:#268bd2">e</span>)).<span style="color:#268bd2">toList</span>(),<span style="color:#268bd2">controller</span>: <span style="color:#268bd2">_tabController</span>),
+   <span style="color:#268bd2">actions</span>: &lt;<span style="color:#268bd2">Widget</span>&gt;[
+       <span style="color:#268bd2">IconButton</span>(
+       <span style="color:#268bd2">icon</span>: <span style="color:#268bd2">Icon</span>(<span style="color:#268bd2">Icons</span>.<span style="color:#268bd2">playlist_play</span>),
+       <span style="color:#268bd2">tooltip</span>: &#39;<span style="color:#268bd2">Air</span> <span style="color:#268bd2">it</span>&#39;,
+       <span style="color:#268bd2">onPressed</span>: () {},
+       ),
+       <span style="color:#268bd2">IconButton</span>(
+       <span style="color:#268bd2">icon</span>: <span style="color:#268bd2">Icon</span>(<span style="color:#268bd2">Icons</span>.<span style="color:#268bd2">playlist_add</span>),
+       <span style="color:#268bd2">tooltip</span>: &#39;<span style="color:#268bd2">Restitch</span> <span style="color:#268bd2">it</span>&#39;,
+       <span style="color:#268bd2">onPressed</span>: () {},
+       ),
+       <span style="color:#268bd2">IconButton</span>(
+       <span style="color:#268bd2">icon</span>: <span style="color:#268bd2">Icon</span>(<span style="color:#268bd2">Icons</span>.<span style="color:#268bd2">playlist_add_check</span>),
+       <span style="color:#268bd2">tooltip</span>: &#39;<span style="color:#268bd2">Repair</span> <span style="color:#268bd2">it</span>&#39;,
+       <span style="color:#268bd2">onPressed</span>: () {},
+       )
+   ],
+)
+</code></pre></div><p>对于上述中<code>leading</code>需要说明一下，一般我们用它来显示一个按钮去关闭当前页面或者打开一个<code>drawer</code>。有兴趣的可以去试试~~</p>
+<p>在<code>AppBar</code>众多的属性中，还有一个是我们比较常用的，那就是<code>bottom</code>，这个显示于工具栏的下方，注意不是屏幕底部哦！一般使用<code>TabBar</code>来实现一个页面包含中多个不同页面的切换。
+<img src="https://comert007.github.io/img/flutter/flutter-tabbar.jpg" alt="AppBar-使用tabBar"></p>
+<p>当然还有其他一些方式方法，这里就不多占用篇幅了，就简单聊聊：</p>
+<ul>
+<li><code>title</code>就是标题</li>
+<li><code>drawer</code>抽屉，一般左侧打开，默认初始隐藏</li>
+<li><code>centerTitle</code> 是否标题居中</li>
+</ul>
+<p>如果想看完整的实现方式，就<a href="https://github.com/AnJoiner/Flutter/blob/master/lib/tabbarroute.dart">跟我来吧</a>！</p>
+<h2 id="bottomnavigationbar">BottomNavigationBar</h2>
+<p>这个属性也是相当重要的，如果我们想要实现多个，不同页面的切换，就可以使用这个。咦？这个不是说过了么？</p>
+<hr>
+<p>BottomNavigationBar与AppBar里面的TabBar是不同的，一个是用来显示于顶部，一个用来显示与底部</p>
+<hr>
+<p><img src="https://comert007.github.io/img/flutter/flutter-bottom.gif" alt="BottomNavigationBar"></p>
+<p>在我们国内的应用中很少向这样出现可以浮动选择项，所以如果想让你的App不进行浮动的话，可以使用里面的一个<code>type</code>属性。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">type:</span> <span style="color:#268bd2">BottomNavigationBarType</span>.<span style="color:#268bd2">fixed</span>,
+</code></pre></div><p>BottomNavigationBarType有两值，就是fixed，还有一个就是shifting，默认是shifting。这样设置之后仍然存在一个问题：就是选中的按钮的字体仍然会比未选中的大一点，有兴趣的可以自己去验证一下。</p>
+<p><img src="https://comert007.github.io/img/flutter/flutter-bottom-type.gif" alt="BottomNavigationBar-选中">
+那么这个问题改怎么办呢？很遗憾，在最新稳定版（Flutter Stable 1.2.1）SDK中并没有处理这个问题的方式方法。如果想要解决这个问题的话，更换Flutter SDK到最新的开发版本(Flutter Dev 1.3.8)，就可以使用它的属性去解决这个问题。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">selectedItemColor:</span> <span style="color:#268bd2">colorRegular</span>, <span style="color:#93a1a1;font-style:italic">//选中颜色
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">unselectedItemColor:</span> <span style="color:#268bd2">colorBlack</span>,<span style="color:#93a1a1;font-style:italic">//未选择颜色
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">selectedFontSize:</span> <span style="color:#268bd2">12</span>,<span style="color:#93a1a1;font-style:italic">//选中字体大小
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">unselectedFontSize:</span> <span style="color:#268bd2">12</span>,<span style="color:#93a1a1;font-style:italic">//未选中字体大小
+</span></code></pre></div><h2 id="floatingactionbutton">FloatingActionButton</h2>
+<p>个人觉得这个<code>FloatingActionButton</code>还是需要说明一下的，毕竟用的时候还是比较多的。<code>FloatingActionButton</code>是一个浮动按钮，也就是上面那个带“+”的按钮，这个可以用来添加，分享，或者是导航。可以与<code>Scaffold</code>中两个属性配合使用</p>
+<ul>
+<li>FloatingActionButtonLocation</li>
+<li>FloatingActionButtonAnimator</li>
+</ul>
+<p><code>FloatingActionButtonLocation</code>属性可以移动浮动按钮的位置，有如下几个位置可以移动：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">FloatingActionButtonLocation</span>.<span style="color:#268bd2">endDocked</span> <span style="color:#93a1a1;font-style:italic">//右侧bottomNagivationBar遮盖
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">FloatingActionButtonLocation</span>.<span style="color:#268bd2">centerDocked</span> <span style="color:#93a1a1;font-style:italic">//居中bottomNagivationBar上遮盖
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">FloatingActionButtonLocation</span>.<span style="color:#268bd2">endFloat</span> <span style="color:#93a1a1;font-style:italic">//bottomNagivationBar上方右侧显示
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">FloatingActionButtonLocation</span>.<span style="color:#268bd2">centerFloat</span> <span style="color:#93a1a1;font-style:italic">//bottomNagivationBar上方居中显示
+</span></code></pre></div><p>自己可以试一试，这里就不一一演示，只演示一下这个<code>centerDocked</code>
+<img src="https://comert007.github.io/img/flutter/flutter-floating.jpg" alt="浮动居中"></p>
+<p><code>FloatingActionButtonAnimator</code>就是<code>FloatingActionButton</code>在出现位置<code>FloatingActionButtonLocation</code>的动画效果~~</p>
+<p>需要注意以下几点：</p>
+<ul>
+<li>如果一个页面有多个<code>FloatingActionButtonLocation</code>,那么就需要让每一个浮动按钮都有自己且唯一的<code>heroTag</code>。</li>
+<li>如果<code>onPressed</code>返回了null，那么它将不会对你的触摸进行任何反应，不推荐这样去展示一个无任何响应的浮动按钮。</li>
+</ul>
+<h2 id="snackbar">SnackBar</h2>
+<p>经常在我们的应用中会使用到信息提示，那么我们就可以使用showSnackBar的方式去显示一个简短的提示，默认显示4s。
+<img src="https://comert007.github.io/img/flutter/flutter-snackbar.jpg" alt="SnackBar"></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">class SnackTest extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Text(&#39;Demo&#39;)
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text(&#39;SHOW A SNACKBAR&#39;),
+          onPressed: () {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(&#39;Hello!&#39;),
+            ));
+          },
+        ),
+      )
+    );
+  }
+}
+</code></pre></div><p>一般我们会向如上方式处理，但是可能会抛出一个<code>Scaffold.of() called with a context that does not contain a Scaffold.</code>的异常，也不会显示出<code>snackBar</code>。 <br>
+这是因为，<code>Scaffold.of()</code>所需的context是Scaffold的，并不是Scaffold上方的build(BuildContext context)中的，这两个并不是一个。</p>
+<p>正确的方式是，创建自己的context：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">SnackTest</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">StatelessWidget</span>{
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">Scaffold</span>(
+      <span style="color:#268bd2">appBar</span>: <span style="color:#268bd2">AppBar</span>(
+          <span style="color:#268bd2">title</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">Demo</span>&#39;)
+      ),
+      <span style="color:#268bd2">body</span>: <span style="color:#268bd2">Builder</span>(
+        <span style="color:#93a1a1;font-style:italic">// Create an inner BuildContext so that the onPressed methods
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#93a1a1;font-style:italic">// can refer to the Scaffold with Scaffold.of().
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">builder</span>: (<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+          <span style="color:#859900">return</span> <span style="color:#268bd2">Center</span>(
+            <span style="color:#268bd2">child</span>: <span style="color:#268bd2">RaisedButton</span>(
+              <span style="color:#268bd2">child</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">SHOW</span> <span style="color:#268bd2">A</span> <span style="color:#268bd2">SNACKBAR</span>&#39;),
+              <span style="color:#268bd2">onPressed</span>: () {
+                <span style="color:#268bd2">Scaffold</span>.<span style="color:#268bd2">of</span>(<span style="color:#268bd2">context</span>).<span style="color:#268bd2">showSnackBar</span>(<span style="color:#268bd2">SnackBar</span>(
+                  <span style="color:#268bd2">content</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">Hello</span>!&#39;),
+                ));
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+</code></pre></div><p>当然还可以使用<code>GlobalKey</code>的方式：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dart" data-lang="dart"><span style="color:#859900">class</span> <span style="color:#cb4b16">ScaffoldTestState</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">State</span>&lt;<span style="color:#268bd2">ScaffoldTest</span>&gt; {
+  <span style="color:#859900">final</span> <span style="color:#268bd2">_scaffoldKey</span> = <span style="color:#268bd2">GlobalKey</span>&lt;<span style="color:#268bd2">ScaffoldState</span>&gt;();
+  
+  <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">showSnackBar</span>() {
+    <span style="color:#268bd2">_scaffoldKey</span>.<span style="color:#268bd2">currentState</span>
+        .<span style="color:#268bd2">showSnackBar</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">SnackBar</span>(<span style="color:#268bd2">content:</span> <span style="color:#268bd2">Text</span>(<span style="color:#2aa198">&#34;SnackBar is Showing!&#34;</span>)));
+  }
+  
+  <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">Scaffold</span>(
+        <span style="color:#268bd2">key:</span> <span style="color:#268bd2">_scaffoldKey</span>,
+        <span style="color:#268bd2">body:</span> <span style="color:#268bd2">Center</span>(
+        <span style="color:#268bd2">child:</span> <span style="color:#268bd2">RaisedButton</span>(
+          <span style="color:#268bd2">child:</span> <span style="color:#268bd2">Text</span>(<span style="color:#2aa198">&#39;SHOW A SNACKBAR&#39;</span>),
+          <span style="color:#268bd2">onPressed:</span> () {
+            <span style="color:#268bd2">showSnackBar</span>(),
+            ));
+          },
+        ),
+      )
+    }
+}
+</code></pre></div><p>还有另一种也可以作为提示，就是bottomSheet:
+<img src="https://comert007.github.io/img/flutter/flutter-bottomsheet.jpg" alt="BottomSheet">
+这个与<code>snackBar</code>的区别就是，虽然弹出了提示，但是不会自动消失，需要手动下拉才会消失。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">SnackTest</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">StatelessWidget</span>{
+
+  <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">showBottomSheet</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#268bd2">Scaffold</span>.<span style="color:#268bd2">of</span>(<span style="color:#268bd2">context</span>).<span style="color:#268bd2">showBottomSheet</span>((<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+      <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">Container</span>(
+        <span style="color:#268bd2">constraints</span>: <span style="color:#268bd2">BoxConstraints</span>.<span style="color:#268bd2">expand</span>(<span style="color:#268bd2">height</span>: <span style="color:#268bd2">100</span>),
+        <span style="color:#268bd2">color</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF786E</span>),
+        <span style="color:#268bd2">alignment</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">center</span>,
+        <span style="color:#268bd2">child</span>: <span style="color:#859900">new</span> <span style="color:#268bd2">Text</span>(
+          <span style="color:#2aa198">&#34;BottomSheet is Showing!&#34;</span>,
+          <span style="color:#268bd2">style</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFFFFFF</span>)),
+        ),
+      );
+    });
+  }
+
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">Scaffold</span>(
+      <span style="color:#268bd2">appBar</span>: <span style="color:#268bd2">AppBar</span>(
+          <span style="color:#268bd2">title</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">Demo</span>&#39;)
+      ),
+      <span style="color:#268bd2">body</span>: <span style="color:#268bd2">Builder</span>(
+        <span style="color:#93a1a1;font-style:italic">// Create an inner BuildContext so that the onPressed methods
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#93a1a1;font-style:italic">// can refer to the Scaffold with Scaffold.of().
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">builder</span>: (<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+          <span style="color:#859900">return</span> <span style="color:#268bd2">Center</span>(
+            <span style="color:#268bd2">child</span>: <span style="color:#268bd2">RaisedButton</span>(
+              <span style="color:#268bd2">child</span>: <span style="color:#268bd2">Text</span>(&#39;<span style="color:#268bd2">SHOW</span> <span style="color:#268bd2">A</span> <span style="color:#268bd2">SNACKBAR</span>&#39;),
+              <span style="color:#268bd2">onPressed</span>: () {
+                <span style="color:#268bd2">showBottomSheet</span>(<span style="color:#268bd2">context</span>);
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+</code></pre></div><h1 id="实现登录">实现登录</h1>
+<p>前面讲了那么多都是为我们接下来的演示做准备的，那先来看看登录代码：
+<img src="https://comert007.github.io/img/flutter/flutter-login.jpg" alt="登录演示"></p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">LoginPageState</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">State</span>&lt;<span style="color:#268bd2">LoginPage</span>&gt; {
+  <span style="color:#268bd2">Color</span> <span style="color:#268bd2">colorRegular</span> = <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF786E</span>);
+  <span style="color:#268bd2">Color</span> <span style="color:#268bd2">colorLight</span> = <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF978F</span>);
+  <span style="color:#268bd2">Color</span> <span style="color:#268bd2">colorInput</span> = <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0x40FFFFFF</span>);
+  <span style="color:#268bd2">Color</span> <span style="color:#268bd2">colorWhite</span> = <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">white</span>;
+
+  <span style="color:#268bd2">TextStyle</span> <span style="color:#268bd2">defaultTextStyle</span> =
+  <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">white</span>, <span style="color:#268bd2">fontWeight</span>: <span style="color:#268bd2">FontWeight</span>.<span style="color:#268bd2">bold</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">16</span>);
+
+  <span style="color:#268bd2">BorderRadius</span> <span style="color:#268bd2">radius</span> = <span style="color:#268bd2">BorderRadius</span>.<span style="color:#268bd2">all</span>(<span style="color:#268bd2">Radius</span>.<span style="color:#268bd2">circular</span>(<span style="color:#268bd2">21</span>));
+
+
+  <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">login</span>() {
+    
+  }
+
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#93a1a1;font-style:italic">// TODO: implement build
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">Scaffold</span>(
+      <span style="color:#268bd2">body</span>: <span style="color:#268bd2">Container</span>(
+        <span style="color:#268bd2">constraints</span>: <span style="color:#268bd2">BoxConstraints</span>.<span style="color:#268bd2">expand</span>(),
+        <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">BoxDecoration</span>(
+            <span style="color:#268bd2">gradient</span>: <span style="color:#268bd2">LinearGradient</span>(
+                <span style="color:#268bd2">colors</span>: [<span style="color:#268bd2">colorLight</span>, <span style="color:#268bd2">colorRegular</span>],
+                <span style="color:#268bd2">begin</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">topCenter</span>,
+                <span style="color:#268bd2">end</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">bottomCenter</span>)),
+        <span style="color:#268bd2">child</span>: <span style="color:#268bd2">Column</span>(
+          <span style="color:#268bd2">children</span>: &lt;<span style="color:#268bd2">Widget</span>&gt;[
+            <span style="color:#268bd2">Container</span> (
+              <span style="color:#268bd2">margin</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">only</span>(<span style="color:#268bd2">top</span>: <span style="color:#268bd2">110</span>, <span style="color:#268bd2">bottom</span>: <span style="color:#268bd2">39</span>, <span style="color:#268bd2">left</span>: <span style="color:#268bd2">24</span>, <span style="color:#268bd2">right</span>: <span style="color:#268bd2">24</span>),
+              <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">BoxDecoration</span>(
+                  <span style="color:#268bd2">borderRadius</span>: <span style="color:#268bd2">BorderRadius</span>.<span style="color:#268bd2">all</span>(<span style="color:#268bd2">Radius</span>.<span style="color:#268bd2">circular</span>(<span style="color:#268bd2">21</span>)), <span style="color:#268bd2">color</span>: <span style="color:#268bd2">colorInput</span>),
+              <span style="color:#268bd2">child</span>: <span style="color:#268bd2">TextField</span>(
+                <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">InputDecoration</span>(
+                    <span style="color:#268bd2">contentPadding</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">symmetric</span>(<span style="color:#268bd2">horizontal</span>: <span style="color:#268bd2">15</span>,<span style="color:#268bd2">vertical</span>: <span style="color:#268bd2">9</span>),
+                    <span style="color:#268bd2">border</span>: <span style="color:#268bd2">InputBorder</span>.<span style="color:#268bd2">none</span>,
+                    <span style="color:#268bd2">hintText</span>: <span style="color:#2aa198">&#34;输入手机号&#34;</span>,
+                    <span style="color:#268bd2">hintStyle</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">white</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">16</span>),
+                    <span style="color:#268bd2">labelStyle</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">black</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">16</span>)),
+                <span style="color:#268bd2">maxLines</span>: <span style="color:#268bd2">1</span>,
+                <span style="color:#268bd2">cursorColor</span>: <span style="color:#268bd2">colorRegular</span>,
+                <span style="color:#268bd2">keyboardType</span>: <span style="color:#268bd2">TextInputType</span>.<span style="color:#268bd2">phone</span>,
+              ),
+            ),
+            <span style="color:#268bd2">Container</span>(
+              <span style="color:#268bd2">margin</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">only</span>(<span style="color:#268bd2">bottom</span>: <span style="color:#268bd2">58</span>, <span style="color:#268bd2">left</span>: <span style="color:#268bd2">24</span>, <span style="color:#268bd2">right</span>: <span style="color:#268bd2">24</span>),
+              <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">BoxDecoration</span>(
+                  <span style="color:#268bd2">borderRadius</span>: <span style="color:#268bd2">radius</span>,
+                  <span style="color:#268bd2">color</span>: <span style="color:#268bd2">colorInput</span>),
+              <span style="color:#268bd2">child</span>: <span style="color:#268bd2">TextField</span>(
+                <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">InputDecoration</span>(
+                    <span style="color:#268bd2">contentPadding</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">symmetric</span>(<span style="color:#268bd2">horizontal</span>: <span style="color:#268bd2">15</span>,<span style="color:#268bd2">vertical</span>: <span style="color:#268bd2">9</span>),
+                    <span style="color:#268bd2">border</span>: <span style="color:#268bd2">InputBorder</span>.<span style="color:#268bd2">none</span>,
+                    <span style="color:#268bd2">hintText</span>: <span style="color:#2aa198">&#34;输入密码&#34;</span>,
+                    <span style="color:#268bd2">hintStyle</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">white</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">16</span>),
+                    <span style="color:#268bd2">labelStyle</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">black</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">16</span>)),
+                <span style="color:#268bd2">maxLines</span>: <span style="color:#268bd2">1</span>,
+                <span style="color:#268bd2">cursorColor</span>: <span style="color:#268bd2">colorRegular</span>,
+                <span style="color:#268bd2">keyboardType</span>: <span style="color:#268bd2">TextInputType</span>.<span style="color:#268bd2">number</span>,
+                <span style="color:#268bd2">obscureText</span>: <span style="color:#859900;font-weight:bold">true</span>,
+              ),
+            ),
+            <span style="color:#268bd2">Container</span>(
+              <span style="color:#268bd2">height</span>: <span style="color:#268bd2">42</span>, <span style="color:#268bd2">width</span>: <span style="color:#268bd2">312</span>,
+              <span style="color:#268bd2">margin</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">only</span>(<span style="color:#268bd2">left</span>: <span style="color:#268bd2">24</span>, <span style="color:#268bd2">right</span>: <span style="color:#268bd2">24</span>),
+              <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">BoxDecoration</span> (
+                  <span style="color:#268bd2">borderRadius</span>: <span style="color:#268bd2">radius</span>,
+                  <span style="color:#268bd2">color</span>: <span style="color:#268bd2">colorWhite</span>),
+              <span style="color:#268bd2">child</span>: <span style="color:#268bd2">RaisedButton</span>(<span style="color:#268bd2">onPressed</span>: <span style="color:#268bd2">login</span>,
+                  <span style="color:#268bd2">elevation</span>: <span style="color:#268bd2">1</span>,
+                  <span style="color:#268bd2">highlightElevation</span>: <span style="color:#268bd2">1</span>,
+                  <span style="color:#268bd2">textColor</span>: <span style="color:#268bd2">colorRegular</span>,
+                  <span style="color:#268bd2">shape</span>: <span style="color:#268bd2">RoundedRectangleBorder</span>(
+                      <span style="color:#268bd2">borderRadius</span>: <span style="color:#268bd2">radius</span>
+                  ),
+                  <span style="color:#268bd2">child</span>: <span style="color:#859900">new</span> <span style="color:#268bd2">Text</span>(<span style="color:#2aa198">&#34;立即登录&#34;</span>, <span style="color:#268bd2">style</span>: <span style="color:#268bd2">TextStyle</span>(
+                      <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">15</span>,
+                      <span style="color:#268bd2">fontWeight</span>: <span style="color:#268bd2">FontWeight</span>.<span style="color:#268bd2">bold</span>),
+                  )),
+            ),
+            <span style="color:#268bd2">Padding</span>(
+              <span style="color:#268bd2">padding</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">only</span>(<span style="color:#268bd2">top</span>: <span style="color:#268bd2">10</span>),
+              <span style="color:#268bd2">child</span>: <span style="color:#268bd2">Text</span>(
+                <span style="color:#2aa198">&#34;登录/注册即代表您已同意《会员协议》&#34;</span>,
+                <span style="color:#268bd2">style</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">white</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">13</span>),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div><p>在上一章就讲过，如果在整个生命周期中，状态如果改变，那么我们就是用<code>StatefulWidget</code>来呈现，并且<code>StatefulWidget</code>的实现需要两步：一个是需要创建继承<code>StatefulWidget</code>的类；另一个就是创建继承<code>State</code>的类，一般在<code>State</code>中控制整个状态。所以此处就是如此：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">LoginPage</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">StatefulWidget</span> {
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">State</span>&lt;<span style="color:#268bd2">StatefulWidget</span>&gt; <span style="color:#268bd2">createState</span>() =&gt; <span style="color:#268bd2">LoginPageState</span>();
+}
+
+<span style="color:#859900">class</span> <span style="color:#cb4b16">LoginPageState</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">State</span>&lt;<span style="color:#268bd2">LoginPage</span>&gt; {
+
+  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#93a1a1;font-style:italic">// TODO: implement build
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">Scaffold</span>(
+      <span style="color:#268bd2">body</span>: <span style="color:#268bd2">Container</span>(
+      <span style="color:#93a1a1;font-style:italic">//省略代码
+</span><span style="color:#93a1a1;font-style:italic"></span>      ...
+      )
+    );
+  }
+}
+</code></pre></div><p>并且当前登录界面是没有工具栏的，所以去掉了<code>AppBar</code>。将所有内容直接写在了<code>body</code>中。可以看到整个登录界面的背景是一个渐变，上面浅一点，下面深一点，所以就需要一个容器去包裹整个内容，并且这个容器可以实现背景颜色的渐变的，所以我选用了<code>Container</code>，因为它是所有容器布局中属性最全面的。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> Container({
+    Key key,
+    this.alignment,//子布局的排列方式
+    this.padding,//内部填充
+    Color color,//背景颜色
+    Decoration decoration,  //用于装饰容器
+    this.foregroundDecoration,//前景装饰
+    double width, //容器宽
+    double height, //容器高
+    BoxConstraints constraints, //约束
+    this.margin, //外部填充
+    this.transform, //对容器进行变换
+    this.child,
+  })
+</code></pre></div><p>提示：如果处于<code>body</code>下的<code>container</code>不论是否设置宽高，它将都会扑满全屏。</p>
+<p>那么最外层的渐变我们就是使用<code>BoxDecoration</code>：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">const</span> <span style="color:#268bd2">BoxDecoration</span>({
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">color</span>,
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">image</span>, <span style="color:#268bd2">图片</span>
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">border</span>, <span style="color:#93a1a1;font-style:italic">//边框
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">borderRadius</span>, <span style="color:#93a1a1;font-style:italic">//圆角
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">boxShadow</span>, <span style="color:#93a1a1;font-style:italic">//阴影
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">gradient</span>, <span style="color:#93a1a1;font-style:italic">//渐变
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">backgroundBlendMode</span>, <span style="color:#93a1a1;font-style:italic">//背景模式，默认BlendMode.srcOver
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">this</span>.<span style="color:#268bd2">shape</span> = <span style="color:#268bd2">BoxShape</span>.<span style="color:#268bd2">rectangle</span>, <span style="color:#93a1a1;font-style:italic">//形状
+</span><span style="color:#93a1a1;font-style:italic"></span>  }) : <span style="color:#859900">assert</span>(<span style="color:#268bd2">shape</span> != <span style="color:#859900;font-weight:bold">null</span>),
+       <span style="color:#859900">assert</span>(
+         <span style="color:#268bd2">backgroundBlendMode</span> == <span style="color:#859900;font-weight:bold">null</span> || <span style="color:#268bd2">color</span> != <span style="color:#859900;font-weight:bold">null</span> || <span style="color:#268bd2">gradient</span> != <span style="color:#859900;font-weight:bold">null</span>,
+         &#39;<span style="color:#268bd2">backgroundBlendMode</span> <span style="color:#268bd2">applies</span> <span style="color:#268bd2">to</span> <span style="color:#268bd2">BoxDecoration</span>\&#39;<span style="color:#268bd2">s</span> <span style="color:#268bd2">background</span> <span style="color:#268bd2">color</span> <span style="color:#268bd2">or</span> &#39;
+         &#39;<span style="color:#268bd2">gradient</span>, <span style="color:#268bd2">but</span> <span style="color:#268bd2">no</span> <span style="color:#268bd2">color</span> <span style="color:#268bd2">or</span> <span style="color:#268bd2">gradient</span> <span style="color:#268bd2">was</span> <span style="color:#268bd2">provided</span>.&#39;
+       );
+</code></pre></div><p>提示：在对形状的处理中，以下是可以互换的：</p>
+<ul>
+<li>CircleBorder === BoxShape.circle</li>
+<li>RoundedRectangleBorder == BoxShape.rectangle</li>
+</ul>
+<p>所以从上可以完成我们的渐变：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">BoxDecoration</span>(
+            <span style="color:#268bd2">gradient</span>: <span style="color:#268bd2">LinearGradient</span>(
+                <span style="color:#268bd2">colors</span>: [<span style="color:#268bd2">colorLight</span>, <span style="color:#268bd2">colorRegular</span>],
+                <span style="color:#268bd2">begin</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">topCenter</span>,
+                <span style="color:#268bd2">end</span>: <span style="color:#268bd2">Alignment</span>.<span style="color:#268bd2">bottomCenter</span>)
+        )
+</code></pre></div><p>实现了渐变的过程，那么就是输入框，可以从设计上来说，这些内容都是纵向排列的，所以内容使用了布局<code>Column</code>，用于纵向布局，当然相对的横向布局<code>Row</code>。</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#268bd2">Column</span>({
+    <span style="color:#268bd2">Key</span> <span style="color:#268bd2">key</span>,
+    <span style="color:#93a1a1;font-style:italic">//主轴排列方式，这里的主轴就是纵向，实际就是纵向的布局方式
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">MainAxisAlignment</span> <span style="color:#268bd2">mainAxisAlignment</span> = <span style="color:#268bd2">MainAxisAlignment</span>.<span style="color:#268bd2">start</span>, 
+    <span style="color:#93a1a1;font-style:italic">//Column在主轴（纵向）占有的控件，默认尽可能大
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">MainAxisSize</span> <span style="color:#268bd2">mainAxisSize</span> = <span style="color:#268bd2">MainAxisSize</span>.<span style="color:#268bd2">max</span>,
+    <span style="color:#93a1a1;font-style:italic">//交叉轴排列方式，那么就是横向
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">CrossAxisAlignment</span> <span style="color:#268bd2">crossAxisAlignment</span> = <span style="color:#268bd2">CrossAxisAlignment</span>.<span style="color:#268bd2">center</span>,
+    <span style="color:#93a1a1;font-style:italic">//横向子widget的布局顺序
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">TextDirection</span> <span style="color:#268bd2">textDirection</span>,
+    <span style="color:#93a1a1;font-style:italic">//交叉轴的布局对齐方向
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">VerticalDirection</span> <span style="color:#268bd2">verticalDirection</span> = <span style="color:#268bd2">VerticalDirection</span>.<span style="color:#268bd2">down</span>,
+    <span style="color:#268bd2">TextBaseline</span> <span style="color:#268bd2">textBaseline</span>,
+    <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Widget</span>&gt; <span style="color:#268bd2">children</span> = <span style="color:#859900">const</span> &lt;<span style="color:#268bd2">Widget</span>&gt;[],
+  })
+</code></pre></div><p>在<code>Column</code>中包含了三个<code>Container</code>,前两个中是输入布局<code>TextField</code>，最后一个是<code>RaisedButton</code>。这里回答在文章开始开始的时候提出的问题：为什么要用<code>Container</code>去包裹<code>TextField</code>？</p>
+<ol>
+<li>需要实现圆角 (decoration)</li>
+<li>要实现间距 （marin 和 padding）</li>
+</ol>
+<p>所有需要使用<code>Container</code>去完成这样的样式装饰。</p>
+<p><code>TextField</code>应该是我们比较常用的widget了：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">TextField</span>(
+    <span style="color:#268bd2">decoration</span>: <span style="color:#268bd2">InputDecoration</span>(
+        <span style="color:#268bd2">contentPadding</span>: <span style="color:#268bd2">EdgeInsets</span>.<span style="color:#268bd2">symmetric</span>(<span style="color:#268bd2">horizontal</span>: <span style="color:#268bd2">15</span>,<span style="color:#268bd2">vertical</span>: <span style="color:#268bd2">9</span>),
+        <span style="color:#268bd2">border</span>: <span style="color:#268bd2">InputBorder</span>.<span style="color:#268bd2">none</span>,
+        <span style="color:#268bd2">hintText</span>: <span style="color:#2aa198">&#34;输入手机号&#34;</span>,
+        <span style="color:#268bd2">hintStyle</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">white</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">16</span>),
+        <span style="color:#268bd2">labelStyle</span>: <span style="color:#268bd2">TextStyle</span>(<span style="color:#268bd2">color</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">black</span>, <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">16</span>)
+    ),
+    <span style="color:#268bd2">maxLines</span>: <span style="color:#268bd2">1</span>,
+    <span style="color:#268bd2">cursorColor</span>: <span style="color:#268bd2">colorRegular</span>,
+    <span style="color:#268bd2">keyboardType</span>: <span style="color:#268bd2">TextInputType</span>.<span style="color:#268bd2">phone</span>,
+),
+</code></pre></div><p>这里只是使用可<code>decoration</code>,对<code>TextField</code>装饰，比如其中的<code>contentPadding</code>，对内容留白填补。
+<code>cursorColor</code>光标颜色，输入类型<code>keyboardType</code>，这里是手机号类型。此外还有很多的属性，这里就不一一赘述，可以自行到官网去查看。</p>
+<p>最后被<code>container</code>包裹是的<code>RaisedButton</code>:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">RaisedButton</span>(
+    <span style="color:#268bd2">onPressed</span>: <span style="color:#268bd2">login</span>, 
+    <span style="color:#268bd2">elevation</span>: <span style="color:#268bd2">1</span>, 
+    <span style="color:#268bd2">highlightElevation</span>: <span style="color:#268bd2">1</span>,
+    <span style="color:#268bd2">textColor</span>: <span style="color:#268bd2">colorRegular</span>,
+    <span style="color:#268bd2">shape</span>: <span style="color:#268bd2">RoundedRectangleBorder</span>(
+        <span style="color:#268bd2">borderRadius</span>: <span style="color:#268bd2">radius</span>
+    ),
+    <span style="color:#268bd2">child</span>: <span style="color:#859900">new</span> <span style="color:#268bd2">Text</span>(<span style="color:#2aa198">&#34;立即登录&#34;</span>, <span style="color:#268bd2">style</span>: <span style="color:#268bd2">TextStyle</span>(
+        <span style="color:#268bd2">fontSize</span>: <span style="color:#268bd2">15</span>,
+        <span style="color:#268bd2">fontWeight</span>: <span style="color:#268bd2">FontWeight</span>.<span style="color:#268bd2">bold</span>),
+))
+</code></pre></div><h1 id="我也修饰一下">我也修饰一下</h1>
+<ul>
+<li>到处登录界面的布局就算完成了，然后运行之后就会出现在文章开头的登录界面，但是当我们点击<code>TextField</code>进行输入的时候，会发现整个布局会被顶上去了，这是为什么呢？。</li>
+</ul>
+<hr>
+<p>答：这是因为<code>Scaffold</code>会填充整个可用空间，当软键盘从<code>Scaffold</code>布局中出现，那么在这种情况下，可用空间变少<code>Scaffold</code>就会重新计算大小，这也就是为什么<code>Scaffold</code>会将我们的布局全部上移的根本原因，为了避免这种情况，可以使用<code>resizeToAvoidBottomInset</code>并将其
+置为<code>false</code>就可以了。</p>
+<hr>
+<ul>
+<li>怎么去掉屏幕右上角的<code>debug</code>标签？</li>
+</ul>
+<p>答：将MaterialApp中的<code>debugShowCheckedModeBanner</code>置为false</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">MyApp</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">StatelessWidget</span> {
+  <span style="color:#93a1a1;font-style:italic">// This widget is the root of your application.
+</span><span style="color:#93a1a1;font-style:italic"></span>  <span style="color:#268bd2">@override</span>
+  <span style="color:#268bd2">Widget</span> <span style="color:#268bd2">build</span>(<span style="color:#268bd2">BuildContext</span> <span style="color:#268bd2">context</span>) {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">MaterialApp</span>(
+      <span style="color:#268bd2">title</span>: &#39;<span style="color:#268bd2">Flutter</span> <span style="color:#268bd2">Demo</span>&#39;,
+      <span style="color:#268bd2">theme</span>: <span style="color:#268bd2">ThemeData</span>(
+        <span style="color:#268bd2">primaryColor</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF786E</span>),
+        <span style="color:#268bd2">primaryColorLight</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFF978F</span>),
+        <span style="color:#268bd2">accentColor</span>: <span style="color:#268bd2">Color</span>(<span style="color:#268bd2">0xFFFFFFFF</span>)
+      ),
+      <span style="color:#268bd2">home</span>: <span style="color:#268bd2">LoginPage</span>(),
+      <span style="color:#268bd2">debugShowCheckedModeBanner</span>: <span style="color:#859900;font-weight:bold">false</span>,
+    );
+  }
+}
+</code></pre></div><ul>
+<li>怎么让状态栏显示沉浸式，不出现灰蒙蒙的赶脚呢？</li>
+</ul>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#268bd2">runApp</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">MyApp</span>());
+  <span style="color:#859900">if</span> (<span style="color:#268bd2">Platform</span>.<span style="color:#268bd2">isAndroid</span>) {
+    <span style="color:#93a1a1;font-style:italic">// 以下两行 设置android状态栏为透明的沉浸。
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">//写在组件渲染之后，是为了在渲染后进行set赋值，
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">//覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">SystemUiOverlayStyle</span> <span style="color:#268bd2">systemUiOverlayStyle</span> = 
+    <span style="color:#268bd2">SystemUiOverlayStyle</span>(<span style="color:#268bd2">statusBarColor</span>: <span style="color:#268bd2">Colors</span>.<span style="color:#268bd2">transparent</span>);
+    <span style="color:#268bd2">SystemChrome</span>.<span style="color:#268bd2">setSystemUIOverlayStyle</span>(<span style="color:#268bd2">systemUiOverlayStyle</span>);
+  }
+</code></pre></div><p>最后给大家推荐一本Flutter书，详细介绍了Flutter的使用方式方法，都提供了演示案例：<a href="https://book.flutterchina.club/">Flutter实战</a>:
+<img src="https://user-gold-cdn.xitu.io/2019/3/9/16962956e77303bc?w=500&amp;h=691&amp;f=png&amp;s=56679" alt="Flutter实战"></p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/">编译Android使用的libx264并使用进行H.264编码</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">华为机器学习-图像分割</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpegapi%E7%9A%84io/">FFmpegAPI的I/O</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/">FFmpegAPI介绍以及日志系统</a></li>
+    
+    <li><a href="https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/">Cloudflare优选IP</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/">IP或Port被墙检测</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/">自建VPS-防火长城</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/">【转载】解决Hexo博客分页展示为HTML代码的问题</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/" data-toggle="tooltip" data-placement="top" title="购买Hostwinds VPS以及免费换IP">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/flutter1/" data-toggle="tooltip" data-placement="top" title="Flutter(一)-你入门了没？">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 移动技术分享</title>
+    <link>https://comert007.github.io/post/</link>
+    <description>Recent content in Posts on 移动技术分享</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Apr 2021 23:33:03 +0000</lastBuildDate><atom:link href="https://comert007.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>编译Android使用的libx264并使用进行H.264编码</title>
+      <link>https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/</link>
+      <pubDate>Sat, 10 Apr 2021 23:33:03 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E7%BC%96%E8%AF%91android%E4%BD%BF%E7%94%A8%E7%9A%84libx264%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%BF%9B%E8%A1%8Ch.264%E7%BC%96%E7%A0%81/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/top/x264.jpg&#34; alt=&#34;&#34;&gt;
+在日常的音视频开发中，我们经常使用&lt;code&gt;FFmpeg&lt;/code&gt;，因为它确实好用呀，囊括了各种功能！但是有个很严重的问题，如果是编译在Android和IOS上使用，会造成APP的包很大。可以看我编译的FFmpeg在Android上的应用程式。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>华为机器学习-图像分割</title>
+      <link>https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/</link>
+      <pubDate>Thu, 08 Apr 2021 10:54:08 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/</guid>
+      <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;记得以前，经常拍大头贴和寸照，要去专门的照相馆，先是让你站在一个红色或者蓝色的幕布前进行拍照，然后就去电脑上把刚刚拍的照片背景在进行修饰，最后再打印出来。其实这都没什么，最主要的是难以忍受他们拍的照片~~&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>FFmpegAPI的I/O</title>
+      <link>https://comert007.github.io/post/ffmpegapi%E7%9A%84io/</link>
+      <pubDate>Wed, 07 Apr 2021 16:44:03 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpegapi%E7%9A%84io/</guid>
+      <description>&lt;p&gt;在&lt;a href=&#34;https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/&#34;&gt;《FFmpegAPI介绍以及日志系统》&lt;/a&gt;中我们了解到如何在&lt;code&gt;FFmpeg&lt;/code&gt;中使用日志系统，这一小节我们来了解它的I/O处理。我们通过上面提到的&lt;a href=&#34;https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/&#34;&gt;《FFmpegAPI介绍以及日志系统》&lt;/a&gt;知道关于I/O的操作是存在于&lt;code&gt;libformat&lt;/code&gt;模块下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>FFmpegAPI介绍以及日志系统</title>
+      <link>https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Mon, 05 Apr 2021 20:08:01 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpegapi%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;音视频的文章已经断更很久了，在这里说声抱歉。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;不论是Android，还是现在国内很火的&lt;code&gt;HarmonyOS-鸿蒙系统&lt;/code&gt;，其实都不能脱离音视频的范畴，&lt;code&gt;鸿蒙&lt;/code&gt;也实现了对&lt;code&gt;FFmpeg&lt;/code&gt;、&lt;code&gt;openGL&lt;/code&gt;等音视频组件的支持。所以对于APP的开发人员，如果想深造的话，音视频不失为一条光明大道。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cloudflare优选IP</title>
+      <link>https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/</link>
+      <pubDate>Fri, 02 Apr 2021 09:55:32 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/cloudflare%E4%BC%98%E9%80%89ip/</guid>
+      <description>&lt;p&gt;在自建VPS之后，我们会发现连接速度并没有那么理想，难度是我们被骗了？其实不然，实质上是我们的VPS所走的线路不是什么高端线路。现在市面上提供的线路一般有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;163传统骨干网 - 全程都是以202.97开头&lt;/li&gt;
+&lt;li&gt;CN2 GT 中端线路 - 去程和回程国内线路都是202.97开头，国际则是59.43开头&lt;/li&gt;
+&lt;li&gt;CN2 GIA 独立线路 - 全程59.43开头，表现最好最稳定&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>IP或Port被墙检测</title>
+      <link>https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/</link>
+      <pubDate>Fri, 26 Mar 2021 11:12:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ip%E6%88%96port%E8%A2%AB%E5%A2%99%E6%A3%80%E6%B5%8B/</guid>
+      <description>&lt;p&gt;在&lt;a href=&#34;https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/&#34;&gt;《自建VPS-防火长城》&lt;/a&gt;中我们知道，GFW可以封锁我们的IP和Port(端口)，怎么检测IP和端口是否被封锁呢？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>自建VPS-防火长城</title>
+      <link>https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/</link>
+      <pubDate>Thu, 25 Mar 2021 09:33:08 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E8%87%AA%E5%BB%BAvps-%E9%98%B2%E7%81%AB%E9%95%BF%E5%9F%8E/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;相信很多做技术、科研的童鞋，都会找一些资料，但是这些资料毕竟相对于国内，国外跟好一些，所以我们经常会去浏览一些国外的网站，但是你如果想访问一些国外的网站，你会发现“找不到该网页”，这是因为国内为了让我们的孩子茁壮成长，对于一些网站做了封锁，那么我们怎么绕过这些封锁呢？。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>【转载】解决Hexo博客分页展示为HTML代码的问题</title>
+      <link>https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Wed, 24 Mar 2021 14:50:15 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;Hexo更新之后，首页的分页展示为HTML代码&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android逆向-初识反编译工具</title>
+      <link>https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Wed, 24 Mar 2021 10:23:26 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/decompile/apktool_decode_apk.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android音视频开发:音频非压缩编码和压缩编码</title>
+      <link>https://comert007.github.io/post/audio-encod/</link>
+      <pubDate>Sun, 19 Jan 2020 08:50:56 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/audio-encod/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/top/audio-encode.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;音视频在开发中，最重要也是最复杂的就是编解码的过程，在上一篇的&lt;a href=&#34;https://readdown.com/2020/01/11/basic-media/&#34;&gt;《Android音视频开发:踩一踩“门槛”》&lt;/a&gt;中，我们说音频的编码根据大小划分有两种：压缩编码和非压缩编码，那到底是怎么实现的这两中编码的呢？这一次就详细了解Android中如何使用这两种方式进行音频编码&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android音视频开发:踩一踩“门槛”</title>
+      <link>https://comert007.github.io/post/basic-media/</link>
+      <pubDate>Sat, 11 Jan 2020 09:14:33 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/basic-media/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/top/basic-media.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;音视频行业已经发展很多年了，随着近几年移动端越来越多的音视频APP的出现，将音视频推向一个高潮，但是由于音视频的学习成本很高，很多开发者望而却步，为了跟紧时代的步伐，我写了这篇音视频基础，讲解了音视频的相关知识，给大家破除音视频的“高门槛”，希望可以共同进步。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android上的FFmpeg命令行</title>
+      <link>https://comert007.github.io/post/ffmpeg-command/</link>
+      <pubDate>Sun, 22 Dec 2019 16:36:17 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-command/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在我们的开发中，经常会用到音视频相关内容，一般我们都会选择&lt;code&gt;FFmpeg&lt;/code&gt;，但是其交叉编译对于我们来说是一件很麻烦的事情．所以这里方便日后使用，集成了关于&lt;code&gt;FFmpeg&lt;/code&gt;相关库(mp3lame+libx264+fdk-aac)&lt;a href=&#34;https://github.com/AnJoiner/FFmpegCommand&#34;&gt;FFmpegCommand&lt;/a&gt;,话不多说，请往下看～～&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>FFmpeg命令行入门基础</title>
+      <link>https://comert007.github.io/post/ffmpeg-basic/</link>
+      <pubDate>Fri, 20 Dec 2019 09:28:48 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-basic/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在手机端越来越多的应用涉及到音视频，直播类、短视频类等等，大大小小都会涉及到音视频的处理工具，音视频的处理工具有很多，这里简单介绍一下全球知名的&lt;code&gt;FFmpeg&lt;/code&gt;，FFmpeg是一个强大的音视频处理库，既可以使用它的API对音视频进行处理，也可以使用它提供的工具，如 ffmpeg, ffplay, ffprobe，来编辑你的音视频文件。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Hexo 搭建个人博客</title>
+      <link>https://comert007.github.io/post/hexo-blog/</link>
+      <pubDate>Mon, 16 Dec 2019 13:12:22 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/hexo-blog/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://comert007.github.io/img/top/hexo.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;作为一只程序猿，每个人都希望有一个自己的个人博客，博客自己写的话，那太麻烦了。幸好&lt;a href=&#34;https://hexo.io/zh-cn/docs/index.html&#34;&gt;Hexo&lt;/a&gt;提供了一个快捷生成博客的方案。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android 音乐播放锁屏界面</title>
+      <link>https://comert007.github.io/post/lock-screen/</link>
+      <pubDate>Fri, 06 Dec 2019 14:58:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/lock-screen/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;如果写过&lt;code&gt;Android&lt;/code&gt;相关的音乐播放器，我们都知道可以从锁屏界面控制音乐的播放、暂停、上／下一曲等操作，那如何打造一个自己应用的锁屏界面呢？&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>FFmpeg编译4.1.4并移植到Android</title>
+      <link>https://comert007.github.io/post/ffmpeg-android/</link>
+      <pubDate>Fri, 02 Aug 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/ffmpeg-android/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在我们开发音视频的过程中，总是避免不了对音视频的操作，对音视频的操作最常用的就是&lt;code&gt;FFmpeg&lt;/code&gt;了，但是有一个问题就是不能直接使用，所以得进行编译才能在移动端使用，下面就给大家介绍如何在&lt;code&gt;Android&lt;/code&gt;中编译&lt;code&gt;FFmpeg&lt;/code&gt;．&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Flutter(三)-如何实现登录动画效果</title>
+      <link>https://comert007.github.io/post/flutter3/</link>
+      <pubDate>Sun, 17 Mar 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/flutter3/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在上一篇的时候，我们讲解了怎么做一个登录界面，但是之后呢？完全是草草结尾的感觉嘛，这不，接下来就是给大家详细说说，这个登录里面不得鸟的故事。先来看一个登录的过程~~&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Flutter(一)-你入门了没？</title>
+      <link>https://comert007.github.io/post/flutter1/</link>
+      <pubDate>Sun, 03 Mar 2019 08:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/flutter1/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;距离Google发布Flutter已经有很长一段时间了，又是一门新的技术，那么我们到底是学呢还是学呢还是学呢？不要问我，我不知道，鬼特么知道我这辈子还要学习多少东西。其实新技术的出现也意味着，老技术会面临淘汰危机，而你将面临着失业危机。用一句话来说：你永远不知道意外和惊喜哪个先来~~&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Flutter(二)-Hello World?</title>
+      <link>https://comert007.github.io/post/flutter2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/flutter2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在上一篇文章中以简单的方式对Flutter自己提供的演示进行了一个简单的分析，当然那是远远不够。本来打算为大家带来官网上的无限下拉刷新的案例，但是发现这里的有些东西实在是太超前了，作为Flutter入门篇，当然不能这么随意，以为了让大家都能够学有所得，所以今天给大家带来了自己手撸的一个登录。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>购买Hostwinds VPS以及免费换IP</title>
+      <link>https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/</guid>
+      <description>&lt;p&gt;在{% post_link IP或Port被墙检测 《IP或Port被墙检测》 %}中我们介绍到，可以使用免费换IP的服务商，防止我们操作失误造成GFW对我们的封锁。这里用笔者经常使用的&lt;code&gt;Hostwinds&lt;/code&gt;介绍。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

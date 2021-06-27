@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>FFmpeg命令行入门基础</title>
+  <meta property="og:title" content="FFmpeg命令行入门基础" />
+  <meta name="twitter:title" content="FFmpeg命令行入门基础" />
+
+  <meta name="description" content="
+在手机端越来越多的应用涉及到音视频，直播类、短视频类等等，大大小小都会涉及到音视频的处理工具，音视频的处理工具有很多，这里简单介绍一下全球知名的FFmpeg，FFmpeg是一个强大的音视频处理库，既可以使用它的API对音视频进行处理，也可以使用它提供的工具，如 ffmpeg, ffplay, ffprobe，来编辑你的音视频文件。
+">
+  <meta property="og:description" content="
+在手机端越来越多的应用涉及到音视频，直播类、短视频类等等，大大小小都会涉及到音视频的处理工具，音视频的处理工具有很多，这里简单介绍一下全球知名的FFmpeg，FFmpeg是一个强大的音视频处理库，既可以使用它的API对音视频进行处理，也可以使用它提供的工具，如 ffmpeg, ffplay, ffprobe，来编辑你的音视频文件。
+">
+  <meta name="twitter:description" content="
+在手机端越来越多的应用涉及到音视频，直播类、短视频类等等，大大小小都会涉及到音视频的处理工具，音视频的处理工具有很多，这里简单介绍一下全球知名的FFmpeg，FFmpeg是一个强大的音视频处理库，既可以使用它的API对音视频进行处理，也可以使用它提供的工具，如 ffmpeg, ffplay, ffprobe，来编辑你的音视频文件。
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/ffmpeg-basic/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/ffmpeg-basic/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>FFmpeg命令行入门基础</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/ffmpeg/">ffmpeg</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/codec/">codec</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ffmpeg基本组成">FFmpeg基本组成</a></li>
+    <li><a href="#ffmpeg处理流程">FFmpeg处理流程</a></li>
+    <li><a href="#ffmpeg简单命令">FFmpeg简单命令</a>
+      <ul>
+        <li><a href="#查询参数">查询参数</a></li>
+        <li><a href="#主要参数">主要参数</a></li>
+        <li><a href="#分解与复用">分解与复用</a></li>
+        <li><a href="#处理原始数据">处理原始数据</a></li>
+        <li><a href="#滤镜">滤镜</a></li>
+        <li><a href="#音视频的拼接与裁剪">音视频的拼接与裁剪</a></li>
+        <li><a href="#裁剪">裁剪</a></li>
+        <li><a href="#合并">合并</a></li>
+        <li><a href="#hls切片">hls切片</a></li>
+        <li><a href="#视频图片互转">视频图片互转</a></li>
+        <li><a href="#直播相关">直播相关</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</aside>
+
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <blockquote>
+<p>在手机端越来越多的应用涉及到音视频，直播类、短视频类等等，大大小小都会涉及到音视频的处理工具，音视频的处理工具有很多，这里简单介绍一下全球知名的<code>FFmpeg</code>，FFmpeg是一个强大的音视频处理库，既可以使用它的API对音视频进行处理，也可以使用它提供的工具，如 ffmpeg, ffplay, ffprobe，来编辑你的音视频文件。</p>
+</blockquote>
+<h2 id="ffmpeg基本组成">FFmpeg基本组成</h2>
+<ul>
+<li>libavcodec： 提供了一系列编码器的实现。</li>
+<li>libavformat： 实现在流协议，容器格式及其本IO访问。</li>
+<li>libavutil： 包括了hash器，解码器和各利工具函数。</li>
+<li>libavfilter： 提供了各种音视频过滤器。</li>
+<li>libavdevice： 提供了访问捕获设备和回放设备的接口。</li>
+<li>libswresample： 实现了混音和重采样。</li>
+<li>libswscale： 实现了色彩转换和缩放工能。</li>
+</ul>
+<p>如果使用过FFmpeg都知道，FFmpeg都是以命令行代码执行的，如下：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> [<span style="color:#268bd2">global_options</span>] {[<span style="color:#268bd2">input_file_options</span>] -<span style="color:#268bd2">i</span> <span style="color:#268bd2">input_url</span>} ...
+                         {[<span style="color:#268bd2">output_file_options</span>] <span style="color:#268bd2">output_url</span>} ...
+</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">input</span>.<span style="color:#268bd2">mp4</span> <span style="color:#268bd2">output</span>.<span style="color:#268bd2">avi</span>
+</code></pre></div><p><code>ffmpeg</code>是 FFmpeg源码编译后生成的一个可执行程序，可以作为命令工具使用。</p>
+<h2 id="ffmpeg处理流程">FFmpeg处理流程</h2>
+<p><img src="https://comert007.github.io/img/ffmpeg/ffmpeg-codec.webp" alt="FFmpeg"></p>
+<ul>
+<li>对输入文件进行解封装</li>
+<li>对解封装后的音频和视频进行解码</li>
+<li>对解码后的音视频数据操作处理后编码</li>
+<li>对编码后的数据进行封装</li>
+<li>输出文件</li>
+</ul>
+<h2 id="ffmpeg简单命令">FFmpeg简单命令</h2>
+<p>我们按使用目的可以将 FFMPEG 命令分成以下几类：</p>
+<ul>
+<li>基本信息查询命令</li>
+<li>录制</li>
+<li>分解/复用</li>
+<li>处理原始数据</li>
+<li>滤镜</li>
+<li>切割与合并</li>
+<li>图／视互转</li>
+<li>直播相关</li>
+</ul>
+<p>除了 FFMPEG 的基本信息查询命令外，其它命令都按下图所示的流程处理音视频。</p>
+<h3 id="查询参数">查询参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-version</td>
+<td>显示版本</td>
+</tr>
+<tr>
+<td>-formats</td>
+<td>显示可用的格式（包括设备</td>
+</tr>
+<tr>
+<td>-demuxers</td>
+<td>显示可用的demuxers</td>
+</tr>
+<tr>
+<td>-muxers</td>
+<td>显示可用的muxers</td>
+</tr>
+<tr>
+<td>-devices</td>
+<td>显示可用的设备</td>
+</tr>
+<tr>
+<td>-codecs</td>
+<td>显示libavcodec已知的所有编解码器</td>
+</tr>
+<tr>
+<td>-decoders</td>
+<td>显示可用的解码器</td>
+</tr>
+<tr>
+<td>-encoders</td>
+<td>显示所有可用的编码器</td>
+</tr>
+<tr>
+<td>-bsfs</td>
+<td>显示可用的比特流filter</td>
+</tr>
+<tr>
+<td>-protocols</td>
+<td>显示可用的协议</td>
+</tr>
+<tr>
+<td>-filters</td>
+<td>显示可用的libavfilter过滤器</td>
+</tr>
+<tr>
+<td>-pix_fmts</td>
+<td>显示可用的像素格式</td>
+</tr>
+<tr>
+<td>-sample_fmts</td>
+<td>显示可用的采样格式</td>
+</tr>
+<tr>
+<td>-layouts</td>
+<td>显示channel名称和标准channel布局</td>
+</tr>
+<tr>
+<td>-colors</td>
+<td>显示识别的颜色名称</td>
+</tr>
+</tbody>
+</table>
+<h3 id="主要参数">主要参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-f fmt</td>
+<td>强制输入或输出文件格式</td>
+</tr>
+<tr>
+<td>-i url</td>
+<td>输入文件的地址</td>
+</tr>
+<tr>
+<td>-y</td>
+<td>覆盖输出文件而不询问</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>不要覆盖输出文件，如果指定的输出文件已经存在，请立即退出</td>
+</tr>
+<tr>
+<td>-c [：stream_specifier] codec</td>
+<td>选择一个编码器（当在输出文件之前使用）或解码器（当在输入文件之前使用时）用于一个或多个流</td>
+</tr>
+<tr>
+<td>-codec [：stream_specifier]</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>-t duration</td>
+<td>当用作输入选项（在-i之前）时，限制从输入文件读取的数据的持续时间。当用作输出选项时（在输出url之前），在持续时间到达持续时间之后停止输出</td>
+</tr>
+<tr>
+<td>-ss position</td>
+<td>当用作输入选项时（在-i之前），在这个输入文件中寻找位置</td>
+</tr>
+<tr>
+<td>-aspect</td>
+<td>设置方面指定的视频显示宽高比</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>设置窗口大小</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>设置帧率</td>
+</tr>
+<tr>
+<td>-vn</td>
+<td>禁用视频录制</td>
+</tr>
+<tr>
+<td>-vcodec</td>
+<td>设置视频编解码器</td>
+</tr>
+<tr>
+<td>-vframes num</td>
+<td>设置要输出的视频帧的数量</td>
+</tr>
+<tr>
+<td>-r [：stream_specifier]</td>
+<td>设置帧率（Hz值，分数或缩写）</td>
+</tr>
+<tr>
+<td>-aframes</td>
+<td>设置要输出的音频帧的数量</td>
+</tr>
+<tr>
+<td>-ar</td>
+<td>设置音频采样频率</td>
+</tr>
+<tr>
+<td>-ac</td>
+<td>设置音频通道的数量</td>
+</tr>
+<tr>
+<td>-an</td>
+<td>禁用录音</td>
+</tr>
+<tr>
+<td>-acodec</td>
+<td>设置音频编解码器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="分解与复用">分解与复用</h3>
+<h4 id="抽取音频流">抽取音频流</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">input</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">acodec</span> <span style="color:#268bd2">copy</span> -<span style="color:#268bd2">vn</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">aac</span>
+</code></pre></div><ul>
+<li>acodec: 指定音频编码器，copy 指明只拷贝，不做编解码。</li>
+<li>vn: v 代表视频，n 代表 no 也就是无视频的意思。</li>
+</ul>
+<h4 id="抽取视频流">抽取视频流</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">input</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">vcodec</span> <span style="color:#268bd2">copy</span> -<span style="color:#268bd2">an</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">h264</span>
+</code></pre></div><ul>
+<li>vcodec: 指定视频编码器，copy 指明只拷贝，不做编解码。</li>
+<li>an: a 代表视频，n 代表 no 也就是无音频的意思。</li>
+</ul>
+<h4 id="转格式">转格式</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">vcodec</span> <span style="color:#268bd2">copy</span> -<span style="color:#268bd2">acodec</span> <span style="color:#268bd2">copy</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">flv</span>
+</code></pre></div><p>上面的命令表式的是音频、视频都直接 copy，只是将 mp4 的封装格式转成了flv</p>
+<h4 id="音视频合并">音视频合并</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">h264</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">aac</span> -<span style="color:#268bd2">vcodec</span> <span style="color:#268bd2">copy</span> -<span style="color:#268bd2">acodec</span> <span style="color:#268bd2">copy</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><h3 id="处理原始数据">处理原始数据</h3>
+<h4 id="提取yuv">提取YUV</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">input</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">an</span> -<span style="color:#268bd2">c</span>:<span style="color:#268bd2">v</span> <span style="color:#268bd2">rawvideo</span> -<span style="color:#268bd2">pixel_format</span> <span style="color:#268bd2">yuv420p</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">yuv</span>
+<span style="color:#268bd2">ffplay</span> -<span style="color:#268bd2">s</span> <span style="color:#268bd2">wxh</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">yuv</span>
+</code></pre></div><ul>
+<li>-c:v rawvideo 指定将视频转成原始数据</li>
+<li>-pixel_format yuv420p 指定转换格式为yuv420p</li>
+</ul>
+<h4 id="yuv转h264">YUV转H264</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">rawvideo</span> -<span style="color:#268bd2">pix_fmt</span> <span style="color:#268bd2">yuv420p</span> -<span style="color:#268bd2">s</span> <span style="color:#2aa198;font-weight:bold">320</span><span style="color:#268bd2">x240</span> -<span style="color:#268bd2">r</span> <span style="color:#2aa198;font-weight:bold">30</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">yuv</span> -<span style="color:#268bd2">c</span>:<span style="color:#268bd2">v</span> <span style="color:#268bd2">libx264</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">rawvideo</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">h264</span>
+</code></pre></div><h4 id="提取pcm数据">提取PCM数据</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">vn</span> -<span style="color:#268bd2">ar</span> <span style="color:#2aa198;font-weight:bold">44100</span> -<span style="color:#268bd2">ac</span> <span style="color:#2aa198;font-weight:bold">2</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">s16le</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">pcm</span>
+<span style="color:#268bd2">ffplay</span> -<span style="color:#268bd2">ar</span> <span style="color:#2aa198;font-weight:bold">44100</span> -<span style="color:#268bd2">ac</span> <span style="color:#2aa198;font-weight:bold">2</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">s16le</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">pcm</span>
+</code></pre></div><h4 id="pcm转wav">PCM转WAV</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">s16be</span> -<span style="color:#268bd2">ar</span> <span style="color:#2aa198;font-weight:bold">8000</span> -<span style="color:#268bd2">ac</span> <span style="color:#2aa198;font-weight:bold">2</span> -<span style="color:#268bd2">acodec</span> <span style="color:#268bd2">pcm_s16be</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">input</span>.<span style="color:#268bd2">raw</span> <span style="color:#268bd2">output</span>.<span style="color:#268bd2">wav</span>
+</code></pre></div><h3 id="滤镜">滤镜</h3>
+<p>在编码之前，ffmpeg可以使用libavfilter库中的过滤器处理原始音频和视频帧。 几个链式过滤器形成一个过滤器图形。 ffmpeg区分两种类型的过滤器图形：简单和复杂。</p>
+<h4 id="加水印">加水印</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span>  -<span style="color:#268bd2">vf</span> <span style="color:#2aa198">&#34;movie=logo.png,scale=48:48[watermask];[in][watermask] overlay=30:20 [out]&#34;</span> <span style="color:#268bd2">water</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><p>-vf中的 movie 指定logo位置。scale 指定 logo 大小。overlay 指定 logo 摆放的位置</p>
+<h4 id="删除水印">删除水印</h4>
+<p>先通过 ffplay 找到要删除 LOGO 的位置</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffplay</span> <span style="color:#268bd2">water</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">vf</span> <span style="color:#268bd2">delogo</span>=<span style="color:#268bd2">x</span>=<span style="color:#2aa198;font-weight:bold">20</span>:<span style="color:#268bd2">y</span>=<span style="color:#2aa198;font-weight:bold">20</span>:<span style="color:#268bd2">w</span>=<span style="color:#2aa198;font-weight:bold">200</span>:<span style="color:#268bd2">h</span>=<span style="color:#2aa198;font-weight:bold">100</span>:<span style="color:#268bd2">show</span>=<span style="color:#2aa198;font-weight:bold">1</span>
+</code></pre></div><p>再使用delogo滤镜删除LOGO</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">water</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">vf</span> <span style="color:#268bd2">delogo</span>=<span style="color:#268bd2">x</span>=<span style="color:#2aa198;font-weight:bold">20</span>:<span style="color:#268bd2">y</span>=<span style="color:#2aa198;font-weight:bold">20</span>:<span style="color:#268bd2">w</span>=<span style="color:#2aa198;font-weight:bold">200</span>:<span style="color:#268bd2">h</span>=<span style="color:#2aa198;font-weight:bold">100</span> <span style="color:#268bd2">output</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><h4 id="视频缩小一倍">视频缩小一倍</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">vf</span> <span style="color:#268bd2">scale</span>=<span style="color:#268bd2">iw</span>/<span style="color:#2aa198;font-weight:bold">2</span>:-<span style="color:#2aa198;font-weight:bold">1</span> <span style="color:#268bd2">scale</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><p>-vf scale 指定使用简单过滤器 scale，iw/2:-1 中的 iw 指定按整型取视频的宽度。 -1 表示高度随宽度一起变化</p>
+<h4 id="视频裁剪">视频裁剪</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ffmpeg -i ss.mp4  -vf crop=in_w-200:in_h-200 -c:v libx264 -c:a copy -video_size 1280x720 vr_new.mp4
+</code></pre></div><p>crop 格式：crop=out_w:out_h:x:y
+out_w: 输出的宽度。可以使用 in_w 表式输入视频的宽度。
+out_h: 输出的高度。可以使用 in_h 表式输入视频的高度。
+x : X坐标
+y : Y坐标
+如果 x和y 设置为 0,说明从左上角开始裁剪。如果不写是从中心点裁剪。</p>
+<h4 id="倍速播放">倍速播放</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">filter_complex</span> <span style="color:#2aa198">&#34;[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]&#34;</span> -<span style="color:#268bd2">map</span> <span style="color:#2aa198">&#34;[v]&#34;</span> -<span style="color:#268bd2">map</span> <span style="color:#2aa198">&#34;[a]&#34;</span> <span style="color:#268bd2">speed2</span><span style="color:#2aa198;font-weight:bold">.0</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><ul>
+<li>-filter_complex 复杂滤镜，[0:v]表示第一个（文件索引号是0）文件的视频作为输入。setpts=0.5*PTS表示每帧视频的pts时间戳都乘0.5 ，也就是差少一半。[v]表示输出的别名。音频同理就不详述了。</li>
+<li>map 可用于处理复杂输出，如可以将指定的多路流输出到一个输出文件，也可以指定输出到多个文件。&quot;[v]&quot; 复杂滤镜输出的别名作为输出文件的一路流。上面map的用法是将复杂滤镜输出的视频和音频输出到指定文件中。</li>
+</ul>
+<h4 id="对称视频">对称视频</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span>  -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">filter_complex</span> <span style="color:#2aa198">&#34;[0:v]pad=w=2*iw[a];[0:v]hflip[b];[a][b]overlay=x=w&#34;</span> <span style="color:#268bd2">duicheng</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><ul>
+<li>hflip 水平翻转</li>
+<li>vflip 垂直翻转</li>
+</ul>
+<h4 id="画中画">画中画</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">test2</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">filter_complex</span> <span style="color:#2aa198">&#34;[1:v]scale=w=90:h=160:force_original_aspect_ratio=decrease[ckout];[0:v][ckout]overlay=x=W-w-10:y=0[out]&#34;</span> -<span style="color:#268bd2">map</span> <span style="color:#2aa198">&#34;[out]&#34;</span> -<span style="color:#268bd2">movflags</span> <span style="color:#268bd2">faststart</span> <span style="color:#268bd2">new</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><h3 id="音视频的拼接与裁剪">音视频的拼接与裁剪</h3>
+<h3 id="裁剪">裁剪</h3>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">ss</span> <span style="color:#2aa198;font-weight:bold">00</span>:<span style="color:#2aa198;font-weight:bold">00</span>:<span style="color:#2aa198;font-weight:bold">00</span> -<span style="color:#268bd2">t</span> <span style="color:#2aa198;font-weight:bold">10</span> <span style="color:#268bd2">s3</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><ul>
+<li>-ss 指定裁剪的开始时间，精确到秒</li>
+<li>-t 被裁剪后的时长。</li>
+</ul>
+<h3 id="合并">合并</h3>
+<p>首先创建一个 inputs.txt 文件，文件内容如下：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">file</span> &#39;<span style="color:#2aa198;font-weight:bold">1.f</span><span style="color:#268bd2">lv</span>&#39;
+<span style="color:#268bd2">file</span> &#39;<span style="color:#2aa198;font-weight:bold">2.f</span><span style="color:#268bd2">lv</span>&#39;
+<span style="color:#268bd2">file</span> &#39;<span style="color:#2aa198;font-weight:bold">3.f</span><span style="color:#268bd2">lv</span>&#39;
+</code></pre></div><p>然后执行下面的命令：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">concat</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">inputs</span>.<span style="color:#268bd2">txt</span> -<span style="color:#268bd2">c</span> <span style="color:#268bd2">copy</span> <span style="color:#268bd2">output</span>.<span style="color:#268bd2">flv</span>
+</code></pre></div><h3 id="hls切片">hls切片</h3>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">c</span>:<span style="color:#268bd2">v</span> <span style="color:#268bd2">libx264</span> -<span style="color:#268bd2">c</span>:<span style="color:#268bd2">a</span> <span style="color:#268bd2">libfdk_aac</span> -<span style="color:#268bd2">strict</span> -<span style="color:#2aa198;font-weight:bold">2</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">hls</span>  <span style="color:#268bd2">out</span>.<span style="color:#268bd2">m3u8</span>
+</code></pre></div><ul>
+<li>-strict -2 指明音频使有AAC。</li>
+<li>-f hls 转成 m3u8 格式。</li>
+</ul>
+<h3 id="视频图片互转">视频图片互转</h3>
+<h4 id="视频转jpeg">视频转JPEG</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">r</span> <span style="color:#2aa198;font-weight:bold">1</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">image2</span> <span style="color:#268bd2">image</span>-%<span style="color:#2aa198;font-weight:bold">3</span><span style="color:#268bd2">d</span>.<span style="color:#268bd2">jpeg</span>
+</code></pre></div><h4 id="视频转gif">视频转GIF</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">ss</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">ss</span> <span style="color:#2aa198;font-weight:bold">00</span>:<span style="color:#2aa198;font-weight:bold">00</span>:<span style="color:#2aa198;font-weight:bold">00</span> -<span style="color:#268bd2">t</span> <span style="color:#2aa198;font-weight:bold">10</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">gif</span>
+</code></pre></div><h4 id="图片转视频">图片转视频</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span>  -<span style="color:#268bd2">f</span> <span style="color:#268bd2">image2</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">image</span>-%<span style="color:#2aa198;font-weight:bold">3</span><span style="color:#268bd2">d</span>.<span style="color:#268bd2">jpeg</span> <span style="color:#268bd2">images</span>.<span style="color:#268bd2">mp4</span>
+</code></pre></div><h3 id="直播相关">直播相关</h3>
+<p>启动本地推流服务器</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">nginx</span>.<span style="color:#268bd2">exe</span> -<span style="color:#268bd2">c</span> <span style="color:#268bd2">conf</span>\<span style="color:#268bd2">nginx</span>-<span style="color:#268bd2">win</span>-<span style="color:#268bd2">rtmp</span>.<span style="color:#268bd2">conf</span>
+</code></pre></div><h4 id="推流">推流</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">re</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">out</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">c</span> <span style="color:#268bd2">copy</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">flv</span> <span style="color:#268bd2">rtmp</span>:<span style="color:#93a1a1;font-style:italic">//localhost/live/room
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">eg</span>:
+<span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">re</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">orange</span>.<span style="color:#268bd2">mp4</span> -<span style="color:#268bd2">c</span> <span style="color:#268bd2">copy</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">flv</span> <span style="color:#268bd2">rtmp</span>:<span style="color:#93a1a1;font-style:italic">//localhost/live/room
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">ffplay</span> <span style="color:#268bd2">rtmp</span>:<span style="color:#93a1a1;font-style:italic">//localhost/live/room
+</span></code></pre></div><h4 id="拉流保存">拉流保存</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">rtmp</span>:<span style="color:#93a1a1;font-style:italic">//server/live/streamName -c copy dump.flv
+</span></code></pre></div><h4 id="转流">转流</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">rtmp</span>:<span style="color:#93a1a1;font-style:italic">//server/live/originalStream -c:a copy -c:v copy -f flv rtmp://localhost/live/room
+</span></code></pre></div><h4 id="实时推流">实时推流</h4>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">framerate</span> <span style="color:#2aa198;font-weight:bold">15</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">avfoundation</span> -<span style="color:#268bd2">i</span> <span style="color:#2aa198">&#34;1&#34;</span> -<span style="color:#268bd2">s</span> <span style="color:#2aa198;font-weight:bold">1280</span><span style="color:#268bd2">x720</span> -<span style="color:#268bd2">c</span>:<span style="color:#268bd2">v</span> <span style="color:#268bd2">libx264</span>  -<span style="color:#268bd2">f</span>  <span style="color:#268bd2">flv</span> <span style="color:#268bd2">rtmp</span>:<span style="color:#93a1a1;font-style:italic">//localhost/live/room
+</span></code></pre></div><p>注意 <code>avfoundation</code> 是mac所支持的设备,如果适用其他的设备需要先查询可用设备列表.</p>
+<p>例如:</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#93a1a1;font-style:italic">// 展示可用设备列表
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">list_devices</span> <span style="color:#cb4b16">true</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">dshow</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">dummy</span>
+<span style="color:#93a1a1;font-style:italic">// 启用推流设备
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">ffmpeg</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">dshow</span> -<span style="color:#268bd2">i</span> <span style="color:#268bd2">video</span>=<span style="color:#2aa198">&#34;CyberLink Webcam Splitter 6.0&#34;</span>:<span style="color:#268bd2">audio</span>=<span style="color:#2aa198">&#34;麦克风阵列 (Realtek High Definition Audio)&#34;</span> -<span style="color:#268bd2">vcodec</span> <span style="color:#268bd2">libx264</span> -<span style="color:#268bd2">acodec</span> <span style="color:#268bd2">copy</span> -<span style="color:#268bd2">f</span> <span style="color:#268bd2">flv</span> <span style="color:#2aa198">&#34;rtmp://localhost/live/home&#34;</span>
+<span style="color:#93a1a1;font-style:italic">// ffmpeg -f dshow -i video=&#34;HP Truevision HD&#34;:audio=&#34;麦克风阵列 (Realtek High Definition Audio)&#34; -vcodec libx264 -acodec copy -f flv &#34;rtmp://localhost/live/home&#34;
+</span></code></pre></div>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/hexo-blog/">使用 Hexo 搭建个人博客</a></li>
+    
+    <li><a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+    <li><a href="https://comert007.github.io/post/%E8%B4%AD%E4%B9%B0hostwindsvps%E4%BB%A5%E5%8F%8A%E5%85%8D%E8%B4%B9%E6%8D%A2ip/">购买Hostwinds VPS以及免费换IP</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/hexo-blog/" data-toggle="tooltip" data-placement="top" title="使用 Hexo 搭建个人博客">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/ffmpeg-command/" data-toggle="tooltip" data-placement="top" title="Android上的FFmpeg命令行">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+

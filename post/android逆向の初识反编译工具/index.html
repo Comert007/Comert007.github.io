@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+  <title>Android逆向-初识反编译工具</title>
+  <meta property="og:title" content="Android逆向-初识反编译工具" />
+  <meta name="twitter:title" content="Android逆向-初识反编译工具" />
+
+  <meta name="description" content="
+
+在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？
+">
+  <meta property="og:description" content="
+
+在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？
+">
+  <meta name="twitter:description" content="
+
+在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？
+">
+  <meta name="author" content=""/>
+  <link href="https://image.glumes.com/video-favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://image.glumes.com/video-favicon.png"/>
+  <meta property="og:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:image" content="https://image.glumes.com/video-favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="移动技术分享" />
+
+  <meta name="generator" content="Hugo 0.84.1" />
+  <link rel="canonical" href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/" />
+  <link rel="alternate" href="https://comert007.github.io/index.xml" type="application/rss+xml" title="移动技术分享">
+
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700%7COpen+Sans:400,700" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/reward.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/search.css" />
+  <link rel="stylesheet" href="https://image.glumes.com/blog_source/assets/css/main.css" />
+
+
+  
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  
+  
+    
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+
+
+
+
+
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?9276c0ce2d3c49b591323abab4a32e1e";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRLK1SYTZ1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TRLK1SYTZ1');
+</script>
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://comert007.github.io/" title="移动技术分享">
+        
+        移动技术分享
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">音视频</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/ffmpeg">FFmpeg</a>
+                
+                  <a href="https://comert007.github.io/categories/codec">Codec </a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">移动开发</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/android">Android</a>
+                
+                  <a href="https://comert007.github.io/categories/flutter">Flutter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">VPS</a>
+              <div class="navlinks-children">
+                
+                  <a href="https://comert007.github.io/categories/gfw">GFW</a>
+                
+                  <a href="https://comert007.github.io/categories/ip">IP</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="所有文章" href="https://comert007.github.io/post/">所有文章</a>
+            </li>
+          
+        
+
+        
+
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="post-heading">
+              <h1>Android逆向-初识反编译工具</h1>
+                
+                
+                  <span class="post-meta">
+  
+    
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </header>
+
+
+    
+
+
+
+<div class="container" role="main">
+  <div class="row">
+
+    
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div>
+            
+            
+            <h5 id="tags" style="margin-top: 30px;">标签:
+              
+                  <a href="https://comert007.github.io/tags/%E9%80%86%E5%90%91/">逆向</a> &nbsp;
+              
+                  <a href="https://comert007.github.io/tags/%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">反编译工具</a> &nbsp;
+              
+            </h5>
+            
+        </div>
+  
+        <article role="main" class="blog-post" itemprop="articleBody" id="content">
+          
+            
+          
+  
+
+          
+
+
+          
+          
+          
+  
+          
+          
+          
+  
+          
+          
+          
+
+          <p><img src="https://comert007.github.io/img/decompile/apktool_decode_apk.png" alt=""></p>
+<blockquote>
+<p>在不断对Android的学习过程中，我们常常肯定会想去研究一下那些大厂的代码是怎么写的，好不断的学习一些新的知识来让自己stronger。但是别人的代码都是打包好了的，怎么能够看得到呢？</p>
+</blockquote>
+<h1 id="反编译伊始">反编译伊始</h1>
+<p>什么叫做反编译？	
+反编译就是将已编译好的程式还原到未编译的状态，也就是找出程序的源代码。</p>
+<p>那怎么找出别人的代码呢？通常我们会用到3个工具</p>
+<ul>
+<li>Apktool</li>
+<li>Dex2jar</li>
+<li>Jd-Gui</li>
+</ul>
+<p>下面我们就针对这三个工具进行介绍</p>
+<h1 id="apktool">Apktool</h1>
+<p>Apktool是用来干嘛的？</p>
+<ul>
+<li>将资源文件还原成原始形式(9.png、AndroidManifest.xml)</li>
+<li>将Android的dex文件反编译为smali源码</li>
+<li>将反编译的资源重新编译成APK/JAR</li>
+</ul>
+<p>所以Apktool不光能够拆解apk，还能加已经拆解的apk资源重新组装成apk。</p>
+<h2 id="安装apktool">安装Apktool</h2>
+<p>环境要求：JDK8</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">java --version // 验证是否安装jdk
+</code></pre></div><p>Windows和MacOs安装JDK这里就不再赘述，可以查看此处<a href="https://blog.csdn.net/qq_35246620/article/details/61208961">Win10安装JDK及配置环境变量的方法</a>和<a href="https://www.jianshu.com/p/194531d106ae">Mac安装JDK及环境变量配置</a>。在Linux上可以使用如下命令进行安装</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// ubuntu上安装方式
+sudo apt-get install openjdk-8-jre
+// centos 上安装方式
+sudo yum install openjdk-8-jre
+</code></pre></div><h2 id="windows">Windows:</h2>
+<ol>
+<li>下载<a href="https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/windows/apktool.bat">apktool脚本</a>并保存为apktool.bat，<a href="https://comert007.github.io/tools/decompile/windows/apktool.bat">【直接下载】</a></li>
+<li>下载<a href="https://bitbucket.org/iBotPeaches/apktool/downloads/">apktool工具</a>并重命名保存为apktool.jar，<a href="https://comert007.github.io/tools/decompile/windows/apktool.jar">【直接下载】</a></li>
+<li>将<code>apktool.bat</code>和<code>apktool.jar</code>放在同一个文件夹下面(C://Windows)</li>
+<li>如果你放的文件不是在(C://Windows)下需要进行配置环境变量</li>
+</ol>
+<h2 id="linux">Linux：</h2>
+<ol>
+<li>下载<a href="https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool">apktool脚本</a>并保存为apktool，<a href="https://comert007.github.io/tools/decompile/linux/apktool">【直接下载】</a></li>
+<li>下载<a href="https://bitbucket.org/iBotPeaches/apktool/downloads/">apktool工具</a>并重命名保存为apktool.jar，<a href="https://comert007.github.io/tools/decompile/linux/apktool.jar">【直接下载】</a></li>
+<li>将<code>apktool</code>和<code>apktool.jar</code>放在同一个文件夹下面<code>/usr/local/bin</code></li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo mv apktool /usr/local/bin
+sudo mv apktool.jar /usr/local/bin
+</code></pre></div><ol start="4">
+<li>给<code>apktool</code>和<code>apktool.jar</code>赋予可执行权限</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo chmod +x apktool
+sudo chmod +x apktool.jar
+</code></pre></div><h2 id="macos">MacOs：</h2>
+<ol>
+<li>下载<a href="https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/osx/apktool">apktool脚本</a>并保存为apktool，<a href="https://comert007.github.io/tools/decompile/macos/apktool">【直接下载】</a></li>
+<li>下载<a href="https://bitbucket.org/iBotPeaches/apktool/downloads/">apktool工具</a>并重命名保存为apktool.jar，<a href="https://comert007.github.io/tools/decompile/macos/apktool.jar">【直接下载】</a></li>
+<li>将<code>apktool</code>和<code>apktool.jar</code>放在同一个文件夹下面<code>/usr/local/bin</code></li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo mv apktool /usr/local/bin
+sudo mv apktool.jar /usr/local/bin
+</code></pre></div><ol start="4">
+<li>给<code>apktool</code>和<code>apktool.jar</code>赋予可执行权限</li>
+</ol>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo chmod +x apktool
+sudo chmod +x apktool.jar
+</code></pre></div><h2 id="使用apktool">使用Apktool</h2>
+<p>使用就比较简单了，直接执行如下命令就可以进行反编译</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">apktool d bar.apk //直接解码
+apktool d bar.apk -o baz //解码到baz的文件夹中
+</code></pre></div><p><img src="https://comert007.github.io/img/decompile/apktool_decode_apk.png" alt="apktool反编译过程"></p>
+<p><img src="https://comert007.github.io/img/decompile/apktool_decode_result.png" alt="apktool反编译结果"></p>
+<p>Apktool既然能够进行反编译，那也能重新编译成Apk文件</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">apktool b bar // 在父目录执行building
+apktool b . // 在当前bar目录执行building
+apktool b bar -o new_bar.apk //  在父目录执行building并生成名为new_bar的apk文件
+</code></pre></div><p>生成的文件就在/dist下		
+<img src="https://comert007.github.io/img/decompile/apktool_build_result.png" alt="apktool重新编译结果"></p>
+<h2 id="有什么用">有什么用？</h2>
+<p>使用<code>apktool</code>大概有如下作用:</p>
+<ul>
+<li>查看AndroidManifest文件内容，知道每一个Activity的绝对路径，方便后面查看代码快速定位</li>
+<li>拿到完整的资源文件(assest、drawable、resouces&hellip;目录下的文件)</li>
+<li>如果我们熟悉smali语法的话，还可以将别人的代码进行修改然后重新打包成apk（比如破解会员验证），在后期的更新文章中会逐步为大家解答。</li>
+</ul>
+<p>通过如上方法，我们就破解了一个简单的APK，但是仍然有一个问题：我想看源代码怎么办？这就需要使用Dex2jar和Jd-Gui了。</p>
+<h1 id="dex2jar">Dex2jar</h1>
+<p>这个工具有什么用呢？其实从名字上就可以知道，它的作用就是将dex文件转成jar。</p>
+<p>为什么要转成jar呢？		
+这个其实是方便我们通过Jd-Gui进行查看代码了~</p>
+<h2 id="安装">安装</h2>
+<ol>
+<li>
+<p>可通过<a href="https://github.com/pxb1988/dex2jar/releases">dex2jar-github</a>进行下载，当然也可以通过本站提供<a href="https://comert007.github.io/tools/decompile/dex-tools-2.1-SNAPSHOT.zip">下载链接</a>进行下载</p>
+</li>
+<li>
+<p>将下载的压缩包进行解压，大致目录如下，其中<code>d2j-dex2jar.bat</code>供Windows使用，而<code>d2j-dex2jar.sh</code>供Linux和MacOs使用</p>
+</li>
+</ol>
+<p><img src="https://comert007.github.io/img/decompile/dex2jar_pkg.png" alt="dex2jar工具目录"></p>
+<h2 id="使用">使用</h2>
+<p>环境要求：JDK7以上
+安装方式在上方已有介绍</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// For Linux, Mac OSX, Cygwin
+sh /home/panxiaobo/dex2jar-version/d2j-dex2jar.sh /home/panxiaobo/bar.apk
+// For Windows
+C:<span style="color:#2aa198">\d</span>ex2jar-version<span style="color:#2aa198">\d</span>2j-dex2jar.bat bar.apk
+</code></pre></div><p>执行完如上命令后就会在apk旁边生成一个jar文件，接下来就是通过工具查看jar文件里面的java代码了。查看代码的工具有很多，大概有如下：</p>
+<ul>
+<li><a href="http://java-decompiler.github.io/">Jd-Gui</a></li>
+<li><a href="https://varaneckas.com/jad/">JAD</a></li>
+<li><a href="https://github.com/mstrobel/procyon">Procyon</a></li>
+</ul>
+<h1 id="jd-gui">Jd-Gui</h1>
+<p>我们这里使用这个工具来查看源代码，因为它比较方便：开箱即用</p>
+<h2 id="安装以及使用">安装以及使用</h2>
+<p>可用通过<a href="http://java-decompiler.github.io/">官网</a>进行下载，也可以使用本站提供的下载地址进行下载</p>
+<ul>
+<li><a href="https://comert007.github.io/tools/decompile/windows/jd-gui-1.6.6.jar">Windows-jd-gui</a> 、 <a href="https://comert007.github.io/tools/decompile/windows/jd-gui-1.6.6-mini.jar">Windows-jd-gui-mini</a></li>
+<li><a href="https://comert007.github.io/tools/decompile/linux/jd-gui-1.6.6.deb">Linux-deb-jd-gui</a> 、 <a href="https://comert007.github.io/tools/decompile/linux/jd-gui-1.6.6.rpm">Linux-rpm-jd-gui</a></li>
+<li><a href="https://comert007.github.io/tools/decompile/macos/jd-gui-osx-1.6.6.tar">MacOS-jd-gui</a></li>
+</ul>
+<p><img src="https://comert007.github.io/img/decompile/jd-gui_installer.png" alt="jd-gui可下载列表"></p>
+<p>安装成功之后打开Jd-Gui，然后dex2jar生成的jar文件拖入进去，就可以查看代码了，是不是超简单~~</p>
+<p><img src="https://comert007.github.io/img/decompile/jd-gui_open_file.png" alt="jd-gui查看源码"></p>
+<p>看了这么多，你不亲自动手练习一下吗？</p>
+
+
+          
+
+
+  
+
+
+                    <p>
+                      原创文章，转载请注明来源: &nbsp;&nbsp; <a href="https://comert007.github.io/post/android%E9%80%86%E5%90%91%E3%81%AE%E5%88%9D%E8%AF%86%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7/">Android逆向-初识反编译工具</a>
+                    </p>
+
+
+          
+            <div class="entry-shang text-center">
+    <p>「真诚赞赏，手留余香」</p>
+    <button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+    <div class="zs-modal-head">
+        <button type="button" class="close">×</button>
+        <span class="author"><img src="https://comert007.github.io/img/avatar.jpeg"/>Glumes</span>
+        <p class="tip"><i></i><span>请我喝杯咖啡？加微信好友 ezglumes </span></p>
+    </div>
+    <div class="zs-modal-body">
+        <div class="zs-modal-btns">
+            <button class="btn btn-blink" data-num="2">2元</button>
+            <button class="btn btn-blink" data-num="5">5元</button>
+            <button class="btn btn-blink" data-num="10">10元</button>
+            <button class="btn btn-blink" data-num="50">50元</button>
+            <button class="btn btn-blink" data-num="100">100元</button>
+            <button class="btn btn-blink" data-num="1">任意金额</button>
+        </div>
+        <div class="zs-modal-pay">
+            <button class="btn btn-bred" id="pay-text">2元</button>
+            <p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+            <img src="https://comert007.github.io/img/wechat-2.png" id="pay-image"/>
+        </div>
+    </div>
+    <div class="zs-modal-footer">
+        <span class="zs-wechat"><img src="https://comert007.github.io/img/wechat-btn.png"/></span>
+    </div>
+</div>
+          
+
+          
+          
+            <div class="social-share" data-initialized="true" style="margin-bottom: 20px;margin-top:20px;">
+    <center>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+          
+        </article>
+  
+        
+          
+
+<h3>相关文章</h3>
+<ul style="margin-bottom: 25px;">
+    
+    <li><a href="https://comert007.github.io/post/audio-encod/">Android音视频开发:音频非压缩编码和压缩编码</a></li>
+    
+    <li><a href="https://comert007.github.io/post/basic-media/">Android音视频开发:踩一踩“门槛”</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-command/">Android上的FFmpeg命令行</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-basic/">FFmpeg命令行入门基础</a></li>
+    
+    <li><a href="https://comert007.github.io/post/hexo-blog/">使用 Hexo 搭建个人博客</a></li>
+    
+    <li><a href="https://comert007.github.io/post/lock-screen/">Android 音乐播放锁屏界面</a></li>
+    
+    <li><a href="https://comert007.github.io/post/ffmpeg-android/">FFmpeg编译4.1.4并移植到Android</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter3/">Flutter(三)-如何实现登录动画效果</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter1/">Flutter(一)-你入门了没？</a></li>
+    
+    <li><a href="https://comert007.github.io/post/flutter2/">Flutter(二)-Hello World?</a></li>
+    
+</ul>
+
+        
+  
+        
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://comert007.github.io/post/audio-encod/" data-toggle="tooltip" data-placement="top" title="Android音视频开发:音频非压缩编码和压缩编码">&larr; 前一篇</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://comert007.github.io/post/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E4%B8%BAhtml%E4%BB%A3%E7%A0%81%E7%9A%84%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="【转载】解决Hexo博客分页展示为HTML代码的问题">后一篇 &rarr;</a>
+            </li>
+          
+        </ul>
+        
+
+        
+        
+        
+
+
+        
+
+
+
+      </div>
+    
+    
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+
+          
+          
+          
+              <li>
+                <a href="mailto:anjoiner@163.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+              <li>
+                <a href="https://github.com/AnJoiner" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="https://comert007.github.io/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+
+          &nbsp;&bull;&nbsp;
+          2021
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/">移动技术分享</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://comert007.github.io/sitemap.xml">网站地图</a>
+          
+             &nbsp;&bull;&nbsp;
+                      <a href="http://beian.miit.gov.cn"> 蜀ICP备17040293号 </a>
+        </p>
+
+
+
+
+
+
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.84.1</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/cnych/qikqiak.com">qikqiak-blog</a> 移植自 <a href="https://github.com/rootsongjc/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://comert007.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://comert007.github.io/js/bootstrap.min.js"></script>
+<script src="https://comert007.github.io/js/main.min.js"></script>
+<script src="https://comert007.github.io/js/reward.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+
+<script>
+  (function() {
+    var cx = 'true';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+  
+
+
+
+
+
+
+<script src='https://comert007.github.io/js/bundle.min.7f06e69a4c2122d35ef2be4884d8b8f3b281f64fbfece3df4d732d4de850150c.js' integrity='sha256-fwbmmkwhItNe8r5IhNi487KB9k&#43;/7OPfTXMtTehQFQw='></script>
+
+  </body>
+</html>
+
